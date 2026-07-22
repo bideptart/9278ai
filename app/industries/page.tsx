@@ -1,10 +1,14 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Building2, PhoneIncoming, PhoneCall, Rocket } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Button } from "@/components/ui/button"
-import { ScrollReveal } from "@/components/animation/scroll-reveal"
+import { ScrollReveal, StaggerGroup, StaggerItem } from "@/components/animation/scroll-reveal"
+import { AmbientGlow } from "@/components/industries/ambient-glow"
+import { CountUpStat } from "@/components/industries/count-up-stat"
+import { HeroPreviewCard } from "@/components/industries/hero-preview-card"
+import { StarField } from "@/components/industries/star-field"
 import { IndustryRow } from "@/components/industries/industry-row"
 import { Industries } from "@/components/sections/industries"
 import { INDUSTRIES } from "@/lib/industries"
@@ -18,6 +22,13 @@ export const metadata: Metadata = pageSeo({
     "Pre-tuned AI voice agents for real estate, dental, healthcare, home services, restaurants, automotive, legal, education, e-commerce, and fitness — live in under 5 minutes.",
   path: "/industries",
 })
+
+const STATS = [
+  { value: 10, prefix: "", suffix: "", decimals: 0, label: "Industries covered", icon: Building2 },
+  { value: 3, prefix: "<", suffix: "s", decimals: 0, label: "First-ring pickup", icon: PhoneIncoming },
+  { value: 2.4, prefix: "", suffix: "M+", decimals: 1, label: "Calls handled monthly", icon: PhoneCall },
+  { value: 5, prefix: "", suffix: " min", decimals: 0, label: "To go live", icon: Rocket },
+]
 
 export default function IndustriesPage() {
   return (
@@ -40,68 +51,123 @@ export default function IndustriesPage() {
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
         />
+        <AmbientGlow />
         <div className="relative mx-auto w-full max-w-6xl px-4 py-20 md:px-6 md:py-28">
-          <ScrollReveal className="mx-auto max-w-3xl text-center">
-            <span className="ai-pill-magenta">
-              <span className="h-1 w-1 rounded-full bg-accent" />
-              Industries
-            </span>
-            <h1 className="mt-6 text-balance text-4xl font-serif font-normal tracking-tight md:text-6xl">
-              Built for every kind of <span className="text-primary">phone call.</span>
-            </h1>
-            <p className="mt-5 text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
-              Pre-tuned scripts, integrations, and compliance guardrails for ten industries — and a configurable engine
-              for everything else. Pick the workflow closest to yours and we&apos;ll have you live in under 5 minutes.
-            </p>
-          </ScrollReveal>
+          <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12 lg:gap-10">
+            <ScrollReveal className="lg:col-span-7">
+              <span className="ai-pill-magenta">
+                <span className="h-1 w-1 rounded-full bg-accent" />
+                Industries
+              </span>
+              <h1 className="mt-6 text-balance text-4xl font-serif font-normal leading-[1.05] tracking-tight md:text-6xl">
+                Built for every kind of <span className="text-primary">phone call.</span>
+              </h1>
+              <p className="mt-5 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
+                Pre-tuned scripts, integrations, and compliance guardrails for ten industries — and a configurable
+                engine for everything else. Pick the workflow closest to yours and we&apos;ll have you live in under
+                5 minutes.
+              </p>
 
-          <ScrollReveal className="mt-10 flex flex-wrap justify-center gap-2">
-            {INDUSTRIES.map((i) => (
-              <Link
-                key={i.slug}
-                href={`/industries/${i.slug}`}
-                className="group inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-card/30 px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Button asChild size="lg" className="group btn-ai h-12 rounded-full px-7">
+                  <Link href="/get-started">
+                    Get started <ArrowRight className="ml-1 size-4 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="h-12 rounded-full border-border/70 bg-card/30 px-7 backdrop-blur-md hover:border-primary/50 hover:bg-card/50"
+                >
+                  <Link href="/pricing">View pricing</Link>
+                </Button>
+              </div>
+
+              <StaggerGroup
+                className="mt-10 grid grid-cols-2 gap-3 border-t border-border/40 pt-8 sm:grid-cols-4 lg:grid-cols-2"
+                stagger={0.08}
               >
-                <i.icon className="size-3.5 text-primary" aria-hidden />
-                {i.name}
-              </Link>
-            ))}
-          </ScrollReveal>
+                {STATS.map((s) => {
+                  const StatIcon = s.icon
+                  return (
+                    <StaggerItem key={s.label}>
+                      <div className="card-glow ring-gradient group relative flex items-center gap-3 overflow-hidden rounded-xl p-3 transition-transform duration-300 hover:-translate-y-1">
+                        <span
+                          aria-hidden
+                          className="pointer-events-none absolute -right-6 -top-6 h-16 w-16 rounded-full bg-primary/0 blur-xl transition-all duration-500 group-hover:bg-primary/25"
+                        />
+                        <span className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary/15 to-accent/10 text-primary ring-1 ring-primary/20 transition-all group-hover:ring-primary/40">
+                          <StatIcon
+                            className="size-4 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
+                            aria-hidden
+                          />
+                        </span>
+                        <div className="relative min-w-0">
+                          <p className="font-serif text-xl text-primary">
+                            <CountUpStat value={s.value} prefix={s.prefix} suffix={s.suffix} decimals={s.decimals} />
+                          </p>
+                          <p className="text-[10px] uppercase tracking-widest text-muted-foreground">{s.label}</p>
+                        </div>
+                      </div>
+                    </StaggerItem>
+                  )
+                })}
+              </StaggerGroup>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.15} className="lg:col-span-5">
+              <HeroPreviewCard />
+            </ScrollReveal>
+          </div>
         </div>
       </section>
 
-      <Industries showHeader={false} />
+      <Industries />
 
       <div className="mx-auto w-full max-w-6xl px-4 md:px-6">
         {INDUSTRIES.map((industry, i) => (
-          <IndustryRow key={industry.slug} slug={industry.slug} reverse={i % 2 === 1} />
+          <IndustryRow key={industry.slug} slug={industry.slug} index={i} reverse={i % 2 === 1} />
         ))}
       </div>
 
-      <section className="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
-        <ScrollReveal className="rounded-2xl border border-border/60 bg-card/30 px-6 py-12 md:px-12 md:py-14">
-          <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
+      <Ornament />
+
+      <section className="mx-auto w-full max-w-6xl px-4 py-24 md:px-6">
+        <div className="bg-ai-gradient relative overflow-hidden rounded-[28px] px-6 py-14 shadow-[0_30px_70px_-20px_oklch(0.577_0.245_27.33_/_0.45)] md:px-12 md:py-16">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 -z-10 bg-grid opacity-25 [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_85%)]"
+          />
+          <StarField />
+          <div className="relative flex flex-col items-start gap-8 md:flex-row md:items-center md:justify-between">
             <div className="max-w-xl">
-              <h3 className="text-balance text-2xl font-semibold tracking-tight md:text-3xl">
+              <h3 className="text-balance text-3xl font-extrabold tracking-tight text-white md:text-4xl">
                 Don&apos;t see your industry?
               </h3>
-              <p className="mt-3 text-muted-foreground">
-                We&apos;ve deployed agents in security, recruiting, property management, insurance, finance, and more.
-                Tell us what calls eat your day and we&apos;ll have a prototype in 48 hours.
+              <span aria-hidden className="mt-3 block h-0.5 w-10 rounded-full bg-white/50" />
+              <p className="mt-4 text-pretty leading-relaxed text-white/85">
+                We&apos;ve deployed agents in security, recruiting, property management, insurance, finance, and
+                more. Tell us what calls eat your day and we&apos;ll have a prototype in 48 hours.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
-              <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
+              <Button asChild size="lg" className="group/btn h-12 rounded-full bg-white px-7 text-primary hover:bg-white/90">
                 <Link href="/get-started">
-                  Get started <ArrowRight className="ml-1 size-4" aria-hidden />
+                  Get started{" "}
+                  <ArrowRight className="ml-1 size-4 transition-transform group-hover/btn:translate-x-1" />
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline">
+              <Button
+                asChild
+                size="lg"
+                className="h-12 rounded-full bg-white/20 px-7 text-white backdrop-blur-md hover:bg-white/30"
+              >
                 <Link href="/pricing">View pricing</Link>
               </Button>
             </div>
           </div>
-        </ScrollReveal>
+        </div>
       </section>
 
       <RelatedLinks
@@ -128,5 +194,15 @@ export default function IndustriesPage() {
 
       <SiteFooter />
     </main>
+  )
+}
+
+function Ornament() {
+  return (
+    <div aria-hidden className="mx-auto flex w-full max-w-6xl items-center gap-4 px-4 py-4 md:px-6">
+      <span className="h-px flex-1 bg-gradient-to-r from-transparent to-border" />
+      <span className="size-1.5 rotate-45 bg-primary/40" />
+      <span className="h-px flex-1 bg-gradient-to-l from-transparent to-border" />
+    </div>
   )
 }

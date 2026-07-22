@@ -43,7 +43,7 @@ const items = [
 export function UseCases() {
   return (
     <section className="relative overflow-hidden border-t border-border/40">
-      <div className="mx-auto w-full max-w-7xl px-4 pb-14 pt-14 md:px-6 md:pb-20 md:pt-20">
+      <div className="mx-auto w-full max-w-7xl px-4 pb-14 pt-8 md:px-6 md:pb-20 md:pt-10">
         <ScrollReveal className="mx-auto max-w-2xl text-center">
           <span className="ai-pill-cyan">
             <span className="h-1 w-1 rounded-full bg-primary" />

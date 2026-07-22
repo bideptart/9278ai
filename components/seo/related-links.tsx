@@ -12,7 +12,7 @@ export type RelatedLink = {
 }
 
 // Rotates through the site's existing red-family accent tokens (already
-// used for the homepage's "01/02/03" step cards) for the flip-card back face.
+// used for the homepage's "01/02/03" step cards) for the icon badge.
 const ACCENTS = ["var(--ai-cyan)", "var(--ai-violet)", "var(--ai-magenta)"]
 
 // Tailwind v4 drops the group-hover:/group-focus-visible: variant prefix when
@@ -24,28 +24,17 @@ function FlipCard({ link, index }: { link: RelatedLink; index: number }) {
   const number = String(index + 1).padStart(2, "0")
   const accent = ACCENTS[index % ACCENTS.length]
 
-  const glow = (color: string, corner1: string, corner2: string) => ({
-    backgroundImage: `radial-gradient(circle at ${corner1}, color-mix(in oklch, ${color} 45%, transparent) 0%, transparent 28%), radial-gradient(circle at ${corner2}, color-mix(in oklch, ${color} 45%, transparent) 0%, transparent 28%)`,
-  })
-
-  const CardFace = ({ tint }: { tint: string }) => (
-    <div className="flex h-full w-full flex-col justify-between p-6">
-      <div className="flex items-start justify-between">
-        <span className="text-6xl font-bold leading-none" style={{ color: `color-mix(in oklch, ${tint} 20%, transparent)` }}>
-          {number}
-        </span>
-        <span
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
-          style={{ backgroundColor: `color-mix(in oklch, ${tint} 10%, transparent)` }}
-        >
-          <ArrowUpRight className="h-4 w-4" style={{ color: tint }} aria-hidden />
-        </span>
-      </div>
-      <div>
-        <p className="text-xl font-bold tracking-tight text-neutral-900">{link.title}</p>
-        <p className="mt-2 text-sm leading-relaxed text-neutral-500">{link.description}</p>
-      </div>
-    </div>
+  const iconBadge = (
+    <span
+      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
+      style={{
+        background: `color-mix(in oklch, ${accent} 12%, transparent)`,
+        boxShadow: `0 6px 16px -4px color-mix(in oklch, ${accent} 45%, transparent)`,
+        color: accent,
+      }}
+    >
+      <ArrowUpRight className="h-4 w-4" aria-hidden />
+    </span>
   )
 
   return (
@@ -59,30 +48,42 @@ function FlipCard({ link, index }: { link: RelatedLink; index: number }) {
         onFocus={() => setFlipped(true)}
         onBlur={() => setFlipped(false)}
       >
-        {/* Front face — white card, red corner glows (top-right / bottom-left) */}
+        {/* Front face — red gradient, shown at rest (matches the homepage how-it-works cards) */}
         <div
-          className="absolute inset-0 h-full w-full overflow-hidden rounded-2xl bg-white"
+          className="absolute inset-0 flex h-full w-full flex-col justify-between overflow-hidden rounded-2xl p-6"
           style={{
-            ...glow("#DC2626", "100% 0%", "0% 100%"),
-            boxShadow: "0 8px 24px -12px rgba(0,0,0,0.18)",
+            backgroundImage:
+              "linear-gradient(135deg, color-mix(in oklch, var(--primary) 16%, white), color-mix(in oklch, var(--primary) 6%, white))",
             backfaceVisibility: "hidden",
             WebkitBackfaceVisibility: "hidden",
           }}
         >
-          <CardFace tint="#DC2626" />
+          <div className="flex items-start justify-between">
+            <span className="text-6xl font-bold leading-none text-primary/20">{number}</span>
+            {iconBadge}
+          </div>
+          <div>
+            <p className="text-xl font-bold tracking-tight text-neutral-900">{link.title}</p>
+            <p className="mt-2 text-sm leading-relaxed text-neutral-500">{link.description}</p>
+          </div>
         </div>
-        {/* Back face — same layout, per-card accent glow mirrored to the opposite corners */}
+        {/* Back face — white card, revealed on hover */}
         <div
-          className="absolute inset-0 h-full w-full overflow-hidden rounded-2xl bg-white"
+          className="step-card card-glow absolute inset-0 flex h-full w-full flex-col justify-between overflow-hidden rounded-2xl bg-white p-6"
           style={{
-            ...glow(accent, "0% 0%", "100% 100%"),
-            boxShadow: "0 8px 24px -12px rgba(0,0,0,0.18)",
             backfaceVisibility: "hidden",
             WebkitBackfaceVisibility: "hidden",
             transform: "rotateY(180deg)",
           }}
         >
-          <CardFace tint={accent} />
+          <div className="flex items-start justify-between">
+            <span className="text-6xl font-bold leading-none text-muted-foreground/25">{number}</span>
+            {iconBadge}
+          </div>
+          <div>
+            <p className="text-xl font-bold tracking-tight text-neutral-900">{link.title}</p>
+            <p className="mt-2 text-sm leading-relaxed text-neutral-500">{link.description}</p>
+          </div>
         </div>
       </Link>
     </li>
