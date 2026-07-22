@@ -1,105 +1,61 @@
 "use client"
 
-import { Home, Stethoscope, HeartPulse, Wrench, UtensilsCrossed, Car } from "lucide-react"
-import { motion } from "motion/react"
-import { cn } from "@/lib/utils"
-import { ScrollReveal, StaggerGroup, StaggerItem } from "@/components/animation/scroll-reveal"
+import Link from "next/link"
+import { ArrowRight } from "lucide-react"
+import { StaggerGroup, StaggerItem } from "@/components/animation/scroll-reveal"
+import { MouseGlowCard } from "@/components/animation/mouse-glow-card"
+import { INDUSTRIES } from "@/lib/industries"
 
-const items = [
-  {
-    icon: Home,
-    title: "Real estate",
-    description:
-      "Qualify buyer & seller leads 24/7, book showings on your calendar, and follow up the moment a listing gets a hit.",
-  },
-  {
-    icon: Stethoscope,
-    title: "Dental",
-    description:
-      "Confirm appointments, fill last-minute cancellations, and answer insurance & treatment questions without tying up the front desk.",
-  },
-  {
-    icon: HeartPulse,
-    title: "Healthcare",
-    description:
-      "Automate patient intake, prescription refills, and reminder calls with a calm, HIPAA-aware bedside tone.",
-  },
-  {
-    icon: Wrench,
-    title: "Home services",
-    description:
-      "Capture every after-hours service request, dispatch the right tech, and never lose a job to a slow callback again.",
-  },
-  {
-    icon: UtensilsCrossed,
-    title: "Restaurants",
-    description:
-      "Take reservations, confirm large parties, answer hours and menu questions — fluently, in any accent.",
-  },
-  {
-    icon: Car,
-    title: "Automotive",
-    description:
-      "Schedule service, follow up on test drives, and keep the BDC ringing 24 hours a day across every dealership.",
-  },
-]
-
-export function Industries({ showHeader = true }: { showHeader?: boolean } = {}) {
+export function Industries() {
   return (
     <section id="industries" className="relative overflow-hidden border-t border-border/40">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]"
+        className="pointer-events-none absolute inset-0 bg-dots opacity-60 [mask-image:radial-gradient(ellipse_at_center,black_25%,transparent_72%)]"
       />
-      <div className="relative mx-auto w-full max-w-5xl px-4 py-10 md:px-6 md:py-12">
-        {showHeader && (
-          <ScrollReveal className="mx-auto max-w-xl text-center">
-            <span className="ai-pill-magenta">
-              <span className="h-1 w-1 rounded-full bg-accent" />
-              Industries
-            </span>
-            <h2 className="mt-3 text-balance text-2xl font-semibold leading-[1.15] tracking-tight md:text-3xl">
-              Built for every kind of{" "}
-              <span className="text-primary">phone call.</span>
+      <div className="relative mx-auto w-full max-w-6xl px-4 py-16 md:px-6 md:py-20">
+        <div className="flex flex-wrap items-end justify-between gap-4 border-b border-border/50 pb-6">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">At a glance</p>
+            <h2 className="mt-2 text-balance font-serif text-2xl font-normal tracking-tight md:text-3xl">
+              Ten playbooks, <span className="text-primary">one platform.</span>
             </h2>
-            <p className="mt-2 text-pretty text-sm leading-relaxed text-muted-foreground">
-              Pre-tuned scripts, integrations, and compliance guardrails for the workflows you actually run.
-            </p>
-          </ScrollReveal>
-        )}
+          </div>
+          <p className="max-w-xs text-pretty text-sm text-muted-foreground">
+            Tap any card to jump straight to its playbook below.
+          </p>
+        </div>
 
-        <StaggerGroup className={cn("grid gap-3 sm:grid-cols-2 lg:grid-cols-3", showHeader && "mt-8")}>
-          {items.map((item) => {
-            const Icon = item.icon
+        <StaggerGroup className="mt-10 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+          {INDUSTRIES.map((industry, i) => {
+            const Icon = industry.icon
             return (
-              <StaggerItem key={item.title}>
-                <motion.div
-                  whileHover={{ y: -3 }}
-                  transition={{ type: "spring", stiffness: 280, damping: 22 }}
-                  className="group relative h-full"
-                >
-                  <div className="card-glow relative h-full overflow-hidden rounded-lg p-3.5">
-                    <span
-                      aria-hidden
-                      className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-primary/0 blur-xl transition-all duration-500 group-hover:bg-primary/30"
-                    />
-                    <div className="relative">
-                      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary/15 to-accent/10 text-primary ring-1 ring-primary/20 transition-all group-hover:ring-primary/40">
+              <StaggerItem key={industry.slug}>
+                <MouseGlowCard className="h-full rounded-xl bg-card/40 p-5">
+                  <Link href={`/industries/${industry.slug}`} className="group flex h-full flex-col">
+                    <div className="flex items-center justify-between">
+                      <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-gradient-to-br from-primary/15 to-accent/10 text-primary ring-1 ring-primary/20 transition-all group-hover:ring-primary/40">
                         <Icon
-                          className="h-3.5 w-3.5 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
+                          className="size-5 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
                           aria-hidden="true"
                         />
                       </span>
-                      <h3 className="mt-2.5 text-sm font-semibold tracking-tight transition-colors group-hover:text-primary">
-                        {item.title}
-                      </h3>
-                      <p className="mt-1 text-[11px] leading-snug text-muted-foreground">{item.description}</p>
-                      <span className="mt-2.5 inline-flex items-center gap-1 text-[10px] font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
-                        Explore playbook →
+                      <span className="font-serif text-lg text-muted-foreground/30" aria-hidden>
+                        {String(i + 1).padStart(2, "0")}
                       </span>
                     </div>
-                  </div>
-                </motion.div>
+                    <h3 className="mt-4 text-sm font-semibold tracking-tight transition-colors group-hover:text-primary">
+                      {industry.name}
+                    </h3>
+                    <p className="mt-1.5 flex-1 text-pretty text-[13px] leading-relaxed text-muted-foreground">
+                      {industry.short}
+                    </p>
+                    <span className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
+                      View playbook
+                      <ArrowRight className="size-3 transition-transform group-hover:translate-x-0.5" aria-hidden />
+                    </span>
+                  </Link>
+                </MouseGlowCard>
               </StaggerItem>
             )
           })}
