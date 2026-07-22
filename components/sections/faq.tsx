@@ -9,7 +9,7 @@ import { FLAT_FAQ } from "@/lib/faq"
 export function FAQ() {
   const items = FLAT_FAQ.slice(0, 8)
   return (
-    <section id="faq" className="relative overflow-hidden border-t border-border/40">
+    <section id="faq" className="relative overflow-hidden border-t border-border/40 bg-muted/40">
       <div className="relative mx-auto w-full max-w-7xl px-4 pb-14 pt-8 md:px-6 md:pb-20 md:pt-10">
         <div className="flex flex-col gap-10">
           {/* Heading */}

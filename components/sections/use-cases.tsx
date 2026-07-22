@@ -1,7 +1,6 @@
 "use client"
 
 import { Headset, TrendingUp, Languages } from "lucide-react"
-import { motion } from "motion/react"
 import { ScrollReveal, StaggerGroup, StaggerItem } from "@/components/animation/scroll-reveal"
 
 const items = [
@@ -11,6 +10,13 @@ const items = [
     description:
       "An always-on receptionist that greets every caller, answers FAQs from your knowledge base, and escalates only when needed.",
     tag: "Inbound",
+    chips: [
+      { word: "24/7 availability", top: "10%", left: "54%", rotate: -5 },
+      { word: "Greets every caller", top: "26%", left: "80%", rotate: 4 },
+      { word: "Knowledge base", top: "44%", left: "62%", rotate: -3 },
+      { word: "Answers FAQs", top: "60%", left: "84%", rotate: 5 },
+      { word: "Smart escalation", top: "78%", left: "60%", rotate: -4 },
+    ],
   },
   {
     icon: TrendingUp,
@@ -18,6 +24,13 @@ const items = [
     description:
       "Automate outbound lead generation, lead revival, and instant speed-to-lead callbacks — from one dashboard.",
     tag: "Outbound",
+    chips: [
+      { word: "+38% conversion", top: "10%", left: "56%", rotate: -5 },
+      { word: "Lead revival", top: "26%", left: "80%", rotate: 4 },
+      { word: "Speed-to-lead", top: "44%", left: "62%", rotate: -3 },
+      { word: "Outbound campaigns", top: "60%", left: "84%", rotate: 5 },
+      { word: "One dashboard", top: "78%", left: "60%", rotate: -4 },
+    ],
   },
   {
     icon: Languages,
@@ -25,13 +38,21 @@ const items = [
     description:
       "Auto-detects the caller's language and switches mid-conversation for a true local feel — no extra setup required.",
     tag: "Global",
+    chips: [
+      { word: "Hello", top: "10%", left: "62%", rotate: -6 },
+      { word: "Привет", top: "24%", left: "82%", rotate: 4 },
+      { word: "Hola", top: "42%", left: "68%", rotate: -3 },
+      { word: "こんにちは", top: "58%", left: "85%", rotate: 5 },
+      { word: "হ্যালো", top: "74%", left: "64%", rotate: -4 },
+      { word: "مرحبا", top: "88%", left: "82%", rotate: 3 },
+    ],
   },
 ]
 
 export function UseCases() {
   return (
     <section className="relative overflow-hidden border-t border-border/40">
-      <div className="mx-auto w-full max-w-7xl px-4 pb-8 pt-8 md:px-6 md:pb-10 md:pt-10">
+      <div className="mx-auto w-full max-w-7xl px-4 pb-14 pt-14 md:px-6 md:pb-20 md:pt-20">
         <ScrollReveal className="mx-auto max-w-2xl text-center">
           <span className="ai-pill-cyan">
             <span className="h-1 w-1 rounded-full bg-primary" />
@@ -51,16 +72,25 @@ export function UseCases() {
             const Icon = item.icon
             return (
               <StaggerItem key={item.title}>
-                <motion.div
-                  whileHover={{ y: -6 }}
-                  transition={{ type: "spring", stiffness: 280, damping: 22 }}
-                  className="group relative h-full"
-                >
-                  <div className="card-glow ring-gradient relative h-full rounded-2xl p-8">
-                    <div className="flex items-start justify-between">
-                      <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/20">
+                <div className="group relative h-full">
+                  <div className="usecase-card card-glow relative h-full overflow-hidden rounded-2xl p-8">
+                    <Icon
+                      className="pointer-events-none absolute -bottom-8 -right-8 h-36 w-36 text-primary/[0.06]"
+                      aria-hidden="true"
+                    />
+                    {item.chips.map((c) => (
+                      <span
+                        key={c.word}
+                        className="pointer-events-none absolute whitespace-nowrap rounded-md border border-primary/15 bg-primary/[0.04] px-2 py-1 text-xs font-medium text-primary/40"
+                        style={{ top: c.top, left: c.left, transform: `rotate(${c.rotate}deg)` }}
+                      >
+                        {c.word}
+                      </span>
+                    ))}
+                    <div className="relative flex items-start justify-between">
+                      <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/20">
                         <Icon
-                          className="h-6 w-6 transition-transform duration-300 group-hover:scale-110"
+                          className="h-5 w-5 transition-transform duration-300 group-hover:scale-110"
                           aria-hidden="true"
                         />
                       </span>
@@ -68,11 +98,11 @@ export function UseCases() {
                         {item.tag}
                       </span>
                     </div>
-                    <p className="mt-7 text-xs font-mono text-muted-foreground/60">/ 0{i + 1}</p>
-                    <h3 className="mt-2 text-xl font-semibold tracking-tight">{item.title}</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{item.description}</p>
+                    <p className="relative mt-6 text-xs font-mono text-muted-foreground/60">/ 0{i + 1}</p>
+                    <h3 className="relative mt-2 text-lg font-semibold tracking-tight">{item.title}</h3>
+                    <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">{item.description}</p>
                   </div>
-                </motion.div>
+                </div>
               </StaggerItem>
             )
           })}
