@@ -449,14 +449,16 @@
       0 0 80px -30px oklch(0.72 0.2 13 / 0.35);
   }
 
-  /* Testimonial carousel cards stay static — no hover lift/glow */
+  /* Testimonial carousel cards: neutral shadow instead of a colored border, stay static on hover */
+  .testimonial-card,
   .testimonial-card:hover {
-    border-color: oklch(0.205 0 0 / 0.08);
-    box-shadow: none;
+    border: none;
+    box-shadow: 0 8px 24px -12px oklch(0.205 0 0 / 0.18);
   }
+  .dark .testimonial-card,
   .dark .testimonial-card:hover {
-    border-color: oklch(1 0 0 / 0.06);
-    box-shadow: none;
+    border: none;
+    box-shadow: 0 8px 24px -12px oklch(0 0 0 / 0.5);
   }
 
   /* Human-experience visual panel: keep the white card + border, soft optimized shadow, no hover glow */
@@ -483,6 +485,18 @@
   }
   .dark .step-card,
   .dark .step-card:hover {
+    border: none;
+    box-shadow: 0 8px 24px -12px oklch(0 0 0 / 0.5);
+  }
+
+  /* Use-cases cards: neutral shadow instead of a colored border, stays static on hover */
+  .usecase-card,
+  .usecase-card:hover {
+    border: none;
+    box-shadow: 0 8px 24px -12px oklch(0.205 0 0 / 0.18);
+  }
+  .dark .usecase-card,
+  .dark .usecase-card:hover {
     border: none;
     box-shadow: 0 8px 24px -12px oklch(0 0 0 / 0.5);
   }

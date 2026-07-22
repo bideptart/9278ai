@@ -56,7 +56,7 @@ const testimonials = [
 export function Testimonials() {
   const reduced = useReducedMotion()
   return (
-    <section id="testimonials" className="relative overflow-hidden">
+    <section id="testimonials" className="relative overflow-hidden bg-muted/40">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-dots [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
@@ -112,7 +112,7 @@ export function Testimonials() {
             {(reduced ? testimonials : [...testimonials, ...testimonials]).map((t, i) => (
               <figure
                 key={`${t.author}-${i}`}
-                className="testimonial-card card-glow ring-gradient relative h-full w-[320px] shrink-0 rounded-2xl p-5 sm:w-[360px]"
+                className="testimonial-card card-glow relative h-full w-[320px] shrink-0 rounded-2xl p-5 sm:w-[360px]"
               >
                 <span className="scan-line" aria-hidden />
                 <div className="relative flex items-start justify-between gap-4">

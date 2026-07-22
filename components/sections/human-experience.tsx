@@ -44,7 +44,7 @@ export function HumanExperience() {
   const prev = () => setIndex((i) => (i - 1 + items.length) % items.length)
 
   return (
-    <section id="experience" className="relative overflow-hidden">
+    <section id="experience" className="relative overflow-hidden bg-muted/40">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-dots [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
