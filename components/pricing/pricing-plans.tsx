@@ -194,48 +194,48 @@ export function PricingPlans() {
                 isRecommended && "ring-2 ring-primary shadow-lg shadow-primary/20",
               )}
             >
-              <CardHeader className="p-6 pb-4">
+              <CardHeader className="p-4 pb-2">
                 <div className="flex items-start justify-between">
-                  <CardTitle className="text-2xl font-bold">{p.label}</CardTitle>
+                  <CardTitle className="text-lg font-bold">{p.label}</CardTitle>
                   {p.tag && (
-                    <span className="whitespace-nowrap rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
+                    <span className="whitespace-nowrap rounded-full bg-primary px-2 py-0.5 text-[10px] font-semibold text-primary-foreground">
                       {p.tag}
                     </span>
                   )}
                 </div>
-                <CardDescription className="mt-1 text-sm">{p.sub}</CardDescription>
-                <div className="mt-4">
-                  <p className="text-4xl font-extrabold text-foreground">
+                <CardDescription className="mt-0.5 text-xs">{p.sub}</CardDescription>
+                <div className="mt-2">
+                  <p className="text-2xl font-extrabold text-foreground">
                     {usd(price)}
-                    <span className="ml-1 text-base font-normal text-muted-foreground">
+                    <span className="ml-1 text-xs font-normal text-muted-foreground">
                       /{cycle === "yearly" ? "yr" : "mo"}
                     </span>
                   </p>
                   {cycle === "yearly" && (
-                    <p className="mt-1 text-xs text-muted-foreground">Save {usd(yearlySavings(p))} vs monthly</p>
+                    <p className="mt-0.5 text-[11px] text-muted-foreground">Save {usd(yearlySavings(p))} vs monthly</p>
                   )}
                 </div>
               </CardHeader>
-              <CardContent className="flex flex-1 flex-col p-6 pt-0">
-                <div className="mb-4 text-xs text-muted-foreground">
+              <CardContent className="flex flex-1 flex-col p-4 pt-0">
+                <div className="mb-2 text-[11px] text-muted-foreground">
                   {p.min.toLocaleString("en-US")} min · {usd(p.rate)}/min ·{" "}
                   {p.agents >= 999 ? "Unlimited" : `${p.agents} agents`}
                 </div>
-                <StaggerGroup className="mb-6 flex-1 list-none space-y-0">
+                <StaggerGroup className="mb-3 flex-1 list-none space-y-0">
                   {p.perks
                     .filter((perk) => !/phone number|concurrent call/i.test(perk))
                     .map((perk) => (
                       <StaggerItem key={perk}>
-                        <div className="flex items-start space-x-3 py-2">
-                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                          <span className="text-sm text-foreground">{perk}</span>
+                        <div className="flex items-start space-x-2 py-1">
+                          <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" aria-hidden="true" />
+                          <span className="text-xs text-foreground">{perk}</span>
                         </div>
                       </StaggerItem>
                     ))}
                 </StaggerGroup>
                 <Button
                   asChild
-                  size="lg"
+                  size="sm"
                   className={cn(
                     "w-full transition-all duration-200",
                     featured

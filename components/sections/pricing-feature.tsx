@@ -1,31 +1,10 @@
 "use client"
 
 import Link from "next/link"
-import { Timer, BadgeCheck, Receipt, ArrowRight } from "lucide-react"
-import { motion } from "motion/react"
+import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { ScrollReveal, StaggerGroup, StaggerItem } from "@/components/animation/scroll-reveal"
-
-const items = [
-  {
-    icon: Timer,
-    title: "From $0.10 per minute",
-    description:
-      "Three tiers: $0.15/min on Starter, $0.12/min on Growth, $0.10/min on Scale. The more you talk, the less you pay.",
-  },
-  {
-    icon: BadgeCheck,
-    title: "$20, $50 or $100 credit",
-    description:
-      "Pick your tier and unlock 1, 2, or 3 concurrent AI agents. Voice credit stays valid for 60 days from purchase.",
-  },
-  {
-    icon: Receipt,
-    title: "No hidden fees",
-    description:
-      "No setup, no contracts, no minimums beyond your top-up. Phone numbers stay billed directly by your existing carrier.",
-  },
-]
+import { ScrollReveal } from "@/components/animation/scroll-reveal"
+import { PricingPlans } from "@/components/pricing/pricing-plans"
 
 export function PricingFeature() {
   return (
@@ -50,49 +29,9 @@ export function PricingFeature() {
           </p>
         </ScrollReveal>
 
-        <StaggerGroup className="mt-16 grid gap-5 md:grid-cols-3">
-          {items.map((item, i) => {
-            const Icon = item.icon
-            const isFeatured = i === 1
-            return (
-              <StaggerItem key={item.title}>
-                <motion.div
-                  whileHover={{ y: -6 }}
-                  transition={{ type: "spring", stiffness: 280, damping: 22 }}
-                  className="group relative h-full"
-                >
-                  <div
-                    className={`relative h-full rounded-2xl p-7 transition-all ${
-                      isFeatured
-                        ? "ring-gradient card-glow glow-primary"
-                        : "card-glow"
-                    }`}
-                  >
-                    {isFeatured && (
-                      <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-primary-foreground shadow-[0_4px_20px_-4px_oklch(0.577_0.245_27.33/0.7)]">
-                        Most popular
-                      </span>
-                    )}
-                    <span
-                      className={`flex h-12 w-12 items-center justify-center rounded-xl ${
-                        isFeatured
-                          ? "bg-primary text-primary-foreground"
-                          : "bg-primary/10 text-primary ring-1 ring-primary/20"
-                      }`}
-                    >
-                      <Icon
-                        className="h-5 w-5 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3"
-                        aria-hidden="true"
-                      />
-                    </span>
-                    <h3 className="mt-6 text-lg font-semibold tracking-tight">{item.title}</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{item.description}</p>
-                  </div>
-                </motion.div>
-              </StaggerItem>
-            )
-          })}
-        </StaggerGroup>
+        <div className="mt-10">
+          <PricingPlans />
+        </div>
 
         <ScrollReveal className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <Button asChild size="lg" className="group btn-ai h-12 rounded-full px-7 transition-all">
