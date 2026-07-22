@@ -1,6 +1,6 @@
 "use client"
 
-import { Wand2, BookOpen, Rocket, ArrowRight } from "lucide-react"
+import { Wand2, BookOpen, Rocket } from "lucide-react"
 import { motion, useReducedMotion } from "motion/react"
 import { ScrollReveal, StaggerGroup, StaggerItem } from "@/components/animation/scroll-reveal"
 
@@ -60,7 +60,7 @@ export function HowItWorks() {
         transition={{ duration: 18, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
       />
 
-      <div className="relative mx-auto w-full max-w-7xl px-4 py-24 md:px-6 md:py-32">
+      <div className="relative mx-auto w-full max-w-7xl px-4 py-14 md:px-6 md:py-20">
         <ScrollReveal className="mx-auto max-w-2xl text-center">
           <span className="ai-pill-cyan">
             <span className="h-1 w-1 rounded-full bg-primary" />
@@ -75,77 +75,83 @@ export function HowItWorks() {
           </p>
         </ScrollReveal>
 
-        {/* Connector line behind cards */}
-        <div className="relative mt-20">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute left-0 right-0 top-12 hidden h-px md:block"
-            style={{
-              background:
-                "linear-gradient(90deg, transparent 0%, var(--ai-cyan) 20%, var(--ai-violet) 50%, var(--ai-magenta) 80%, transparent 100%)",
-              opacity: 0.35,
-            }}
-          />
-
+        <div className="relative mt-10">
           <StaggerGroup className="grid gap-6 md:grid-cols-3 md:gap-8">
             {steps.map((step, i) => {
               const Icon = step.icon
               return (
                 <StaggerItem key={step.title}>
-                  <motion.div
-                    whileHover={{ y: -6 }}
-                    transition={{ type: "spring", stiffness: 280, damping: 22 }}
-                    className="group relative h-full"
-                  >
-                    <div className="card-glow ring-gradient relative h-full rounded-2xl p-7">
-                      <span className="scan-line" aria-hidden />
-                      <div className="relative flex items-center justify-between">
-                        <span className="relative flex h-12 w-12 items-center justify-center rounded-xl">
+                  <div className="group relative h-full [perspective:1200px]">
+                    <div className="relative h-full min-h-[320px] transition-transform duration-700 ease-out [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+                      {/* FRONT — placeholder brand blue */}
+                      <div className="absolute inset-0 flex flex-col rounded-2xl bg-primary p-6 text-primary-foreground [backface-visibility:hidden]">
+                        <div className="flex items-start justify-between">
                           <span
-                            aria-hidden
-                            className="absolute inset-0 rounded-xl opacity-15 transition-opacity duration-500 group-hover:opacity-40"
-                            style={{ background: step.accent, filter: "blur(14px)" }}
-                          />
+                            className="text-6xl font-bold tracking-tight text-white/30"
+                            style={{ fontVariantNumeric: "tabular-nums" }}
+                            aria-hidden="true"
+                          >
+                            {String(i + 1).padStart(2, "0")}
+                          </span>
+                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/15 text-white shadow-[0_6px_16px_-4px_rgba(255,255,255,0.35)]">
+                            <Icon className="h-4 w-4" aria-hidden="true" />
+                          </span>
+                        </div>
+                        <span className="sr-only">{step.label}</span>
+                        <h3 className="mt-2 text-xl font-semibold tracking-tight">{step.title}</h3>
+                        <p className="mt-2 text-sm leading-relaxed text-white/75">{step.description}</p>
+
+                        <ul className="mt-6 space-y-2">
+                          {step.bullets.map((b) => (
+                            <li key={b} className="flex items-center gap-2 text-sm text-white/85">
+                              <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-white/60" />
+                              {b}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* BACK — actual card, revealed on hover */}
+                      <div className="step-card card-glow absolute inset-0 flex flex-col overflow-hidden rounded-2xl p-6 [backface-visibility:hidden] [transform:rotateY(180deg)]">
+                        <span className="scan-line" aria-hidden />
+                        <div className="relative flex items-start justify-between">
                           <span
-                            className="relative flex h-12 w-12 items-center justify-center rounded-xl ring-1"
+                            className="text-6xl font-bold tracking-tight text-muted-foreground/25"
+                            style={{ fontVariantNumeric: "tabular-nums" }}
+                            aria-hidden="true"
+                          >
+                            {String(i + 1).padStart(2, "0")}
+                          </span>
+                          <span
+                            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
                             style={{
                               background: `color-mix(in oklch, ${step.accent} 12%, transparent)`,
-                              borderColor: `color-mix(in oklch, ${step.accent} 30%, transparent)`,
+                              boxShadow: `0 6px 16px -4px color-mix(in oklch, ${step.accent} 45%, transparent)`,
                               color: step.accent,
                             }}
                           >
-                            <Icon className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" aria-hidden="true" />
+                            <Icon className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" aria-hidden="true" />
                           </span>
-                        </span>
-                        <span className={step.pillClass}>{step.label}</span>
+                        </div>
+
+                        <h3 className="relative mt-2 text-xl font-semibold tracking-tight">{step.title}</h3>
+                        <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">{step.description}</p>
+
+                        <ul className="relative mt-6 space-y-2">
+                          {step.bullets.map((b) => (
+                            <li key={b} className="flex items-center gap-2 text-sm text-foreground/80">
+                              <span
+                                aria-hidden
+                                className="h-1.5 w-1.5 rounded-full"
+                                style={{ background: step.accent }}
+                              />
+                              {b}
+                            </li>
+                          ))}
+                        </ul>
                       </div>
-
-                      <h3 className="relative mt-6 text-xl font-semibold tracking-tight">{step.title}</h3>
-                      <p className="relative mt-3 text-sm leading-relaxed text-muted-foreground">{step.description}</p>
-
-                      <ul className="relative mt-6 space-y-2">
-                        {step.bullets.map((b) => (
-                          <li key={b} className="flex items-center gap-2 text-sm text-foreground/80">
-                            <span
-                              aria-hidden
-                              className="h-1.5 w-1.5 rounded-full"
-                              style={{ background: step.accent }}
-                            />
-                            {b}
-                          </li>
-                        ))}
-                      </ul>
-
-                      {i < steps.length - 1 && (
-                        <span
-                          aria-hidden
-                          className="pointer-events-none absolute -right-4 top-1/2 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-border/60 bg-card/80 backdrop-blur-md md:flex"
-                        >
-                          <ArrowRight className="h-3.5 w-3.5 text-muted-foreground" />
-                        </span>
-                      )}
                     </div>
-                  </motion.div>
+                  </div>
                 </StaggerItem>
               )
             })}

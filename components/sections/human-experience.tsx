@@ -1,8 +1,10 @@
 "use client"
 
-import { Waves, Hand, Infinity as InfinityIcon } from "lucide-react"
-import { motion, useReducedMotion } from "motion/react"
-import { ScrollReveal, StaggerGroup, StaggerItem } from "@/components/animation/scroll-reveal"
+import { useEffect, useState } from "react"
+import { Waves, Hand, Infinity as InfinityIcon, ChevronLeft, ChevronRight } from "lucide-react"
+import { AnimatePresence, motion, useReducedMotion } from "motion/react"
+import { ScrollReveal } from "@/components/animation/scroll-reveal"
+import { cn } from "@/lib/utils"
 
 const items = [
   {
@@ -27,6 +29,20 @@ const items = [
 
 export function HumanExperience() {
   const reduced = useReducedMotion()
+  const [index, setIndex] = useState(0)
+  const [paused, setPaused] = useState(false)
+
+  useEffect(() => {
+    if (reduced || paused) return
+    const id = setInterval(() => setIndex((i) => (i + 1) % items.length), 2000)
+    return () => clearInterval(id)
+  }, [reduced, paused])
+
+  const active = items[index]
+  const Icon = active.icon
+  const next = () => setIndex((i) => (i + 1) % items.length)
+  const prev = () => setIndex((i) => (i - 1 + items.length) % items.length)
+
   return (
     <section id="experience" className="relative overflow-hidden">
       <div
@@ -40,13 +56,13 @@ export function HumanExperience() {
         transition={{ duration: 12, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
       />
 
-      <div className="relative mx-auto w-full max-w-7xl px-4 py-24 md:px-6 md:py-32">
-        <ScrollReveal className="mx-auto max-w-2xl text-center">
+      <div className="relative mx-auto w-full max-w-7xl px-4 py-14 md:px-6 md:py-20">
+        <ScrollReveal className="mx-auto max-w-4xl text-center">
           <span className="ai-pill-cyan">
             <span className="h-1 w-1 rounded-full bg-primary" />
             The human-kind experience
           </span>
-          <h2 className="mt-6 text-balance text-4xl font-serif font-normal leading-[1.1] tracking-tight md:text-5xl">
+          <h2 className="mt-6 whitespace-nowrap font-serif font-normal leading-[1.1] tracking-tight text-[6.6vw] sm:text-4xl md:text-5xl">
             Conversations indistinguishable from{" "}
             <span className="text-primary">your best agent.</span>
           </h2>
@@ -56,38 +72,94 @@ export function HumanExperience() {
           </p>
         </ScrollReveal>
 
-        <StaggerGroup className="mt-16 grid gap-6 md:grid-cols-3">
-          {items.map((item, i) => {
-            const Icon = item.icon
-            return (
-              <StaggerItem key={item.title}>
-                <motion.div
-                  whileHover={{ y: -6 }}
-                  transition={{ type: "spring", stiffness: 280, damping: 22 }}
-                  className="group relative h-full"
+        <ScrollReveal className="mt-16">
+          <div className="grid items-start gap-10 lg:grid-cols-12 lg:gap-12">
+            {/* LEFT: visual panel, swaps with the active item */}
+            <div className="lg:col-span-6">
+              <div className="experience-visual card-glow relative h-[260px] overflow-hidden rounded-3xl">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,oklch(0.577_0.245_27.33/0.08),transparent_60%)]" />
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    className="absolute inset-0 flex items-center justify-center"
+                  >
+                    <span className="flex h-28 w-28 items-center justify-center rounded-3xl bg-primary/10 text-primary ring-1 ring-primary/20">
+                      <Icon className="h-14 w-14" aria-hidden="true" />
+                    </span>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
+
+            {/* RIGHT: content, arrows + dots to navigate manually */}
+            <div
+              className="lg:col-span-6"
+              onMouseEnter={() => setPaused(true)}
+              onMouseLeave={() => setPaused(false)}
+            >
+              <span className="ai-pill-cyan">
+                <span className="h-1 w-1 rounded-full bg-primary" />
+                0{index + 1} / 0{items.length}
+              </span>
+
+              <div className="relative min-h-[145px]">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
+                    transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                    className="absolute inset-x-0 top-0"
+                  >
+                    <h3 className="mt-4 text-2xl font-semibold tracking-tight md:text-3xl">{active.title}</h3>
+                    <p className="mt-3 text-pretty leading-relaxed text-muted-foreground md:text-lg">
+                      {active.description}
+                    </p>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              <div className="mt-8 flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={prev}
+                  aria-label="Previous"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-card/40 text-foreground transition-colors hover:border-primary/50 hover:text-primary"
                 >
-                  <div className="card-glow ring-gradient relative h-full rounded-2xl p-7">
-                    <div className="flex items-center justify-between">
-                      <span className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/20">
-                        <span
-                          aria-hidden
-                          className="absolute inset-0 rounded-xl bg-primary/0 blur-xl transition-all duration-500 group-hover:bg-primary/40"
-                        />
-                        <Icon
-                          className="relative h-5 w-5 transition-transform duration-300 group-hover:scale-110"
-                          aria-hidden="true"
-                        />
-                      </span>
-                      <span className="text-xs font-mono text-muted-foreground/60">0{i + 1}</span>
-                    </div>
-                    <h3 className="mt-6 text-xl font-semibold tracking-tight">{item.title}</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{item.description}</p>
-                  </div>
-                </motion.div>
-              </StaggerItem>
-            )
-          })}
-        </StaggerGroup>
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={next}
+                  aria-label="Next"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-card/40 text-foreground transition-colors hover:border-primary/50 hover:text-primary"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+
+                <div className="ml-2 flex items-center gap-1.5">
+                  {items.map((item, i) => (
+                    <button
+                      key={item.title}
+                      type="button"
+                      onClick={() => setIndex(i)}
+                      aria-label={`Go to ${item.title}`}
+                      className={cn(
+                        "h-1.5 shrink-0 rounded-full transition-colors",
+                        i === index ? "w-6 bg-primary" : "w-1.5 bg-border",
+                      )}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   )

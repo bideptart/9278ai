@@ -41,7 +41,7 @@ const cities = [
 export function Connectivity() {
   return (
     <section className="relative overflow-hidden border-t border-border/40">
-      <div className="mx-auto w-full max-w-7xl px-4 py-24 md:px-6 md:py-32">
+      <div className="mx-auto w-full max-w-7xl px-4 pb-8 pt-14 md:px-6 md:pb-10 md:pt-20">
         <div className="grid gap-16 lg:grid-cols-12 lg:items-center lg:gap-12">
           {/* LEFT: Copy + items */}
           <div className="lg:col-span-6">
@@ -50,34 +50,34 @@ export function Connectivity() {
                 <Globe2 className="h-3 w-3" />
                 Phone numbers
               </span>
-              <h2 className="mt-6 text-balance text-4xl font-serif font-normal leading-[1.1] tracking-tight md:text-5xl">
+              <h2 className="mt-4 text-balance text-3xl font-serif font-normal leading-[1.1] tracking-tight md:text-4xl">
                 Your carrier account,{" "}
                 <span className="text-primary">supercharged.</span>
               </h2>
-              <p className="mt-5 text-pretty leading-relaxed text-muted-foreground md:text-lg">
+              <p className="mt-3 text-pretty leading-relaxed text-muted-foreground">
                 We don't sell phone numbers. We connect to the carrier you already use — so your numbers, billing, and
                 porting stay exactly where they are.
               </p>
             </ScrollReveal>
 
-            <StaggerGroup className="mt-10 flex flex-col gap-3">
+            <StaggerGroup className="mt-6 flex flex-col gap-2">
               {items.map((item) => {
                 const Icon = item.icon
                 return (
                   <StaggerItem key={item.title}>
                     <motion.div
-                      className="group card-glow relative flex items-start gap-5 rounded-2xl p-5"
+                      className="group card-glow relative flex items-start gap-4 rounded-2xl p-4"
                       whileHover={{ x: 6 }}
                       transition={{ type: "spring", stiffness: 280, damping: 22 }}
                     >
-                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/20">
-                        <Icon className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" aria-hidden="true" />
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/20">
+                        <Icon className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" aria-hidden="true" />
                       </span>
                       <div>
-                        <h3 className="font-semibold tracking-tight transition-colors group-hover:text-primary">
+                        <h3 className="text-sm font-semibold tracking-tight transition-colors group-hover:text-primary">
                           {item.title}
                         </h3>
-                        <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{item.description}</p>
+                        <p className="mt-0.5 text-xs leading-snug text-muted-foreground">{item.description}</p>
                       </div>
                     </motion.div>
                   </StaggerItem>

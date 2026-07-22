@@ -10,10 +10,10 @@ export function FAQ() {
   const items = FLAT_FAQ.slice(0, 8)
   return (
     <section id="faq" className="relative overflow-hidden border-t border-border/40">
-      <div className="relative mx-auto w-full max-w-7xl px-4 py-24 md:px-6 md:py-32">
-        <div className="grid gap-16 lg:grid-cols-12 lg:gap-12">
-          {/* LEFT: Heading */}
-          <ScrollReveal className="lg:col-span-4">
+      <div className="relative mx-auto w-full max-w-7xl px-4 pb-14 pt-8 md:px-6 md:pb-20 md:pt-10">
+        <div className="flex flex-col gap-10">
+          {/* Heading */}
+          <ScrollReveal className="flex flex-col items-center text-center">
             <span className="ai-pill-magenta">
               <HelpCircle className="h-3 w-3" />
               FAQ
@@ -22,21 +22,14 @@ export function FAQ() {
               Questions,{" "}
               <span className="text-primary">answered.</span>
             </h2>
-            <p className="mt-5 text-pretty leading-relaxed text-muted-foreground md:text-lg">
+            <p className="mt-5 max-w-2xl text-pretty leading-relaxed text-muted-foreground md:text-lg">
               The short version: $20 minimum top-up, voice credit valid 60 days, phone numbers stay with your existing carrier.
               The long version is on the right.
             </p>
-            <Link
-              href="/faq"
-              className="group mt-8 inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/40 px-4 py-2 text-sm text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground"
-            >
-              See all FAQs
-              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-            </Link>
           </ScrollReveal>
 
-          {/* RIGHT: Accordion */}
-          <ScrollReveal className="lg:col-span-8">
+          {/* Accordion */}
+          <ScrollReveal className="flex flex-col items-center">
             <Accordion type="single" collapsible className="w-full space-y-3">
               {items.map((item, i) => (
                 <AccordionItem
@@ -58,6 +51,13 @@ export function FAQ() {
                 </AccordionItem>
               ))}
             </Accordion>
+            <Link
+              href="/faq"
+              className="group mt-8 inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/40 px-4 py-2 text-sm text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground"
+            >
+              See all FAQs
+              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+            </Link>
           </ScrollReveal>
         </div>
       </div>
