@@ -81,90 +81,55 @@ export function HowItWorks() {
               const Icon = step.icon
               return (
                 <StaggerItem key={step.title}>
-                  <div className="group relative h-full [perspective:1200px]">
-                    <div className="relative h-full min-h-[320px] transition-transform duration-700 ease-out [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
-                      {/* FRONT — white base, red gradient glow in opposite corners */}
-                      <div
-                        className="absolute inset-0 flex flex-col overflow-hidden rounded-2xl bg-white p-6 text-foreground shadow-[0_8px_24px_-12px_rgba(0,0,0,0.18)] [backface-visibility:hidden]"
+                  <motion.div
+                    whileHover={{ x: 6 }}
+                    transition={{ type: "spring", stiffness: 280, damping: 22 }}
+                    className="step-card card-glow group relative flex h-full flex-col overflow-hidden rounded-2xl p-6"
+                    style={{
+                      backgroundColor: "white",
+                      backgroundImage:
+                        "radial-gradient(circle at top right, oklch(0.577 0.245 27.33 / 0.45), transparent 28%), radial-gradient(circle at bottom left, oklch(0.577 0.245 27.33 / 0.45), transparent 28%)",
+                    }}
+                  >
+                    <span className="scan-line" aria-hidden />
+                    <div className="relative flex items-start justify-between">
+                      <span
+                        className="text-6xl font-bold tracking-tight text-primary/20"
+                        style={{ fontVariantNumeric: "tabular-nums" }}
+                        aria-hidden="true"
+                      >
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span
+                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-colors"
                         style={{
-                          backgroundImage:
-                            "radial-gradient(circle at top right, oklch(0.577 0.245 27.33 / 0.45), transparent 28%), radial-gradient(circle at bottom left, oklch(0.577 0.245 27.33 / 0.45), transparent 28%)",
+                          background: `color-mix(in oklch, ${step.accent} 12%, transparent)`,
+                          boxShadow: `0 6px 16px -4px color-mix(in oklch, ${step.accent} 45%, transparent)`,
+                          color: step.accent,
                         }}
                       >
-                        <div className="relative flex items-start justify-between">
-                          <span
-                            className="text-6xl font-bold tracking-tight text-primary/20"
-                            style={{ fontVariantNumeric: "tabular-nums" }}
-                            aria-hidden="true"
-                          >
-                            {String(i + 1).padStart(2, "0")}
-                          </span>
-                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary ring-1 ring-primary/20">
-                            <Icon className="h-4 w-4" aria-hidden="true" />
-                          </span>
-                        </div>
-                        <span className="sr-only">{step.label}</span>
-                        <h3 className="relative mt-2 text-xl font-semibold tracking-tight">{step.title}</h3>
-                        <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">{step.description}</p>
-
-                        <ul className="relative mt-6 space-y-2">
-                          {step.bullets.map((b) => (
-                            <li key={b} className="flex items-center gap-2 text-sm text-foreground/80">
-                              <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-primary" />
-                              {b}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      {/* BACK — actual card, revealed on hover; glow mirrored to top-left / bottom-right */}
-                      <div
-                        className="step-card card-glow absolute inset-0 flex flex-col overflow-hidden rounded-2xl p-6 [backface-visibility:hidden] [transform:rotateY(180deg)]"
-                        style={{
-                          backgroundColor: "white",
-                          backgroundImage:
-                            "radial-gradient(circle at top left, oklch(0.577 0.245 27.33 / 0.45), transparent 28%), radial-gradient(circle at bottom right, oklch(0.577 0.245 27.33 / 0.45), transparent 28%)",
-                        }}
-                      >
-                        <span className="scan-line" aria-hidden />
-                        <div className="relative flex items-start justify-between">
-                          <span
-                            className="text-6xl font-bold tracking-tight text-muted-foreground/25"
-                            style={{ fontVariantNumeric: "tabular-nums" }}
-                            aria-hidden="true"
-                          >
-                            {String(i + 1).padStart(2, "0")}
-                          </span>
-                          <span
-                            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
-                            style={{
-                              background: `color-mix(in oklch, ${step.accent} 12%, transparent)`,
-                              boxShadow: `0 6px 16px -4px color-mix(in oklch, ${step.accent} 45%, transparent)`,
-                              color: step.accent,
-                            }}
-                          >
-                            <Icon className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" aria-hidden="true" />
-                          </span>
-                        </div>
-
-                        <h3 className="relative mt-2 text-xl font-semibold tracking-tight">{step.title}</h3>
-                        <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">{step.description}</p>
-
-                        <ul className="relative mt-6 space-y-2">
-                          {step.bullets.map((b) => (
-                            <li key={b} className="flex items-center gap-2 text-sm text-foreground/80">
-                              <span
-                                aria-hidden
-                                className="h-1.5 w-1.5 rounded-full"
-                                style={{ background: step.accent }}
-                              />
-                              {b}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                        <Icon className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" aria-hidden="true" />
+                      </span>
                     </div>
-                  </div>
+                    <span className="sr-only">{step.label}</span>
+                    <h3 className="relative mt-2 text-xl font-semibold tracking-tight transition-colors group-hover:text-primary">
+                      {step.title}
+                    </h3>
+                    <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">{step.description}</p>
+
+                    <ul className="relative mt-6 space-y-2">
+                      {step.bullets.map((b) => (
+                        <li key={b} className="flex items-center gap-2 text-sm text-foreground/80">
+                          <span
+                            aria-hidden
+                            className="h-1.5 w-1.5 rounded-full"
+                            style={{ background: step.accent }}
+                          />
+                          {b}
+                        </li>
+                      ))}
+                    </ul>
+                  </motion.div>
                 </StaggerItem>
               )
             })}
