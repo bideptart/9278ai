@@ -7,7 +7,6 @@ import { HowItWorks } from "@/components/sections/how-it-works"
 import { Connectivity } from "@/components/sections/connectivity"
 import { UseCases } from "@/components/sections/use-cases"
 import { Testimonials } from "@/components/sections/testimonials"
-import { FAQ } from "@/components/sections/faq"
 import { CTA } from "@/components/sections/cta"
 import { ServiceJsonLd } from "@/components/seo/jsonld"
 
@@ -29,7 +28,6 @@ export default function HomePage() {
         <UseCases />
         <Testimonials />
         <PricingFeature />
-        <FAQ />
         <CTA />
       </main>
       <SiteFooter />
