@@ -8,6 +8,8 @@ import { PricingPlans } from "@/components/pricing/pricing-plans"
 import { pageSeo } from "@/lib/seo"
 import { BreadcrumbJsonLd } from "@/components/seo/jsonld"
 import { RelatedLinks } from "@/components/seo/related-links"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { FAQ_GROUPS } from "@/lib/faq"
 
 export const metadata: Metadata = pageSeo({
   title: "Pricing — AI voice agents",
@@ -73,6 +75,31 @@ export default async function PricingPage({
         <PricingPlans />
       </section>
 
+      {/* Billing FAQ */}
+      <section className="mx-auto w-full max-w-6xl px-4 py-16 md:px-6 md:py-20">
+        <ScrollReveal>
+          <h2 className="mb-8 text-balance text-center text-2xl font-serif font-normal tracking-tight md:text-3xl">
+            Billing questions, answered.
+          </h2>
+          <Accordion type="single" collapsible className="w-full space-y-3">
+            {(FAQ_GROUPS.find((g) => g.id === "billing")?.items ?? []).map((item, i) => (
+              <AccordionItem
+                key={i}
+                value={`item-${i}`}
+                className="card-glow rounded-2xl border-0 px-5 transition-colors data-[state=open]:border data-[state=open]:border-primary/30"
+              >
+                <AccordionTrigger className="text-left text-base font-medium hover:no-underline data-[state=open]:text-primary">
+                  {item.q}
+                </AccordionTrigger>
+                <AccordionContent className="text-pretty leading-relaxed text-muted-foreground">
+                  {item.a}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </ScrollReveal>
+      </section>
+
       {/* CTA */}
       <section className="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
         <ScrollReveal className="rounded-2xl border border-border/60 bg-card/30 px-6 py-12 md:px-12 md:py-14">
@@ -98,6 +125,7 @@ export default async function PricingPage({
       </section>
 
       <RelatedLinks
+        variant="flip"
         heading="More on 9278.ai"
         description="Industry playbooks, FAQs, and the get-started flow."
         links={[

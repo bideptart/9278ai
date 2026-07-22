@@ -8,12 +8,18 @@
 import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import { Check, Loader2 } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { animate } from "motion/react"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+import { Slider } from "@/components/ui/slider"
+import { StaggerGroup, StaggerItem } from "@/components/animation/scroll-reveal"
 import { cn } from "@/lib/utils"
 
 const PORTAL_BASE = "https://voice.9278.ai"
+
+// Assumed average call length, used only to turn the "calls per month" slider
+// into estimated minutes for the plan recommendation. Not billing-accurate.
+const AVG_CALL_MINUTES = 4
 
 type Plan = {
   id: string
@@ -32,10 +38,29 @@ type Plan = {
 const usd = (n: number) =>
   "$" + Number(n || 0).toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 2 })
 
+function useCountUp(target: number, active: boolean) {
+  const [value, setValue] = useState(active ? target : 0)
+  useEffect(() => {
+    if (!active) {
+      setValue(0)
+      return
+    }
+    const controls = animate(0, target, {
+      duration: 0.7,
+      ease: [0.22, 1, 0.36, 1],
+      onUpdate: (v) => setValue(v),
+    })
+    return () => controls.stop()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [target, active])
+  return value
+}
+
 export function PricingPlans() {
   const [plans, setPlans] = useState<Plan[]>([])
   const [loadError, setLoadError] = useState<string | null>(null)
   const [cycle, setCycle] = useState<"monthly" | "yearly">("monthly")
+  const [calls, setCalls] = useState(300)
 
   useEffect(() => {
     let cancelled = false
@@ -56,6 +81,15 @@ export function PricingPlans() {
   const yearlySavings = (p: Plan) => p.yearlySavingsUsd ?? Math.max(0, p.amount * 12 - p.yearlyAmount)
 
   const ordered = useMemo(() => plans, [plans])
+
+  const estimatedMinutes = calls * AVG_CALL_MINUTES
+  const recommendedPlan = useMemo(() => {
+    if (!ordered.length) return null
+    return ordered.find((p) => p.min >= estimatedMinutes) ?? ordered[ordered.length - 1]
+  }, [ordered, estimatedMinutes])
+
+  const savingsTarget = recommendedPlan ? yearlySavings(recommendedPlan) : 0
+  const animatedSavings = useCountUp(savingsTarget, cycle === "yearly" && Boolean(recommendedPlan))
 
   if (loadError) {
     return (
@@ -79,8 +113,23 @@ export function PricingPlans() {
 
   return (
     <div>
+      {/* Usage slider — recommends a plan and highlights it below */}
+      <div className="mx-auto mb-10 max-w-xl md:max-w-2xl">
+        <div className="mb-3 flex items-center justify-between text-sm">
+          <span className="font-medium">How many calls do you get?</span>
+          <span className="text-muted-foreground">~{calls.toLocaleString()} calls/mo</span>
+        </div>
+        <Slider value={[calls]} min={50} max={3000} step={50} onValueChange={(v) => setCalls(v[0])} />
+        {recommendedPlan && (
+          <p className="mt-3 text-center text-sm text-muted-foreground">
+            At ~{estimatedMinutes.toLocaleString()} min/mo, we&apos;d recommend{" "}
+            <span className="font-medium text-primary">{recommendedPlan.label}</span>.
+          </p>
+        )}
+      </div>
+
       {/* Billing cycle toggle */}
-      <div className="mb-8 flex justify-center">
+      <div className="mb-3 flex justify-center">
         <div className="inline-flex items-center gap-1 rounded-full border border-border bg-card p-1 text-sm">
           <button
             type="button"
@@ -112,10 +161,16 @@ export function PricingPlans() {
           </button>
         </div>
       </div>
+      {cycle === "yearly" && recommendedPlan && (
+        <p className="mb-8 text-center text-sm text-primary">
+          Switching to yearly saves you {usd(animatedSavings)} on {recommendedPlan.label}.
+        </p>
+      )}
+      {cycle === "monthly" && <div className="mb-8" />}
 
       {/* Per-second billing callout */}
       <div className="mb-8 flex justify-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/[0.06] px-4 py-2 text-sm text-primary">
+        <div className="inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-primary/30 bg-primary/[0.06] px-4 py-2 text-sm text-primary">
           <span>⏱️</span>
           <span>
             <strong>Per-second billing</strong> — pay only for the seconds you use.
@@ -124,54 +179,69 @@ export function PricingPlans() {
       </div>
 
       {/* Plan cards */}
-      <div className="grid gap-5 md:grid-cols-3 md:items-stretch">
+      <div className="grid gap-8 md:grid-cols-3 md:gap-6 md:items-stretch lg:gap-8">
         {ordered.map((p) => {
           const price = priceFor(p)
           const featured = Boolean(p.tag)
+          const isRecommended = recommendedPlan?.id === p.id
           return (
             <Card
               key={p.id}
               className={cn(
-                "relative flex flex-col transition",
-                featured ? "border-primary ring-1 ring-primary/30" : "",
+                "flex flex-col shadow-md transition-all duration-300 hover:shadow-lg dark:hover:shadow-white/10",
+                featured &&
+                  "ring-2 ring-primary shadow-xl transform md:scale-[1.02] hover:scale-[1.04] dark:ring-primary/80 dark:shadow-primary/20",
+                isRecommended && "ring-2 ring-primary shadow-lg shadow-primary/20",
               )}
             >
-              {p.tag && (
-                <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary hover:bg-primary">
-                  {p.tag}
-                </Badge>
-              )}
-              <CardHeader>
-                <CardTitle>{p.label}</CardTitle>
-                <p className="text-sm text-muted-foreground">{p.sub}</p>
-              </CardHeader>
-              <CardContent className="flex flex-1 flex-col">
-                <div className="mb-1">
-                  <span className="text-4xl font-bold tracking-tight">{usd(price)}</span>
-                  <span className="ml-1 text-sm text-muted-foreground">/{cycle === "yearly" ? "yr" : "mo"}</span>
+              <CardHeader className="p-6 pb-4">
+                <div className="flex items-start justify-between">
+                  <CardTitle className="text-2xl font-bold">{p.label}</CardTitle>
+                  {p.tag && (
+                    <span className="whitespace-nowrap rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
+                      {p.tag}
+                    </span>
+                  )}
                 </div>
-                {cycle === "yearly" && (
-                  <div className="mb-2 text-xs text-primary">Save {usd(yearlySavings(p))} vs monthly</div>
-                )}
+                <CardDescription className="mt-1 text-sm">{p.sub}</CardDescription>
+                <div className="mt-4">
+                  <p className="text-4xl font-extrabold text-foreground">
+                    {usd(price)}
+                    <span className="ml-1 text-base font-normal text-muted-foreground">
+                      /{cycle === "yearly" ? "yr" : "mo"}
+                    </span>
+                  </p>
+                  {cycle === "yearly" && (
+                    <p className="mt-1 text-xs text-muted-foreground">Save {usd(yearlySavings(p))} vs monthly</p>
+                  )}
+                </div>
+              </CardHeader>
+              <CardContent className="flex flex-1 flex-col p-6 pt-0">
                 <div className="mb-4 text-xs text-muted-foreground">
                   {p.min.toLocaleString("en-US")} min · {usd(p.rate)}/min ·{" "}
                   {p.agents >= 999 ? "Unlimited" : `${p.agents} agents`}
                 </div>
-                <ul className="mb-6 space-y-2 text-sm">
+                <StaggerGroup className="mb-6 flex-1 list-none space-y-0">
                   {p.perks
                     .filter((perk) => !/phone number|concurrent call/i.test(perk))
                     .map((perk) => (
-                      <li key={perk} className="flex items-start gap-2">
-                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                        <span>{perk}</span>
-                      </li>
+                      <StaggerItem key={perk}>
+                        <div className="flex items-start space-x-3 py-2">
+                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                          <span className="text-sm text-foreground">{perk}</span>
+                        </div>
+                      </StaggerItem>
                     ))}
-                </ul>
+                </StaggerGroup>
                 <Button
                   asChild
                   size="lg"
-                  variant={featured ? "default" : "outline"}
-                  className={cn("mt-auto w-full rounded-full", featured && "btn-ai text-primary-foreground")}
+                  className={cn(
+                    "w-full transition-all duration-200",
+                    featured
+                      ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 hover:bg-primary/90 dark:shadow-primary/40"
+                      : "border border-input bg-muted text-foreground hover:bg-muted/80",
+                  )}
                 >
                   <Link href={`/get-started?plan=${p.id}&cycle=${cycle}`}>
                     {featured ? `Choose ${p.label}` : "Get started"}
