@@ -9,7 +9,7 @@ export function CTA() {
   const reduced = useReducedMotion()
   return (
     <section id="cta" className="relative overflow-hidden border-t border-border/40">
-      <div className="relative mx-auto w-full max-w-7xl px-4 py-24 md:px-6 md:py-32">
+      <div className="relative mx-auto w-full max-w-7xl px-4 py-14 md:px-6 md:py-20">
         <ScrollReveal>
           <div className="ring-gradient relative overflow-hidden rounded-[28px] border border-border/40 bg-gradient-to-br from-card/80 via-card/40 to-background/40 px-6 py-16 text-center md:px-12 md:py-24">
             {/* Drifting glow */}

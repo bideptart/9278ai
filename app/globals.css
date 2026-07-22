@@ -449,6 +449,44 @@
       0 0 80px -30px oklch(0.72 0.2 13 / 0.35);
   }
 
+  /* Testimonial carousel cards stay static — no hover lift/glow */
+  .testimonial-card:hover {
+    border-color: oklch(0.205 0 0 / 0.08);
+    box-shadow: none;
+  }
+  .dark .testimonial-card:hover {
+    border-color: oklch(1 0 0 / 0.06);
+    box-shadow: none;
+  }
+
+  /* Human-experience visual panel: keep the white card + border, soft optimized shadow, no hover glow */
+  .experience-visual {
+    box-shadow: 0 24px 60px -28px oklch(0.577 0.245 27.33 / 0.35);
+  }
+  .experience-visual:hover {
+    border-color: oklch(0.205 0 0 / 0.08);
+    box-shadow: 0 24px 60px -28px oklch(0.577 0.245 27.33 / 0.35);
+  }
+  .dark .experience-visual {
+    box-shadow: 0 24px 60px -28px oklch(0.637 0.237 25.33 / 0.45);
+  }
+  .dark .experience-visual:hover {
+    border-color: oklch(1 0 0 / 0.06);
+    box-shadow: 0 24px 60px -28px oklch(0.637 0.237 25.33 / 0.45);
+  }
+
+  /* How-it-works step cards: neutral shadow instead of a colored border, stays static on hover */
+  .step-card,
+  .step-card:hover {
+    border: none;
+    box-shadow: 0 8px 24px -12px oklch(0.205 0 0 / 0.18);
+  }
+  .dark .step-card,
+  .dark .step-card:hover {
+    border: none;
+    box-shadow: 0 8px 24px -12px oklch(0 0 0 / 0.5);
+  }
+
   /* Tag — small status pill (red) */
   .ai-pill-cyan {
     display: inline-flex;
@@ -680,16 +718,6 @@
   .legal .post-cards {
     grid-template-columns: 1fr;
   }
-}
-
-/* Homepage: every section fills the viewport with content vertically centred,
-   giving a consistent full-screen rhythm. (Hero handles its own height.)
-   Content taller than a screen still grows naturally and scrolls. */
-.fit-sections > section:not(:first-child) {
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
 /* --- Performance --- */

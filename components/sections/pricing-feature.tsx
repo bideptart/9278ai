@@ -34,7 +34,7 @@ export function PricingFeature() {
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-[300px] bg-[radial-gradient(60%_60%_at_50%_0%,oklch(0.577_0.245_27.33/0.05),transparent_70%)]"
       />
-      <div className="relative mx-auto w-full max-w-7xl px-4 py-24 md:px-6 md:py-32">
+      <div className="relative mx-auto w-full max-w-7xl px-4 pb-8 pt-10 md:px-6 md:pb-10 md:pt-14">
         <ScrollReveal className="mx-auto max-w-2xl text-center">
           <span className="ai-pill-violet">
             <span className="h-1 w-1 rounded-full bg-accent" />
@@ -94,7 +94,7 @@ export function PricingFeature() {
           })}
         </StaggerGroup>
 
-        <ScrollReveal className="mt-14 flex flex-wrap items-center justify-center gap-3">
+        <ScrollReveal className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <Button asChild size="lg" className="group btn-ai h-12 rounded-full px-7 transition-all">
             <Link href="/pricing">
               View full pricing

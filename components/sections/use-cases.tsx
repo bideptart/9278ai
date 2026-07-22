@@ -31,7 +31,7 @@ const items = [
 export function UseCases() {
   return (
     <section className="relative overflow-hidden border-t border-border/40">
-      <div className="mx-auto w-full max-w-7xl px-4 py-24 md:px-6 md:py-32">
+      <div className="mx-auto w-full max-w-7xl px-4 pb-8 pt-8 md:px-6 md:pb-10 md:pt-10">
         <ScrollReveal className="mx-auto max-w-2xl text-center">
           <span className="ai-pill-cyan">
             <span className="h-1 w-1 rounded-full bg-primary" />
@@ -46,7 +46,7 @@ export function UseCases() {
           </p>
         </ScrollReveal>
 
-        <StaggerGroup className="mt-16 grid gap-6 md:grid-cols-3">
+        <StaggerGroup className="mt-4 grid gap-6 md:grid-cols-3">
           {items.map((item, i) => {
             const Icon = item.icon
             return (

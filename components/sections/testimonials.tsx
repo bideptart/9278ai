@@ -69,7 +69,7 @@ export function Testimonials() {
         transition={{ duration: 14, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
       />
 
-      <div className="relative mx-auto w-full max-w-7xl px-4 py-24 md:px-6 md:py-32">
+      <div className="relative mx-auto w-full max-w-7xl px-4 pb-14 pt-8 md:px-6 md:pb-20 md:pt-10">
         <ScrollReveal className="mx-auto max-w-2xl text-center">
           <span className="ai-pill-magenta">
             <span className="h-1 w-1 rounded-full bg-accent" />
@@ -85,33 +85,34 @@ export function Testimonials() {
         </ScrollReveal>
 
         {/* Metrics row */}
-        <StaggerGroup className="mt-16 grid gap-4 sm:grid-cols-3">
+        <StaggerGroup className="mt-6 flex flex-wrap justify-center gap-2.5">
           {metrics.map((m) => {
             const Icon = m.icon
             return (
               <StaggerItem key={m.label}>
-                <div className="card-glow ring-gradient relative flex items-center gap-4 rounded-2xl p-5">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/20">
-                    <Icon className="h-5 w-5" />
+                <div className="flex items-center gap-2 rounded-full border border-border/60 bg-card/60 py-1.5 pl-1.5 pr-3.5">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <Icon className="h-3.5 w-3.5" />
                   </span>
-                  <div className="min-w-0">
-                    <p className="text-2xl font-semibold tracking-tight text-primary">{m.value}</p>
-                    <p className="text-xs uppercase tracking-widest text-muted-foreground">{m.label}</p>
-                  </div>
+                  <p className="text-xs font-medium whitespace-nowrap">
+                    <span className="text-primary">{m.value}</span>{" "}
+                    <span className="text-muted-foreground">{m.label}</span>
+                  </p>
                 </div>
               </StaggerItem>
             )
           })}
         </StaggerGroup>
 
-        {/* Testimonial cards */}
-        <StaggerGroup className="mt-8 grid gap-6 md:grid-cols-2">
-          {testimonials.map((t) => (
-            <StaggerItem key={t.author}>
-              <motion.figure
-                whileHover={{ y: -4 }}
-                transition={{ type: "spring", stiffness: 280, damping: 22 }}
-                className="card-glow ring-gradient relative h-full rounded-2xl p-7"
+        {/* Testimonial carousel — one row, drifting left, pauses on hover */}
+        <ScrollReveal
+          className="mt-6 [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]"
+        >
+          <div className={`flex w-max gap-6 ${reduced ? "" : "marquee"}`}>
+            {(reduced ? testimonials : [...testimonials, ...testimonials]).map((t, i) => (
+              <figure
+                key={`${t.author}-${i}`}
+                className="testimonial-card card-glow ring-gradient relative h-full w-[320px] shrink-0 rounded-2xl p-5 sm:w-[360px]"
               >
                 <span className="scan-line" aria-hidden />
                 <div className="relative flex items-start justify-between gap-4">
@@ -127,19 +128,19 @@ export function Testimonials() {
                     {t.metric}
                   </span>
                   <Quote
-                    className="h-7 w-7 shrink-0 text-foreground/15"
+                    className="h-6 w-6 shrink-0 text-foreground/15"
                     aria-hidden="true"
                   />
                 </div>
 
-                <blockquote className="relative mt-6 text-pretty text-base leading-relaxed text-foreground/90 md:text-lg">
+                <blockquote className="relative mt-3 line-clamp-3 text-pretty text-sm leading-relaxed text-foreground/90">
                   &ldquo;{t.quote}&rdquo;
                 </blockquote>
 
-                <figcaption className="relative mt-7 flex items-center justify-between border-t border-border/40 pt-5">
+                <figcaption className="relative mt-4 flex items-center justify-between border-t border-border/40 pt-3">
                   <div className="flex items-center gap-3">
                     <span
-                      className="flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold ring-1"
+                      className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold ring-1"
                       style={{
                         background: `color-mix(in oklch, ${t.metricAccent} 14%, transparent)`,
                         color: t.metricAccent,
@@ -148,9 +149,9 @@ export function Testimonials() {
                     >
                       {t.initial}
                     </span>
-                    <div>
+                    <div className="min-w-0">
                       <p className="text-sm font-semibold tracking-tight">{t.author}</p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="truncate text-xs text-muted-foreground">
                         {t.role} · {t.company}
                       </p>
                     </div>
@@ -161,10 +162,10 @@ export function Testimonials() {
                     ))}
                   </div>
                 </figcaption>
-              </motion.figure>
-            </StaggerItem>
-          ))}
-        </StaggerGroup>
+              </figure>
+            ))}
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   )
