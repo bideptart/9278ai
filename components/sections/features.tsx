@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import {
   AudioLines,
   Hand,
@@ -14,9 +15,21 @@ import {
   CalendarClock,
   Network,
   ArrowUpRight,
+  ArrowRight,
+  Zap,
+  Sparkles,
 } from "lucide-react"
 import { motion } from "motion/react"
+import { Button } from "@/components/ui/button"
 import { ScrollReveal, StaggerGroup, StaggerItem } from "@/components/animation/scroll-reveal"
+
+const trustPills = [
+  { icon: Zap, label: "Sub-300ms latency" },
+  { icon: Languages, label: "60+ languages" },
+  { icon: PhoneCall, label: "Carrier-grade telephony" },
+  { icon: ShieldCheck, label: "SOC 2-aligned" },
+  { icon: Network, label: "Unlimited concurrency" },
+]
 
 const ACCENTS = [
   "var(--ai-cyan)",
@@ -115,10 +128,10 @@ const features = [
 export function Features() {
   return (
     <>
-      {/* Hero — fits the viewport on /features */}
+      {/* Hero */}
       <section
         id="features-hero"
-        className="relative flex min-h-[calc(100svh-4rem)] items-center overflow-hidden border-t border-border/40"
+        className="relative flex items-center overflow-hidden border-t border-border/40 py-14 md:py-20"
       >
         <div
           aria-hidden
@@ -129,7 +142,7 @@ export function Features() {
           className="pointer-events-none absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
         />
         <div className="relative mx-auto grid w-full max-w-7xl items-center gap-12 px-4 md:px-6 lg:grid-cols-12 lg:gap-8">
-          <ScrollReveal className="lg:col-span-6">
+          <ScrollReveal className="lg:col-span-6 lg:self-start lg:-mt-10">
             <span className="ai-pill-magenta">
               <span className="h-1 w-1 rounded-full bg-accent" />
               Features
@@ -141,11 +154,44 @@ export function Features() {
             <p className="mt-6 text-pretty leading-relaxed text-muted-foreground md:text-lg">
               Real-time audio, telephony, integrations, and observability — production-ready, all in one platform.
             </p>
+
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Button asChild size="lg" className="group btn-ai h-12 rounded-full px-7 transition-all">
+                <Link href="/get-started">
+                  Build your first agent
+                  <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="group h-12 rounded-full border-border/70 bg-card/30 px-7 backdrop-blur-md hover:border-primary/50 hover:bg-card/50"
+              >
+                <Sparkles className="mr-2 h-4 w-4 transition-transform group-hover:rotate-12" aria-hidden="true" />
+                Features
+              </Button>
+            </div>
+
+            <StaggerGroup className="mt-5 flex flex-wrap gap-2.5">
+              {trustPills.map((p) => {
+                const Icon = p.icon
+                return (
+                  <StaggerItem key={p.label}>
+                    <div className="flex items-center gap-2 rounded-full border border-border/60 bg-card/60 py-1.5 pl-1.5 pr-3.5">
+                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-primary">
+                        <Icon className="h-3.5 w-3.5" />
+                      </span>
+                      <p className="text-xs font-medium text-muted-foreground">{p.label}</p>
+                    </div>
+                  </StaggerItem>
+                )
+              })}
+            </StaggerGroup>
           </ScrollReveal>
 
           {/* Live call mockup — phone and dashboard side by side, no overlap */}
           <ScrollReveal delay={0.1} className="lg:col-span-6">
-            <div className="relative mx-auto h-[440px] w-full max-w-[560px]">
+            <div className="relative mx-auto h-[380px] w-full max-w-[500px]">
               {/* Floating feature icons — related to the subheading copy, drifting slowly */}
               {[
                 { Icon: AudioLines, top: "14%", left: "9%", duration: 4.5, delay: 0 },
