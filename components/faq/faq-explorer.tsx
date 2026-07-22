@@ -6,7 +6,7 @@
 // same answers, same grouping — only how they're presented.
 
 import { useEffect, useRef, useState } from "react"
-import { Check, Flame, Search, ThumbsDown, ThumbsUp } from "lucide-react"
+import { ArrowRight, Check, Flame, Search, ThumbsDown, ThumbsUp } from "lucide-react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Input } from "@/components/ui/input"
 import { ScrollReveal } from "@/components/animation/scroll-reveal"
@@ -97,9 +97,9 @@ export function FaqExplorer({ groups }: { groups: FaqGroup[] }) {
   return (
     <>
       {/* Search + category pill scroll-spy */}
-      <ScrollReveal className="mt-10">
+      <ScrollReveal className="-mt-2 md:-mt-2">
         <form
-          className="relative mx-auto max-w-md"
+          className="mx-auto flex max-w-lg items-center gap-1 rounded-full border border-border/60 bg-background p-1.5 shadow-sm"
           onSubmit={(e) => {
             e.preventDefault()
             const q = query.trim().toLowerCase()
@@ -111,21 +111,21 @@ export function FaqExplorer({ groups }: { groups: FaqGroup[] }) {
             }
           }}
         >
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="ml-3 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
           <Input
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search questions…"
             aria-label="Search FAQ"
-            className="pl-9 pr-9"
+            className="h-9 border-0 bg-transparent shadow-none focus-visible:ring-0"
           />
           <button
             type="submit"
-            aria-label="Search"
-            className="absolute right-1.5 top-1/2 inline-flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            <Search className="h-4 w-4" />
+            Search
+            <ArrowRight className="h-4 w-4" aria-hidden />
           </button>
         </form>
 
