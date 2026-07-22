@@ -5,9 +5,9 @@
 // in the portal is reflected here automatically. Each card deep-links into
 // /get-started?plan=<id>&cycle=<cycle>, where checkout is completed.
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import Link from "next/link"
-import { Check, Loader2 } from "lucide-react"
+import { Check, ChevronLeft, ChevronRight, Loader2 } from "lucide-react"
 import { animate } from "motion/react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -63,6 +63,8 @@ export function PricingPlans() {
   const [loadError, setLoadError] = useState<string | null>(null)
   const [cycle, setCycle] = useState<"monthly" | "yearly">("monthly")
   const [calls, setCalls] = useState(300)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const carouselRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -100,6 +102,39 @@ export function PricingPlans() {
     const idx = Math.min(ordered.length - 1, Math.floor((calls - SLIDER_MIN) / third))
     return ordered[idx]
   }, [ordered, calls])
+
+  // Mobile plan carousel: swipeable, snap-to-card, with peeking side cards,
+  // dot pagination, and prev/next arrows. Desktop keeps the 3-column grid.
+  // offsetLeft is relative to the nearest *positioned* ancestor, which isn't
+  // reliably the scroll container itself — use getBoundingClientRect deltas
+  // instead so this works regardless of the offsetParent chain.
+  const childScrollLeft = (el: HTMLDivElement, child: HTMLElement) =>
+    child.getBoundingClientRect().left - el.getBoundingClientRect().left + el.scrollLeft
+
+  const scrollToIndex = (idx: number) => {
+    const el = carouselRef.current
+    const child = el?.children[idx] as HTMLElement | undefined
+    if (el && child) el.scrollTo({ left: childScrollLeft(el, child), behavior: "smooth" })
+  }
+
+  useEffect(() => {
+    const el = carouselRef.current
+    if (!el) return
+    const onScroll = () => {
+      let closest = 0
+      let min = Infinity
+      Array.from(el.children).forEach((child, idx) => {
+        const dist = Math.abs(childScrollLeft(el, child as HTMLElement) - el.scrollLeft)
+        if (dist < min) {
+          min = dist
+          closest = idx
+        }
+      })
+      setActiveIndex(closest)
+    }
+    el.addEventListener("scroll", onScroll, { passive: true })
+    return () => el.removeEventListener("scroll", onScroll)
+  }, [ordered.length])
 
   const savingsTarget = recommendedPlan ? yearlySavings(recommendedPlan) : 0
   const animatedSavings = useCountUp(savingsTarget, cycle === "yearly" && Boolean(recommendedPlan))
@@ -188,87 +223,66 @@ export function PricingPlans() {
       {cycle === "monthly" && <div className="mb-8" />}
 
       {/* Per-second billing callout */}
-      <div className="mb-8 flex justify-center">
-        <div className="inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-primary/30 bg-primary/[0.06] px-4 py-2 text-sm text-primary">
-          <span>⏱️</span>
+      <div className="mb-8 flex justify-center px-4">
+        <div className="flex flex-col items-center gap-1 rounded-2xl border border-primary/30 bg-primary/[0.06] px-4 py-3 text-center text-sm text-primary sm:flex-row sm:gap-2 sm:rounded-full sm:py-2">
+          <span aria-hidden>⏱️</span>
           <span>
             <strong>Per-second billing</strong> — pay only for the seconds you use.
           </span>
         </div>
       </div>
 
-      {/* Plan cards */}
-      <div className="grid gap-8 md:grid-cols-3 md:gap-6 md:items-stretch lg:gap-8">
-        {ordered.map((p) => {
-          const price = priceFor(p)
-          const featured = Boolean(p.tag)
-          return (
-            <Card
-              key={p.id}
-              className={cn(
-                "flex flex-col shadow-md transition-all duration-300 hover:shadow-lg dark:hover:shadow-white/10",
-                featured
-                  ? "ring-2 ring-primary shadow-xl transform md:scale-[1.02] hover:scale-[1.04] dark:ring-primary/80 dark:shadow-primary/20"
-                  : "hover:ring-2 hover:ring-primary hover:shadow-primary/20",
-              )}
-            >
-              <CardHeader className="p-4 pb-2">
-                <div className="flex items-start justify-between">
-                  <CardTitle className="text-lg font-bold">{p.label}</CardTitle>
-                  {p.tag && (
-                    <span className="whitespace-nowrap rounded-full bg-primary px-2 py-0.5 text-[10px] font-semibold text-primary-foreground">
-                      {p.tag}
-                    </span>
-                  )}
-                </div>
-                <CardDescription className="mt-0.5 text-xs">{p.sub}</CardDescription>
-                <div className="mt-2">
-                  <p className="text-2xl font-extrabold text-foreground">
-                    {usd(price)}
-                    <span className="ml-1 text-xs font-normal text-muted-foreground">
-                      /{cycle === "yearly" ? "yr" : "mo"}
-                    </span>
-                  </p>
-                  {cycle === "yearly" && (
-                    <p className="mt-0.5 text-[11px] text-muted-foreground">Save {usd(yearlySavings(p))} vs monthly</p>
-                  )}
-                </div>
-              </CardHeader>
-              <CardContent className="flex flex-1 flex-col p-4 pt-0">
-                <div className="mb-2 text-[11px] text-muted-foreground">
-                  {p.min.toLocaleString("en-US")} min · {usd(p.rate)}/min ·{" "}
-                  {p.agents >= 999 ? "Unlimited" : `${p.agents} agents`}
-                </div>
-                <StaggerGroup className="mb-3 flex-1 list-none space-y-0">
-                  {p.perks
-                    .filter((perk) => !/phone number|concurrent call/i.test(perk))
-                    .map((perk) => (
-                      <StaggerItem key={perk}>
-                        <div className="flex items-start space-x-2 py-1">
-                          <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" aria-hidden="true" />
-                          <span className="text-xs text-foreground">{perk}</span>
-                        </div>
-                      </StaggerItem>
-                    ))}
-                </StaggerGroup>
-                <Button
-                  asChild
-                  size="sm"
-                  className={cn(
-                    "w-full rounded-full transition-all duration-200",
-                    featured
-                      ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 hover:bg-primary/90 dark:shadow-primary/40"
-                      : "border border-input bg-muted text-foreground hover:border-primary hover:bg-primary hover:text-primary-foreground",
-                  )}
-                >
-                  <Link href={`/get-started?plan=${p.id}&cycle=${cycle}`}>
-                    {featured ? `Choose ${p.label}` : "Get started"}
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-          )
-        })}
+      {/* Plan cards — 3-col grid on desktop, swipeable peek carousel on mobile */}
+      <div className="hidden gap-8 md:grid md:grid-cols-3 md:gap-6 md:items-stretch lg:gap-8">
+        {ordered.map((p) => renderCard(p))}
+      </div>
+
+      <div className="md:hidden">
+        <div
+          ref={carouselRef}
+          className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-[4%] pt-3 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          {ordered.map((p, i) => (
+            <div key={p.id} className="w-[92%] shrink-0 snap-center">
+              {renderCard(p, i === activeIndex)}
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-4 flex items-center justify-center gap-4">
+          <button
+            type="button"
+            aria-label="Previous plan"
+            onClick={() => scrollToIndex(Math.max(0, activeIndex - 1))}
+            disabled={activeIndex === 0}
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-border/60 text-muted-foreground transition-colors disabled:opacity-30"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <div className="flex items-center gap-2">
+            {ordered.map((p, i) => (
+              <button
+                key={p.id}
+                type="button"
+                aria-label={`Go to ${p.label}`}
+                onClick={() => scrollToIndex(i)}
+                className={cn(
+                  "h-2 rounded-full transition-all",
+                  i === activeIndex ? "w-6 bg-primary" : "w-2 bg-border",
+                )}
+              />
+            ))}
+          </div>
+          <button
+            type="button"
+            aria-label="Next plan"
+            onClick={() => scrollToIndex(Math.min(ordered.length - 1, activeIndex + 1))}
+            disabled={activeIndex === ordered.length - 1}
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-border/60 text-muted-foreground transition-colors disabled:opacity-30"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
       </div>
 
       <p className="mt-6 text-center text-sm text-muted-foreground">
@@ -276,4 +290,76 @@ export function PricingPlans() {
       </p>
     </div>
   )
+
+  function renderCard(p: Plan, emphasize = false) {
+    const price = priceFor(p)
+    const featured = Boolean(p.tag)
+    return (
+      <Card
+        key={p.id}
+        className={cn(
+          "flex h-full flex-col shadow-md transition-all duration-300 hover:shadow-lg dark:hover:shadow-white/10",
+          featured
+            ? "ring-2 ring-primary shadow-xl transform md:scale-[1.02] hover:scale-[1.04] dark:ring-primary/80 dark:shadow-primary/20"
+            : "hover:ring-2 hover:ring-primary hover:shadow-primary/20",
+          emphasize && "ring-2 ring-primary shadow-xl scale-[1.02]",
+        )}
+      >
+        <CardHeader className="px-4 md:px-6">
+          <div className="flex items-start justify-between">
+            <CardTitle className="text-2xl font-bold">{p.label}</CardTitle>
+            {p.tag && (
+              <span className="whitespace-nowrap rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
+                {p.tag}
+              </span>
+            )}
+          </div>
+          <CardDescription className="mt-1 text-sm">{p.sub}</CardDescription>
+          <div className="mt-4">
+            <p className="text-4xl font-extrabold text-foreground">
+              {usd(price)}
+              <span className="ml-1 text-base font-normal text-muted-foreground">
+                /{cycle === "yearly" ? "yr" : "mo"}
+              </span>
+            </p>
+            {cycle === "yearly" && (
+              <p className="mt-1 text-xs text-muted-foreground">Save {usd(yearlySavings(p))} vs monthly</p>
+            )}
+          </div>
+        </CardHeader>
+        <CardContent className="flex flex-1 flex-col px-4 md:px-6">
+          <div className="mb-4 text-xs text-muted-foreground">
+            {p.min.toLocaleString("en-US")} min · {usd(p.rate)}/min ·{" "}
+            {p.agents >= 999 ? "Unlimited" : `${p.agents} agents`}
+          </div>
+          <StaggerGroup className="mb-6 flex-1 list-none space-y-0">
+            {p.perks
+              .filter((perk) => !/phone number|concurrent call/i.test(perk))
+              .map((perk) => (
+                <StaggerItem key={perk}>
+                  <div className="flex items-start space-x-3 py-2">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                    <span className="text-sm text-foreground">{perk}</span>
+                  </div>
+                </StaggerItem>
+              ))}
+          </StaggerGroup>
+          <Button
+            asChild
+            size="lg"
+            className={cn(
+              "w-full rounded-full transition-all duration-200",
+              featured
+                ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 hover:bg-primary/90 dark:shadow-primary/40"
+                : "border border-input bg-muted text-foreground hover:border-primary hover:bg-primary hover:text-primary-foreground",
+            )}
+          >
+            <Link href={`/get-started?plan=${p.id}&cycle=${cycle}`}>
+              {featured ? `Choose ${p.label}` : "Get started"}
+            </Link>
+          </Button>
+        </CardContent>
+      </Card>
+    )
+  }
 }
