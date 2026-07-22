@@ -43,8 +43,8 @@ export default async function PricingPage({
         </div>
       )}
 
-      {/* Hero */}
-      <section className="relative overflow-hidden border-b border-border/50">
+      {/* Hero — vertically centered in the viewport, matching /features */}
+      <section className="relative flex min-h-[calc(100svh-4rem)] items-center overflow-hidden border-b border-border/50">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(60%_60%_at_50%_0%,rgba(220,38,38,0.10),transparent_70%)]"
@@ -53,7 +53,7 @@ export default async function PricingPage({
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
         />
-        <div className="relative mx-auto w-full max-w-3xl px-4 py-20 text-center md:px-6 md:py-24">
+        <div className="relative mx-auto w-full max-w-3xl px-4 text-center md:px-6">
           <ScrollReveal>
             <span className="ai-pill-magenta">
               <span className="h-1 w-1 rounded-full bg-accent" />

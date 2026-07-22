@@ -11,17 +11,10 @@ import { Check, ChevronLeft, ChevronRight, Loader2 } from "lucide-react"
 import { animate } from "motion/react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Slider } from "@/components/ui/slider"
 import { StaggerGroup, StaggerItem } from "@/components/animation/scroll-reveal"
 import { cn } from "@/lib/utils"
 
 const PORTAL_BASE = "https://voice.9278.ai"
-
-// Assumed average call length, used only to turn the "calls per month" slider
-// into estimated minutes for the plan recommendation. Not billing-accurate.
-const AVG_CALL_MINUTES = 4
-const SLIDER_MIN = 50
-const SLIDER_MAX = 3000
 
 type Plan = {
   id: string
@@ -62,7 +55,6 @@ export function PricingPlans() {
   const [plans, setPlans] = useState<Plan[]>([])
   const [loadError, setLoadError] = useState<string | null>(null)
   const [cycle, setCycle] = useState<"monthly" | "yearly">("monthly")
-  const [calls, setCalls] = useState(300)
   const [activeIndex, setActiveIndex] = useState(0)
   const carouselRef = useRef<HTMLDivElement>(null)
 
@@ -92,16 +84,10 @@ export function PricingPlans() {
     [plans],
   )
 
-  const estimatedMinutes = calls * AVG_CALL_MINUTES
-  // Split the slider's own range into equal thirds so Starter, Growth, and
-  // Scale are each reachable — comparing against the plans' real minute
-  // thresholds made Growth's recommendation window a sliver of the range.
-  const recommendedPlan = useMemo(() => {
-    if (!ordered.length) return null
-    const third = (SLIDER_MAX - SLIDER_MIN) / ordered.length
-    const idx = Math.min(ordered.length - 1, Math.floor((calls - SLIDER_MIN) / third))
-    return ordered[idx]
-  }, [ordered, calls])
+  const recommendedPlan = useMemo(
+    () => ordered.find((p) => p.tag) ?? ordered[0] ?? null,
+    [ordered],
+  )
 
   // Mobile plan carousel: swipeable, snap-to-card, with peeking side cards,
   // dot pagination, and prev/next arrows. Desktop keeps the 3-column grid.
@@ -161,29 +147,8 @@ export function PricingPlans() {
 
   return (
     <div>
-      {/* Usage slider — recommends a plan and highlights it below */}
-      <div className="card-glow mx-auto mb-10 max-w-xl rounded-2xl p-6 md:max-w-2xl">
-        <div className="mb-3 flex items-center justify-between text-sm">
-          <span className="font-medium">How many calls do you get?</span>
-          <span className="text-muted-foreground">~{calls.toLocaleString()} calls/mo</span>
-        </div>
-        <Slider
-          value={[calls]}
-          min={SLIDER_MIN}
-          max={SLIDER_MAX}
-          step={50}
-          onValueChange={(v) => setCalls(v[0])}
-        />
-        {recommendedPlan && (
-          <p className="mt-3 text-center text-sm text-muted-foreground">
-            At ~{estimatedMinutes.toLocaleString()} min/mo, we&apos;d recommend{" "}
-            <span className="font-medium text-primary">{recommendedPlan.label}</span>.
-          </p>
-        )}
-      </div>
-
       {/* Billing cycle toggle */}
-      <div className="mb-3 flex justify-center">
+      <div className="mb-3 mt-40 flex justify-center">
         <div className="inline-flex items-center gap-1 rounded-full border border-border bg-card p-1 text-sm">
           <button
             type="button"
