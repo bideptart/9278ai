@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, PhoneCall, Sparkles, Mic, Volume2, Cpu, Radio } from "lucide-react"
+import { ArrowRight, Sparkles, Mic, Volume2, Cpu, Radio } from "lucide-react"
 import { motion, useReducedMotion, type Variants } from "motion/react"
 
 export function Hero() {
@@ -153,8 +153,8 @@ export function Hero() {
               variant="outline"
               className="group h-12 rounded-full border-border/70 bg-card/30 px-7 backdrop-blur-md hover:border-primary/50 hover:bg-card/50"
             >
-              <PhoneCall className="mr-2 h-4 w-4 transition-transform group-hover:rotate-12" aria-hidden="true" />
-              Try the live demo
+              <Sparkles className="mr-2 h-4 w-4 transition-transform group-hover:rotate-12" aria-hidden="true" />
+              Features
             </Button>
           </motion.div>
 

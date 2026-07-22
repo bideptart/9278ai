@@ -75,7 +75,7 @@ export function HowItWorks() {
           </p>
         </ScrollReveal>
 
-        <div className="relative mt-10">
+        <div className="relative mt-4">
           <StaggerGroup className="grid gap-6 md:grid-cols-3 md:gap-8">
             {steps.map((step, i) => {
               const Icon = step.icon
@@ -83,36 +83,49 @@ export function HowItWorks() {
                 <StaggerItem key={step.title}>
                   <div className="group relative h-full [perspective:1200px]">
                     <div className="relative h-full min-h-[320px] transition-transform duration-700 ease-out [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
-                      {/* FRONT — placeholder brand blue */}
-                      <div className="absolute inset-0 flex flex-col rounded-2xl bg-primary p-6 text-primary-foreground [backface-visibility:hidden]">
-                        <div className="flex items-start justify-between">
+                      {/* FRONT — white base, red gradient glow in opposite corners */}
+                      <div
+                        className="absolute inset-0 flex flex-col overflow-hidden rounded-2xl bg-white p-6 text-foreground shadow-[0_8px_24px_-12px_rgba(0,0,0,0.18)] [backface-visibility:hidden]"
+                        style={{
+                          backgroundImage:
+                            "radial-gradient(circle at top right, oklch(0.577 0.245 27.33 / 0.45), transparent 28%), radial-gradient(circle at bottom left, oklch(0.577 0.245 27.33 / 0.45), transparent 28%)",
+                        }}
+                      >
+                        <div className="relative flex items-start justify-between">
                           <span
-                            className="text-6xl font-bold tracking-tight text-white/30"
+                            className="text-6xl font-bold tracking-tight text-primary/20"
                             style={{ fontVariantNumeric: "tabular-nums" }}
                             aria-hidden="true"
                           >
                             {String(i + 1).padStart(2, "0")}
                           </span>
-                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/15 text-white shadow-[0_6px_16px_-4px_rgba(255,255,255,0.35)]">
+                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary ring-1 ring-primary/20">
                             <Icon className="h-4 w-4" aria-hidden="true" />
                           </span>
                         </div>
                         <span className="sr-only">{step.label}</span>
-                        <h3 className="mt-2 text-xl font-semibold tracking-tight">{step.title}</h3>
-                        <p className="mt-2 text-sm leading-relaxed text-white/75">{step.description}</p>
+                        <h3 className="relative mt-2 text-xl font-semibold tracking-tight">{step.title}</h3>
+                        <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">{step.description}</p>
 
-                        <ul className="mt-6 space-y-2">
+                        <ul className="relative mt-6 space-y-2">
                           {step.bullets.map((b) => (
-                            <li key={b} className="flex items-center gap-2 text-sm text-white/85">
-                              <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-white/60" />
+                            <li key={b} className="flex items-center gap-2 text-sm text-foreground/80">
+                              <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-primary" />
                               {b}
                             </li>
                           ))}
                         </ul>
                       </div>
 
-                      {/* BACK — actual card, revealed on hover */}
-                      <div className="step-card card-glow absolute inset-0 flex flex-col overflow-hidden rounded-2xl p-6 [backface-visibility:hidden] [transform:rotateY(180deg)]">
+                      {/* BACK — actual card, revealed on hover; glow mirrored to top-left / bottom-right */}
+                      <div
+                        className="step-card card-glow absolute inset-0 flex flex-col overflow-hidden rounded-2xl p-6 [backface-visibility:hidden] [transform:rotateY(180deg)]"
+                        style={{
+                          backgroundColor: "white",
+                          backgroundImage:
+                            "radial-gradient(circle at top left, oklch(0.577 0.245 27.33 / 0.45), transparent 28%), radial-gradient(circle at bottom right, oklch(0.577 0.245 27.33 / 0.45), transparent 28%)",
+                        }}
+                      >
                         <span className="scan-line" aria-hidden />
                         <div className="relative flex items-start justify-between">
                           <span

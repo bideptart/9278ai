@@ -46,7 +46,7 @@ export function UseCases() {
           </p>
         </ScrollReveal>
 
-        <StaggerGroup className="mt-16 grid gap-6 md:grid-cols-3">
+        <StaggerGroup className="mt-4 grid gap-6 md:grid-cols-3">
           {items.map((item, i) => {
             const Icon = item.icon
             return (

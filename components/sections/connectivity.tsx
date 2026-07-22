@@ -41,7 +41,7 @@ const cities = [
 export function Connectivity() {
   return (
     <section className="relative overflow-hidden border-t border-border/40">
-      <div className="mx-auto w-full max-w-7xl px-4 pb-8 pt-14 md:px-6 md:pb-10 md:pt-20">
+      <div className="mx-auto w-full max-w-7xl px-4 pb-8 pt-10 md:px-6 md:pb-10 md:pt-14">
         <div className="grid gap-16 lg:grid-cols-12 lg:items-center lg:gap-12">
           {/* LEFT: Copy + items */}
           <div className="lg:col-span-6">
