@@ -134,42 +134,40 @@ export default function IndustriesPage() {
       <Ornament />
 
       <section className="mx-auto w-full max-w-6xl px-4 py-24 md:px-6">
-        <ScrollReveal>
-          <div className="bg-ai-gradient relative overflow-hidden rounded-[28px] px-6 py-14 shadow-[0_30px_70px_-20px_oklch(0.577_0.245_27.33_/_0.45)] md:px-12 md:py-16">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 -z-10 bg-grid opacity-25 [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_85%)]"
-            />
-            <StarField />
-            <div className="relative flex flex-col items-start gap-8 md:flex-row md:items-center md:justify-between">
-              <div className="max-w-xl">
-                <h3 className="text-balance text-3xl font-extrabold tracking-tight text-white md:text-4xl">
-                  Don&apos;t see your industry?
-                </h3>
-                <span aria-hidden className="mt-3 block h-0.5 w-10 rounded-full bg-white/50" />
-                <p className="mt-4 text-pretty leading-relaxed text-white/85">
-                  We&apos;ve deployed agents in security, recruiting, property management, insurance, finance, and
-                  more. Tell us what calls eat your day and we&apos;ll have a prototype in 48 hours.
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-3">
-                <Button asChild size="lg" className="group/btn h-12 rounded-full bg-white px-7 text-primary hover:bg-white/90">
-                  <Link href="/get-started">
-                    Get started{" "}
-                    <ArrowRight className="ml-1 size-4 transition-transform group-hover/btn:translate-x-1" />
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  size="lg"
-                  className="h-12 rounded-full bg-white/20 px-7 text-white backdrop-blur-md hover:bg-white/30"
-                >
-                  <Link href="/pricing">View pricing</Link>
-                </Button>
-              </div>
+        <div className="bg-ai-gradient relative overflow-hidden rounded-[28px] px-6 py-14 shadow-[0_30px_70px_-20px_oklch(0.577_0.245_27.33_/_0.45)] md:px-12 md:py-16">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 -z-10 bg-grid opacity-25 [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_85%)]"
+          />
+          <StarField />
+          <div className="relative flex flex-col items-start gap-8 md:flex-row md:items-center md:justify-between">
+            <div className="max-w-xl">
+              <h3 className="text-balance text-3xl font-extrabold tracking-tight text-white md:text-4xl">
+                Don&apos;t see your industry?
+              </h3>
+              <span aria-hidden className="mt-3 block h-0.5 w-10 rounded-full bg-white/50" />
+              <p className="mt-4 text-pretty leading-relaxed text-white/85">
+                We&apos;ve deployed agents in security, recruiting, property management, insurance, finance, and
+                more. Tell us what calls eat your day and we&apos;ll have a prototype in 48 hours.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <Button asChild size="lg" className="group/btn h-12 rounded-full bg-white px-7 text-primary hover:bg-white/90">
+                <Link href="/get-started">
+                  Get started{" "}
+                  <ArrowRight className="ml-1 size-4 transition-transform group-hover/btn:translate-x-1" />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                className="h-12 rounded-full bg-white/20 px-7 text-white backdrop-blur-md hover:bg-white/30"
+              >
+                <Link href="/pricing">View pricing</Link>
+              </Button>
             </div>
           </div>
-        </ScrollReveal>
+        </div>
       </section>
 
       <RelatedLinks
