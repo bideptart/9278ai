@@ -97,7 +97,7 @@ export function FaqExplorer({ groups }: { groups: FaqGroup[] }) {
   return (
     <>
       {/* Search + category pill scroll-spy */}
-      <ScrollReveal className="-mt-2 md:-mt-2">
+      <ScrollReveal className="mt-36">
         <form
           className="mx-auto flex max-w-lg items-center gap-1 rounded-full border border-border/60 bg-background p-1.5 shadow-sm"
           onSubmit={(e) => {
