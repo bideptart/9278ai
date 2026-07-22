@@ -71,18 +71,32 @@ export default async function PricingPage({
       </section>
 
       {/* Live plans — same source as get-started */}
-      <section id="plans" className="mx-auto w-full max-w-6xl px-4 py-16 md:px-6 md:py-20">
+      <section id="plans" className="mx-auto w-full max-w-6xl px-4 pt-6 pb-16 md:px-6 md:pt-8 md:pb-20">
         <PricingPlans />
       </section>
 
       {/* Billing FAQ */}
       <section className="mx-auto w-full max-w-6xl px-4 py-16 md:px-6 md:py-20">
         <ScrollReveal>
-          <h2 className="mb-8 text-balance text-center text-2xl font-serif font-normal tracking-tight md:text-3xl">
-            Billing questions, answered.
+          <h2 className="text-balance text-center text-4xl font-serif font-normal leading-[1.1] tracking-tight md:text-5xl">
+            Billing questions, <span className="text-primary">answered.</span>
           </h2>
+          <p className="mx-auto mb-8 mt-4 max-w-xl text-pretty text-center text-sm leading-relaxed text-muted-foreground md:text-base">
+            Straight answers on credit, billing cycles, and what happens when your minutes run out — no jargon, no
+            surprise charges.
+          </p>
           <Accordion type="single" collapsible className="w-full space-y-3">
-            {(FAQ_GROUPS.find((g) => g.id === "billing")?.items ?? []).map((item, i) => (
+            {(FAQ_GROUPS.find((g) => g.id === "billing")?.items ?? [])
+              .filter((item) =>
+                [
+                  "How does pricing work?",
+                  "Do my voice minutes expire?",
+                  "Are there any hidden fees?",
+                  "Do you offer refunds?",
+                  "Can I top up more than $100?",
+                ].includes(item.q),
+              )
+              .map((item, i) => (
               <AccordionItem
                 key={i}
                 value={`item-${i}`}

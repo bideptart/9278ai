@@ -20,6 +20,8 @@ const PORTAL_BASE = "https://voice.9278.ai"
 // Assumed average call length, used only to turn the "calls per month" slider
 // into estimated minutes for the plan recommendation. Not billing-accurate.
 const AVG_CALL_MINUTES = 4
+const SLIDER_MIN = 50
+const SLIDER_MAX = 3000
 
 type Plan = {
   id: string
@@ -80,13 +82,24 @@ export function PricingPlans() {
   const priceFor = (p: Plan) => (cycle === "yearly" ? p.yearlyAmount : p.amount)
   const yearlySavings = (p: Plan) => p.yearlySavingsUsd ?? Math.max(0, p.amount * 12 - p.yearlyAmount)
 
-  const ordered = useMemo(() => plans, [plans])
+  // Display order: Starter (left) → Growth (middle) → Scale (right), regardless
+  // of the order the portal API returns them in.
+  const PLAN_ORDER = ["starter", "growth", "scale"]
+  const ordered = useMemo(
+    () => [...plans].sort((a, b) => PLAN_ORDER.indexOf(a.id) - PLAN_ORDER.indexOf(b.id)),
+    [plans],
+  )
 
   const estimatedMinutes = calls * AVG_CALL_MINUTES
+  // Split the slider's own range into equal thirds so Starter, Growth, and
+  // Scale are each reachable — comparing against the plans' real minute
+  // thresholds made Growth's recommendation window a sliver of the range.
   const recommendedPlan = useMemo(() => {
     if (!ordered.length) return null
-    return ordered.find((p) => p.min >= estimatedMinutes) ?? ordered[ordered.length - 1]
-  }, [ordered, estimatedMinutes])
+    const third = (SLIDER_MAX - SLIDER_MIN) / ordered.length
+    const idx = Math.min(ordered.length - 1, Math.floor((calls - SLIDER_MIN) / third))
+    return ordered[idx]
+  }, [ordered, calls])
 
   const savingsTarget = recommendedPlan ? yearlySavings(recommendedPlan) : 0
   const animatedSavings = useCountUp(savingsTarget, cycle === "yearly" && Boolean(recommendedPlan))
@@ -114,12 +127,18 @@ export function PricingPlans() {
   return (
     <div>
       {/* Usage slider — recommends a plan and highlights it below */}
-      <div className="mx-auto mb-10 max-w-xl md:max-w-2xl">
+      <div className="card-glow mx-auto mb-10 max-w-xl rounded-2xl p-6 md:max-w-2xl">
         <div className="mb-3 flex items-center justify-between text-sm">
           <span className="font-medium">How many calls do you get?</span>
           <span className="text-muted-foreground">~{calls.toLocaleString()} calls/mo</span>
         </div>
-        <Slider value={[calls]} min={50} max={3000} step={50} onValueChange={(v) => setCalls(v[0])} />
+        <Slider
+          value={[calls]}
+          min={SLIDER_MIN}
+          max={SLIDER_MAX}
+          step={50}
+          onValueChange={(v) => setCalls(v[0])}
+        />
         {recommendedPlan && (
           <p className="mt-3 text-center text-sm text-muted-foreground">
             At ~{estimatedMinutes.toLocaleString()} min/mo, we&apos;d recommend{" "}
@@ -183,15 +202,14 @@ export function PricingPlans() {
         {ordered.map((p) => {
           const price = priceFor(p)
           const featured = Boolean(p.tag)
-          const isRecommended = recommendedPlan?.id === p.id
           return (
             <Card
               key={p.id}
               className={cn(
                 "flex flex-col shadow-md transition-all duration-300 hover:shadow-lg dark:hover:shadow-white/10",
-                featured &&
-                  "ring-2 ring-primary shadow-xl transform md:scale-[1.02] hover:scale-[1.04] dark:ring-primary/80 dark:shadow-primary/20",
-                isRecommended && "ring-2 ring-primary shadow-lg shadow-primary/20",
+                featured
+                  ? "ring-2 ring-primary shadow-xl transform md:scale-[1.02] hover:scale-[1.04] dark:ring-primary/80 dark:shadow-primary/20"
+                  : "hover:ring-2 hover:ring-primary hover:shadow-primary/20",
               )}
             >
               <CardHeader className="p-4 pb-2">
@@ -237,10 +255,10 @@ export function PricingPlans() {
                   asChild
                   size="sm"
                   className={cn(
-                    "w-full transition-all duration-200",
+                    "w-full rounded-full transition-all duration-200",
                     featured
                       ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 hover:bg-primary/90 dark:shadow-primary/40"
-                      : "border border-input bg-muted text-foreground hover:bg-muted/80",
+                      : "border border-input bg-muted text-foreground hover:border-primary hover:bg-primary hover:text-primary-foreground",
                   )}
                 >
                   <Link href={`/get-started?plan=${p.id}&cycle=${cycle}`}>
