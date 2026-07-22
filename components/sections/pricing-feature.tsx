@@ -1,8 +1,5 @@
 "use client"
 
-import Link from "next/link"
-import { ArrowRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { ScrollReveal } from "@/components/animation/scroll-reveal"
 import { PricingPlans } from "@/components/pricing/pricing-plans"
 
@@ -32,18 +29,6 @@ export function PricingFeature() {
         <div className="mt-10">
           <PricingPlans />
         </div>
-
-        <ScrollReveal className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <Button asChild size="lg" className="group btn-ai h-12 rounded-full px-7 transition-all">
-            <Link href="/pricing">
-              View full pricing
-              <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Link>
-          </Button>
-          <Button asChild size="lg" variant="outline" className="h-12 rounded-full border-border/70 bg-card/30 px-7 backdrop-blur-md hover:border-primary/50">
-            <Link href="/get-started">Get started</Link>
-          </Button>
-        </ScrollReveal>
       </div>
     </section>
   )
