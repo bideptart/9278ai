@@ -2,9 +2,17 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Logo } from "@/components/logo"
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 
 const NAV = [
   { href: "/features", label: "Features" },
@@ -62,6 +70,48 @@ export function SiteHeader() {
               <ArrowRight className="ml-1 h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
             </Link>
           </Button>
+
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-9 w-9 md:hidden" aria-label="Open menu">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right">
+              <SheetHeader>
+                <SheetTitle>Menu</SheetTitle>
+              </SheetHeader>
+              <nav aria-label="Mobile" className="flex flex-col gap-1 px-4">
+                {NAV.map((item) => {
+                  const isActive =
+                    pathname === item.href || pathname.startsWith(`${item.href}/`)
+                  return (
+                    <SheetClose asChild key={item.href}>
+                      <Link
+                        href={item.href}
+                        aria-current={isActive ? "page" : undefined}
+                        className={`rounded-md px-3 py-2 text-base transition-colors hover:bg-card/80 hover:text-foreground ${
+                          isActive ? "text-foreground" : "text-muted-foreground"
+                        }`}
+                      >
+                        {item.label}
+                      </Link>
+                    </SheetClose>
+                  )
+                })}
+                <SheetClose asChild>
+                  <a
+                    href="https://voice.9278.ai/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-md px-3 py-2 text-base text-muted-foreground transition-colors hover:bg-card/80 hover:text-foreground"
+                  >
+                    Sign in
+                  </a>
+                </SheetClose>
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </header>

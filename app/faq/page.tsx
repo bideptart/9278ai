@@ -3,8 +3,8 @@ import Link from "next/link"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Button } from "@/components/ui/button"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { ScrollReveal } from "@/components/animation/scroll-reveal"
+import { FaqExplorer } from "@/components/faq/faq-explorer"
 import { FAQ_GROUPS, FLAT_FAQ } from "@/lib/faq"
 import { pageSeo } from "@/lib/seo"
 import { BreadcrumbJsonLd, FaqJsonLd } from "@/components/seo/jsonld"
@@ -53,45 +53,10 @@ export default function FaqPage() {
               The team replies within an hour during business days.
             </p>
           </ScrollReveal>
-
-          <ScrollReveal className="mt-10 flex flex-wrap justify-center gap-2">
-            {FAQ_GROUPS.map((g) => (
-              <a
-                key={g.id}
-                href={`#${g.id}`}
-                className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-card/30 px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
-              >
-                {g.title}
-              </a>
-            ))}
-          </ScrollReveal>
         </div>
       </section>
 
-      <div className="mx-auto w-full max-w-3xl px-4 py-16 md:px-6 md:py-24">
-        {FAQ_GROUPS.map((group) => (
-          <section key={group.id} id={group.id} className="scroll-mt-24 border-b border-border/50 py-10 first:pt-0 last:border-b-0">
-            <ScrollReveal>
-              <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">{group.title}</h2>
-            </ScrollReveal>
-
-            <ScrollReveal className="mt-6">
-              <Accordion type="single" collapsible className="w-full">
-                {group.items.map((item, i) => (
-                  <AccordionItem key={i} value={`${group.id}-${i}`} className="border-border/60">
-                    <AccordionTrigger className="text-left text-base font-medium hover:no-underline">
-                      {item.q}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-pretty leading-relaxed text-muted-foreground">
-                      {item.a}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </ScrollReveal>
-          </section>
-        ))}
-      </div>
+      <FaqExplorer groups={FAQ_GROUPS} />
 
       <section className="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
         <ScrollReveal className="rounded-2xl border border-border/60 bg-card/30 px-6 py-12 md:px-12 md:py-14">
@@ -118,6 +83,7 @@ export default function FaqPage() {
       </section>
 
       <RelatedLinks
+        variant="flip"
         heading="Keep reading"
         description="The pages most teams visit right after the FAQ."
         links={[
