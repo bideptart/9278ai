@@ -56,6 +56,7 @@ export default function FeaturesPage() {
         <RelatedLinks
           heading="Keep exploring"
           description="Where teams head next after the feature tour."
+          variant="flip"
           links={[
             {
               href: "/pricing",
