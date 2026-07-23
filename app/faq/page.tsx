@@ -1,10 +1,9 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
-import { Button } from "@/components/ui/button"
 import { ScrollReveal } from "@/components/animation/scroll-reveal"
 import { FaqExplorer } from "@/components/faq/faq-explorer"
+import { FaqCta } from "@/components/faq/faq-cta"
 import { FAQ_GROUPS, FLAT_FAQ } from "@/lib/faq"
 import { pageSeo } from "@/lib/seo"
 import { BreadcrumbJsonLd, FaqJsonLd } from "@/components/seo/jsonld"
@@ -59,27 +58,7 @@ export default function FaqPage() {
       <FaqExplorer groups={FAQ_GROUPS} />
 
       <section className="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
-        <ScrollReveal className="rounded-2xl border border-border/60 bg-card/30 px-6 py-12 md:px-12 md:py-14">
-          <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
-            <div className="max-w-xl">
-              <h3 className="text-balance text-2xl font-semibold tracking-tight md:text-3xl">
-                Still have a question?
-              </h3>
-              <p className="mt-3 text-muted-foreground">
-                Talk to a live 9278.ai agent — yes, that&apos;s actually how we do support — or book 20 minutes with a
-                solutions engineer.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
-                <Link href="/get-started">Get started</Link>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <Link href="/pricing">View pricing</Link>
-              </Button>
-            </div>
-          </div>
-        </ScrollReveal>
+        <FaqCta />
       </section>
 
       <RelatedLinks

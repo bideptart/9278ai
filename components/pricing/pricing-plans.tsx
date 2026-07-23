@@ -33,6 +33,46 @@ type Plan = {
 const usd = (n: number) =>
   "$" + Number(n || 0).toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 2 })
 
+// Pulls a specific attribute (voice stack, support tier, SLA) out of a plan's
+// perks list, so the comparison table stays in sync with whatever the portal
+// API returns instead of hardcoding a second copy of the same data.
+function perkMatching(perks: string[], pattern: RegExp) {
+  return perks.find((perk) => pattern.test(perk)) ?? "—"
+}
+
+const COMPARISON_ROWS: Array<{
+  label: string
+  value: (p: Plan) => string
+}> = [
+  { label: "Included minutes", value: (p) => `${p.min.toLocaleString("en-US")} min` },
+  { label: "Effective rate", value: (p) => `${usd(p.rate)}/min` },
+  { label: "AI voice agents", value: (p) => (p.agents >= 999 ? "Unlimited" : String(p.agents)) },
+  { label: "Voice stack", value: (p) => perkMatching(p.perks, /stack|premium/i) },
+  { label: "Support", value: (p) => perkMatching(p.perks, /support|success manager/i) },
+  { label: "SLA", value: (p) => (p.perks.some((perk) => /sla/i.test(perk)) ? "✓" : "—") },
+]
+
+const TESTIMONIALS = [
+  {
+    metric: "+38% conversion",
+    quote: "The agent handles objections better than half my SDRs — prospects don't realize it's AI until we tell them.",
+    author: "Marcus Chen",
+    role: "Head of Sales, Northwind Solar",
+  },
+  {
+    metric: "Saved 60 hrs/week",
+    quote: "Aria handles every inbound after-hours call now. Our reply time dropped from 14 minutes to under one.",
+    author: "Lina Okafor",
+    role: "VP Operations, Marlowe Realty",
+  },
+  {
+    metric: "Live in 4 days",
+    quote: "I was quoted 6 months by an enterprise vendor. We had a working voice agent in production by day four.",
+    author: "Daniel Reyes",
+    role: "CTO, Bright Dental Group",
+  },
+]
+
 function useCountUp(target: number, active: boolean) {
   const [value, setValue] = useState(active ? target : 0)
   useEffect(() => {
@@ -49,6 +89,26 @@ function useCountUp(target: number, active: boolean) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [target, active])
   return value
+}
+
+// Animates a displayed number from its previous value to a new one whenever
+// it changes (e.g. the Monthly/Yearly toggle) — shows the exact value on
+// first mount, only tweens on subsequent changes.
+function useAnimatedNumber(target: number) {
+  const [display, setDisplay] = useState(target)
+  const prevTarget = useRef(target)
+  useEffect(() => {
+    if (prevTarget.current === target) return
+    const from = prevTarget.current
+    prevTarget.current = target
+    const controls = animate(from, target, {
+      duration: 0.5,
+      ease: [0.22, 1, 0.36, 1],
+      onUpdate: (v) => setDisplay(v),
+    })
+    return () => controls.stop()
+  }, [target])
+  return display
 }
 
 export function PricingPlans() {
@@ -199,7 +259,9 @@ export function PricingPlans() {
 
       {/* Plan cards — 3-col grid on desktop, swipeable peek carousel on mobile */}
       <div className="hidden gap-8 md:grid md:grid-cols-3 md:gap-6 md:items-stretch lg:gap-8">
-        {ordered.map((p) => renderCard(p))}
+        {ordered.map((p) => (
+          <PlanCard key={p.id} plan={p} cycle={cycle} price={priceFor(p)} savings={yearlySavings(p)} />
+        ))}
       </div>
 
       <div className="md:hidden">
@@ -209,7 +271,13 @@ export function PricingPlans() {
         >
           {ordered.map((p, i) => (
             <div key={p.id} className="w-[92%] shrink-0 snap-center">
-              {renderCard(p, i === activeIndex)}
+              <PlanCard
+                plan={p}
+                cycle={cycle}
+                price={priceFor(p)}
+                savings={yearlySavings(p)}
+                emphasize={i === activeIndex}
+              />
             </div>
           ))}
         </div>
@@ -253,78 +321,150 @@ export function PricingPlans() {
       <p className="mt-6 text-center text-sm text-muted-foreground">
         All plans include real-time transcripts, recording, analytics, and unlimited test calls in the playground.
       </p>
+
+      {/* Feature comparison table */}
+      <h3 className="mt-16 text-balance text-center text-2xl font-serif font-normal tracking-tight md:text-3xl">
+        Compare plans <span className="text-primary">side by side.</span>
+      </h3>
+      <p className="mx-auto mb-8 mt-4 max-w-xl text-pretty text-center text-sm leading-relaxed text-muted-foreground md:text-base">
+        See exactly what you get at every tier — included minutes, effective rate, and support level, all in one
+        view.
+      </p>
+      <div className="overflow-x-auto rounded-2xl border border-border/60">
+        <table className="w-full min-w-[560px] border-separate border-spacing-0 text-left text-sm">
+          <thead>
+            <tr className="border-b border-border/60 bg-card/40">
+              <th className="p-4 font-medium text-muted-foreground">Feature</th>
+              {ordered.map((p) => (
+                <th
+                  key={p.id}
+                  className={cn(
+                    "border-l border-border/60 p-4 text-center font-semibold text-foreground",
+                    p.tag && "bg-primary/10",
+                  )}
+                >
+                  {p.label}
+                  {p.tag && <span className="ml-1.5 text-xs font-normal text-primary">{p.tag}</span>}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {COMPARISON_ROWS.map((row, i) => (
+              <tr
+                key={row.label}
+                className={cn("group border-b border-border/40 last:border-0", i % 2 === 1 && "bg-card/20")}
+              >
+                <td className="p-4 text-muted-foreground transition-colors group-hover:bg-primary/10">{row.label}</td>
+                {ordered.map((p) => (
+                  <td
+                    key={p.id}
+                    className={cn(
+                      "border-l border-border/40 p-4 text-center text-foreground transition-colors group-hover:bg-primary/15",
+                      p.tag && (i % 2 === 1 ? "bg-primary/10" : "bg-primary/5"),
+                    )}
+                  >
+                    {row.value(p)}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Testimonials with quantified results */}
+      <div className="mt-16 grid gap-5 md:grid-cols-3">
+        {TESTIMONIALS.map((t) => (
+          <div key={t.author} className="card-glow rounded-2xl p-6">
+            <p className="text-sm font-semibold text-primary">{t.metric}</p>
+            <p className="mt-3 text-sm leading-relaxed text-foreground">&ldquo;{t.quote}&rdquo;</p>
+            <p className="mt-4 text-xs text-muted-foreground">
+              {t.author} · {t.role}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   )
+}
 
-  function renderCard(p: Plan, emphasize = false) {
-    const price = priceFor(p)
-    const featured = Boolean(p.tag)
-    return (
-      <Card
-        key={p.id}
-        className={cn(
-          "flex h-full flex-col shadow-md transition-all duration-300 hover:shadow-lg dark:hover:shadow-white/10",
-          featured
-            ? "ring-2 ring-primary shadow-xl transform md:scale-[1.02] hover:scale-[1.04] dark:ring-primary/80 dark:shadow-primary/20"
-            : "hover:ring-2 hover:ring-primary hover:shadow-primary/20",
-          emphasize && "ring-2 ring-primary shadow-xl scale-[1.02]",
-        )}
-      >
-        <CardHeader className="px-4 md:px-6">
-          <div className="flex items-start justify-between">
-            <CardTitle className="text-2xl font-bold">{p.label}</CardTitle>
-            {p.tag && (
-              <span className="whitespace-nowrap rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
-                {p.tag}
-              </span>
-            )}
-          </div>
-          <CardDescription className="mt-1 text-sm">{p.sub}</CardDescription>
-          <div className="mt-4">
-            <p className="text-4xl font-extrabold text-foreground">
-              {usd(price)}
-              <span className="ml-1 text-base font-normal text-muted-foreground">
-                /{cycle === "yearly" ? "yr" : "mo"}
-              </span>
-            </p>
-            {cycle === "yearly" && (
-              <p className="mt-1 text-xs text-muted-foreground">Save {usd(yearlySavings(p))} vs monthly</p>
-            )}
-          </div>
-        </CardHeader>
-        <CardContent className="flex flex-1 flex-col px-4 md:px-6">
-          <div className="mb-4 text-xs text-muted-foreground">
-            {p.min.toLocaleString("en-US")} min · {usd(p.rate)}/min ·{" "}
-            {p.agents >= 999 ? "Unlimited" : `${p.agents} agents`}
-          </div>
-          <StaggerGroup className="mb-6 flex-1 list-none space-y-0">
-            {p.perks
-              .filter((perk) => !/phone number|concurrent call/i.test(perk))
-              .map((perk) => (
-                <StaggerItem key={perk}>
-                  <div className="flex items-start space-x-3 py-2">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                    <span className="text-sm text-foreground">{perk}</span>
-                  </div>
-                </StaggerItem>
-              ))}
-          </StaggerGroup>
-          <Button
-            asChild
-            size="lg"
-            className={cn(
-              "w-full rounded-full transition-all duration-200",
-              featured
-                ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 hover:bg-primary/90 dark:shadow-primary/40"
-                : "border border-input bg-muted text-foreground hover:border-primary hover:bg-primary hover:text-primary-foreground",
-            )}
-          >
-            <Link href={`/get-started?plan=${p.id}&cycle=${cycle}`}>
-              {featured ? `Choose ${p.label}` : "Get started"}
-            </Link>
-          </Button>
-        </CardContent>
-      </Card>
-    )
-  }
+function PlanCard({
+  plan: p,
+  cycle,
+  price,
+  savings,
+  emphasize = false,
+}: {
+  plan: Plan
+  cycle: "monthly" | "yearly"
+  price: number
+  savings: number
+  emphasize?: boolean
+}) {
+  const featured = Boolean(p.tag)
+  const animatedPrice = useAnimatedNumber(price)
+
+  return (
+    <Card
+      className={cn(
+        "flex h-full flex-col shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-white/10",
+        featured
+          ? "ring-2 ring-primary shadow-xl transform md:scale-[1.02] hover:scale-[1.04] dark:ring-primary/80 dark:shadow-primary/20"
+          : "hover:ring-2 hover:ring-primary hover:shadow-primary/20",
+        emphasize && "ring-2 ring-primary shadow-xl scale-[1.02]",
+      )}
+    >
+      <CardHeader className="px-4 md:px-6">
+        <div className="flex items-start justify-between">
+          <CardTitle className="text-2xl font-bold">{p.label}</CardTitle>
+          {p.tag && (
+            <span className="whitespace-nowrap rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
+              {p.tag}
+            </span>
+          )}
+        </div>
+        <CardDescription className="mt-1 text-sm">{p.sub}</CardDescription>
+        <div className="mt-4">
+          <p className="text-4xl font-extrabold text-foreground">
+            {usd(animatedPrice)}
+            <span className="ml-1 text-base font-normal text-muted-foreground">
+              /{cycle === "yearly" ? "yr" : "mo"}
+            </span>
+          </p>
+          {cycle === "yearly" && <p className="mt-1 text-xs text-muted-foreground">Save {usd(savings)} vs monthly</p>}
+        </div>
+      </CardHeader>
+      <CardContent className="flex flex-1 flex-col px-4 md:px-6">
+        <div className="mb-4 text-xs text-muted-foreground">
+          {p.min.toLocaleString("en-US")} min · {usd(p.rate)}/min ·{" "}
+          {p.agents >= 999 ? "Unlimited" : `${p.agents} agents`}
+        </div>
+        <StaggerGroup className="mb-6 flex-1 list-none space-y-0">
+          {p.perks
+            .filter((perk) => !/phone number|concurrent call/i.test(perk))
+            .map((perk) => (
+              <StaggerItem key={perk}>
+                <div className="flex items-start space-x-3 py-2">
+                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                  <span className="text-sm text-foreground">{perk}</span>
+                </div>
+              </StaggerItem>
+            ))}
+        </StaggerGroup>
+        <Button
+          asChild
+          size="lg"
+          className={cn(
+            "w-full rounded-full transition-all duration-200",
+            featured
+              ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 hover:bg-primary/90 dark:shadow-primary/40"
+              : "border border-input bg-muted text-foreground hover:border-primary hover:bg-primary hover:text-primary-foreground",
+          )}
+        >
+          <Link href={`/get-started?plan=${p.id}&cycle=${cycle}`}>{featured ? `Choose ${p.label}` : "Get started"}</Link>
+        </Button>
+      </CardContent>
+    </Card>
+  )
 }
