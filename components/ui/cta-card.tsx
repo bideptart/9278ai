@@ -20,6 +20,10 @@ interface CtaCardProps extends React.HTMLAttributes<HTMLDivElement> {
   overlayClassName?: string
   /** Extra classes for the background image (e.g. desaturating it for a grey variant). */
   imageClassName?: string
+  /** Overrides the default white title/description text color (e.g. for a light-background variant). */
+  textClassName?: string
+  /** Overrides the default light-grey description text color. */
+  descriptionClassName?: string
 }
 
 const containerVariants: Variants = {
@@ -52,6 +56,8 @@ const CtaCard = React.forwardRef<HTMLDivElement, CtaCardProps>(
       actions,
       overlayClassName,
       imageClassName,
+      textClassName,
+      descriptionClassName,
       ...props
     },
     ref,
@@ -76,7 +82,7 @@ const CtaCard = React.forwardRef<HTMLDivElement, CtaCardProps>(
           aria-hidden="true"
         />
         {/* Brand-red tinted overlay by default; pass overlayClassName to swap in another palette */}
-        <div className={cn("absolute inset-0 bg-gradient-to-br from-black/80 via-primary/25 to-primary/70", overlayClassName)} />
+        <div className={cn("absolute inset-0", overlayClassName ?? "bg-gradient-to-br from-black/80 via-primary/25 to-primary/70")} />
 
         <motion.div
           className="relative z-10 grid h-full grid-cols-1 items-center gap-8 p-8 md:grid-cols-2 md:p-12 lg:p-16"
@@ -85,11 +91,11 @@ const CtaCard = React.forwardRef<HTMLDivElement, CtaCardProps>(
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
         >
-          <div className="flex flex-col items-start text-left text-white">
+          <div className={cn("flex flex-col items-start text-left text-white", textClassName)}>
             <motion.h2 className="text-3xl font-serif font-normal tracking-tight md:text-4xl lg:text-5xl" variants={itemVariants}>
               {title}
             </motion.h2>
-            <motion.p className="mt-4 max-w-xl text-lg text-neutral-200" variants={itemVariants}>
+            <motion.p className={cn("mt-4 max-w-xl text-lg text-neutral-200", descriptionClassName)} variants={itemVariants}>
               {description}
             </motion.p>
           </div>
