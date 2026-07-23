@@ -72,7 +72,10 @@ const CtaCard = React.forwardRef<HTMLDivElement, CtaCardProps>(
     return (
       <div
         ref={ref}
-        className={cn("relative w-full overflow-hidden rounded-[2rem] border border-primary/20 shadow-xl", className)}
+        className={cn(
+          "relative w-full overflow-hidden rounded-[2rem] border border-primary/35 shadow-[0_24px_60px_-20px_color-mix(in_oklch,var(--primary)_28%,transparent),0_8px_20px_-8px_color-mix(in_oklch,var(--primary)_16%,transparent)]",
+          className,
+        )}
         {...props}
       >
         <img

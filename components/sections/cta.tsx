@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { ArrowRight, CalendarDays, PhoneCall, Sparkles } from "lucide-react"
+import { ArrowRight, CalendarDays, Sparkles } from "lucide-react"
 import { motion, useReducedMotion } from "motion/react"
 import { ScrollReveal } from "@/components/animation/scroll-reveal"
 
@@ -11,7 +11,9 @@ export function CTA() {
     <section id="cta" className="relative overflow-hidden border-t border-border/40">
       <div className="relative mx-auto w-full max-w-7xl px-4 py-14 md:px-6 md:py-20">
         <ScrollReveal>
-          <div className="ring-gradient relative overflow-hidden rounded-[28px] border border-border/40 bg-gradient-to-br from-card/80 via-card/40 to-background/40 px-6 py-16 text-center md:px-12 md:py-24">
+          <div
+            className="ring-gradient relative overflow-hidden rounded-[28px] border border-primary/35 px-6 py-8 text-center shadow-[0_24px_60px_-20px_color-mix(in_oklch,var(--primary)_28%,transparent),0_8px_20px_-8px_color-mix(in_oklch,var(--primary)_16%,transparent)] md:px-8 md:py-11 [background-image:radial-gradient(circle_at_top_right,white,transparent_60%),linear-gradient(135deg,color-mix(in_oklch,var(--primary)_16%,white),color-mix(in_oklch,var(--primary)_6%,white))]"
+          >
             {/* Drifting glow */}
             <motion.div
               aria-hidden="true"
@@ -57,11 +59,7 @@ export function CTA() {
                 variant="outline"
                 className="group h-12 rounded-full border-border/70 bg-card/40 px-7 backdrop-blur-md hover:border-primary/50 hover:bg-card/60"
               >
-                <PhoneCall className="mr-2 h-4 w-4 transition-transform group-hover:rotate-12" />
-                Call me now
-              </Button>
-              <Button size="lg" variant="ghost" className="h-12 rounded-full px-7 hover:bg-card/40">
-                <CalendarDays className="mr-2 h-4 w-4" />
+                <CalendarDays className="mr-2 h-4 w-4 transition-transform group-hover:scale-110" />
                 Schedule a meeting
               </Button>
             </div>
@@ -73,15 +71,15 @@ export function CTA() {
                 Sub-second latency
               </span>
               <span className="inline-flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
                 Bring your own carrier
               </span>
               <span className="inline-flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
                 Self-hosted control panel
               </span>
               <span className="inline-flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
                 No contracts
               </span>
             </div>
