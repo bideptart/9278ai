@@ -2,12 +2,10 @@
 
 import { useEffect, useState } from "react"
 import { motion, useReducedMotion } from "motion/react"
-import { Check } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { INDUSTRIES } from "@/lib/industries"
 
-const CYCLE_MS = 2600
-const TOP_JOBS_COUNT = 3
+const CYCLE_MS = 1000
 
 /**
  * Hand-placed cluster geometry, in percentages of the square stage: `x`/`y` are
@@ -42,9 +40,8 @@ function fallbackSpot(i: number) {
  * HeroPreviewCard
  * A cluster of ten blown-glass bubbles — one per industry — drifting like soap
  * spheres above the fold. The selected bubble fills with brand-red glass, swells,
- * and picks up a sweeping halo; the caption beneath it names the playbook and
- * lists that industry's first three day-one tasks. Selection auto-advances every
- * 2.6s until a bubble is clicked, which pins it so the copy stays readable.
+ * picks up a sweeping halo, and raises its name plate. Selection auto-advances
+ * once a second until a bubble is clicked, which pins it.
  */
 export function HeroPreviewCard() {
   const [index, setIndex] = useState(0)
@@ -62,11 +59,6 @@ export function HeroPreviewCard() {
     setIndex(i)
     setPaused(true)
   }
-
-  const industry = INDUSTRIES[index]
-  const ordinal = String(index + 1).padStart(2, "0")
-  const total = String(INDUSTRIES.length).padStart(2, "0")
-  const topJobs = industry.jobs.slice(0, TOP_JOBS_COUNT)
 
   return (
     <div className="relative mx-auto w-[340px] max-w-full">
@@ -178,52 +170,6 @@ export function HeroPreviewCard() {
           )
         })}
       </div>
-
-      {/* ---- Caption ---- */}
-      <motion.div
-        key={industry.slug}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        className="mt-8 px-2 text-center"
-      >
-        <p className="font-serif text-xs uppercase tracking-[0.28em] text-muted-foreground/80">
-          Playbook {ordinal} of {total}
-        </p>
-
-        <h3 className="mt-2 text-balance font-serif text-3xl font-normal leading-tight tracking-tight text-primary">
-          {industry.name}
-        </h3>
-
-        {/* Classical rule */}
-        <div aria-hidden className="mt-3 flex items-center justify-center gap-2">
-          <span className="h-px w-12 bg-gradient-to-r from-transparent to-border" />
-          <span className="size-1.5 rotate-45 bg-primary/50" />
-          <span className="h-px w-12 bg-gradient-to-l from-transparent to-border" />
-        </div>
-
-        <p className="mx-auto mt-3 line-clamp-2 max-w-[17rem] text-pretty text-sm leading-relaxed text-muted-foreground">
-          {industry.short}
-        </p>
-
-        <div className="mt-5 flex flex-col gap-2 text-left">
-          {topJobs.map((job, i) => (
-            <motion.div
-              key={job}
-              initial={{ opacity: 0, x: -6 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.06 + i * 0.06, duration: 0.3 }}
-              title={job}
-              className="flex items-center gap-2.5 rounded-xl border border-border/60 bg-card/60 px-3 py-2 backdrop-blur-sm"
-            >
-              <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10 ring-1 ring-primary/20">
-                <Check className="size-3 text-primary" aria-hidden />
-              </span>
-              <span className="truncate text-sm leading-tight text-foreground/85">{job}</span>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
     </div>
   )
 }

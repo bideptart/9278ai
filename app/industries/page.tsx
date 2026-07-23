@@ -117,7 +117,7 @@ export default function IndustriesPage() {
               </StaggerGroup>
             </ScrollReveal>
 
-            <ScrollReveal delay={0.15} className="lg:col-span-5 flex justify-center items-start">
+            <ScrollReveal delay={0.15} className="lg:col-span-5 flex items-center justify-center lg:self-stretch">
               <HeroPreviewCard />
             </ScrollReveal>
           </div>
