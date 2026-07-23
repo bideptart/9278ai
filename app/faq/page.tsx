@@ -1,10 +1,9 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
-import { Button } from "@/components/ui/button"
 import { ScrollReveal } from "@/components/animation/scroll-reveal"
 import { FaqExplorer } from "@/components/faq/faq-explorer"
+import { FaqCta } from "@/components/faq/faq-cta"
 import { FAQ_GROUPS, FLAT_FAQ } from "@/lib/faq"
 import { pageSeo } from "@/lib/seo"
 import { BreadcrumbJsonLd, FaqJsonLd } from "@/components/seo/jsonld"
@@ -30,7 +29,7 @@ export default function FaqPage() {
       />
       <FaqJsonLd items={FLAT_FAQ} />
 
-      <section className="relative overflow-hidden border-b border-border/50">
+      <section className="relative flex min-h-[calc(100svh-4rem)] items-center overflow-hidden border-b border-border/50">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(60%_60%_at_50%_0%,rgba(220,38,38,0.10),transparent_70%)]"
@@ -39,7 +38,7 @@ export default function FaqPage() {
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
         />
-        <div className="relative mx-auto w-full max-w-4xl px-4 py-20 md:px-6 md:py-28">
+        <div className="relative mx-auto w-full max-w-4xl px-4 md:px-6">
           <ScrollReveal className="text-center">
             <span className="ai-pill-magenta">
               <span className="h-1 w-1 rounded-full bg-accent" />
@@ -59,27 +58,7 @@ export default function FaqPage() {
       <FaqExplorer groups={FAQ_GROUPS} />
 
       <section className="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
-        <ScrollReveal className="rounded-2xl border border-border/60 bg-card/30 px-6 py-12 md:px-12 md:py-14">
-          <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
-            <div className="max-w-xl">
-              <h3 className="text-balance text-2xl font-semibold tracking-tight md:text-3xl">
-                Still have a question?
-              </h3>
-              <p className="mt-3 text-muted-foreground">
-                Talk to a live 9278.ai agent — yes, that&apos;s actually how we do support — or book 20 minutes with a
-                solutions engineer.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
-                <Link href="/get-started">Get started</Link>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <Link href="/pricing">View pricing</Link>
-              </Button>
-            </div>
-          </div>
-        </ScrollReveal>
+        <FaqCta />
       </section>
 
       <RelatedLinks

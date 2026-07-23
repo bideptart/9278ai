@@ -9,6 +9,7 @@ import { AmbientGlow } from "@/components/industries/ambient-glow"
 import { CountUpStat } from "@/components/industries/count-up-stat"
 import { HeroPreviewCard } from "@/components/industries/hero-preview-card"
 import { IndustryRow } from "@/components/industries/industry-row"
+import { IndustriesCta } from "@/components/industries/industries-cta"
 import { Industries } from "@/components/sections/industries"
 import { INDUSTRIES } from "@/lib/industries"
 import { pageSeo } from "@/lib/seo"
@@ -133,80 +134,14 @@ export default function IndustriesPage() {
 
       <Ornament />
 
-      <section className="mx-auto w-full max-w-7xl px-4 py-24 md:px-6">
-        <div className="relative overflow-hidden rounded-[28px] px-6 py-10 shadow-[0_30px_70px_-20px_rgba(0,0,0,0.5)] md:px-12 md:py-12" 
-             style={{
-               background: 'linear-gradient(90deg, #0f0404 0%, #2b0606 30%, #3f0909 50%, #2b0606 70%, #0f0404 100%)'
-             }}>
-          {/* More visible grid pattern */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 opacity-25"
-            style={{
-              backgroundImage: `
-                linear-gradient(to right, rgba(255,100,100,0.2) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255,100,100,0.2) 1px, transparent 1px)
-              `,
-              backgroundSize: '35px 35px'
-            }}
-          />
-          
-          {/* Enhanced red glow accents */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute top-0 left-1/4 h-52 w-52 rounded-full bg-red-500/40 blur-3xl"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute bottom-0 right-1/4 h-52 w-52 rounded-full bg-red-500/30 blur-3xl"
-          />
-          
-          {/* More prominent border accents */}
-          <div aria-hidden className="pointer-events-none absolute inset-0 rounded-[28px] border border-red-500/40" />
-          <div aria-hidden className="pointer-events-none absolute inset-3 rounded-[20px] border border-red-500/20" />
-          <div aria-hidden className="pointer-events-none absolute inset-6 rounded-[14px] border border-white/10" />
-
-          <div className="relative flex flex-col items-center gap-8 text-center md:flex-row md:items-center md:justify-between md:text-left">
-            <div className="max-w-2xl">
-              <h3 className="text-balance font-serif text-4xl font-normal leading-[1.1] tracking-tight text-white md:text-5xl">
-                Don&apos;t see your industry?
-              </h3>
-              <div aria-hidden className="mt-4 flex items-center justify-center gap-2 md:justify-start">
-                <span className="h-px w-16 bg-gradient-to-r from-transparent via-red-400 to-transparent" />
-                <span className="size-3 rotate-45 bg-red-500" />
-                <span className="h-px w-16 bg-gradient-to-l from-transparent via-red-400 to-transparent" />
-              </div>
-              <p className="mt-5 text-pretty leading-relaxed text-white/85 text-lg">
-                We&apos;ve deployed agents in security, recruiting, property management, insurance, finance, and
-                more. Tell us what calls eat your day and we&apos;ll have a prototype in 48 hours.
-              </p>
-            </div>
-            <div className="flex items-center gap-4">
-              <Button
-                asChild
-                size="lg"
-                className="group/btn relative h-14 overflow-hidden rounded-full bg-red-600 px-8 text-lg font-semibold text-white hover:bg-red-500 shadow-[0_6px_30px_-10px_rgba(220,38,38,0.7)] transition-all duration-300"
-              >
-                <Link href="/get-started">
-                  <span className="relative z-10">Get started</span>
-                  <ArrowRight className="relative z-10 ml-2 size-5 transition-transform duration-300 group-hover/btn:translate-x-1" />
-                </Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                className="h-14 rounded-full border-2 border-white/40 bg-white/5 px-8 text-lg font-semibold text-white backdrop-blur-md hover:bg-white/10 hover:border-white/60 transition-all duration-300"
-              >
-                <Link href="/pricing">View pricing</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
+      <section className="mx-auto w-full max-w-6xl px-4 py-24 md:px-6">
+        <IndustriesCta />
       </section>
 
       <RelatedLinks
         heading="Related guides"
         description="Explore pricing, FAQs, and the get-started flow used by thousands of teams."
+        variant="flip"
         links={[
           {
             href: "/pricing",

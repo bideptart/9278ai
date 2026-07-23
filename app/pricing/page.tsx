@@ -1,8 +1,6 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
-import { Button } from "@/components/ui/button"
 import { ScrollReveal } from "@/components/animation/scroll-reveal"
 import { PricingPlans } from "@/components/pricing/pricing-plans"
 import { pageSeo } from "@/lib/seo"
@@ -10,6 +8,7 @@ import { BreadcrumbJsonLd } from "@/components/seo/jsonld"
 import { RelatedLinks } from "@/components/seo/related-links"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { FAQ_GROUPS } from "@/lib/faq"
+import { PricingCta } from "@/components/pricing/pricing-cta"
 
 export const metadata: Metadata = pageSeo({
   title: "Pricing — AI voice agents",
@@ -116,26 +115,7 @@ export default async function PricingPage({
 
       {/* CTA */}
       <section className="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
-        <ScrollReveal className="rounded-2xl border border-border/60 bg-card/30 px-6 py-12 md:px-12 md:py-14">
-          <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
-            <div className="max-w-xl">
-              <h3 className="text-balance text-2xl font-serif font-normal tracking-tight md:text-3xl">
-                Try before you commit. Talk to our agent now.
-              </h3>
-              <p className="mt-3 text-muted-foreground">
-                See latency, voice quality, and conversation flow firsthand — then start only if you love it.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Button asChild size="lg" className="btn-ai rounded-full text-primary-foreground">
-                <Link href="/get-started">Get started</Link>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <Link href="/#cta">Talk to an agent</Link>
-              </Button>
-            </div>
-          </div>
-        </ScrollReveal>
+        <PricingCta />
       </section>
 
       <RelatedLinks

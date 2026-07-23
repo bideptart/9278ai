@@ -5,14 +5,7 @@ import { usePathname } from "next/navigation"
 import { ArrowRight, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Logo } from "@/components/logo"
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet"
+import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 
 const NAV = [
   { href: "/features", label: "Features" },
@@ -77,21 +70,24 @@ export function SiteHeader() {
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right">
-              <SheetHeader>
-                <SheetTitle>Menu</SheetTitle>
-              </SheetHeader>
-              <nav aria-label="Mobile" className="flex flex-col gap-1 px-4">
+            <SheetContent side="top" className="gap-0 border-b border-border/60 p-0">
+              <SheetTitle className="sr-only">Menu</SheetTitle>
+              <div className="flex h-20 items-center justify-between border-b border-border/40 px-4">
+                <Link href="/" className="flex items-center gap-2" aria-label="9278.ai home">
+                  <Logo height={34} />
+                </Link>
+              </div>
+
+              <nav aria-label="Mobile" className="flex flex-col px-4 py-2">
                 {NAV.map((item) => {
-                  const isActive =
-                    pathname === item.href || pathname.startsWith(`${item.href}/`)
+                  const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`)
                   return (
                     <SheetClose asChild key={item.href}>
                       <Link
                         href={item.href}
                         aria-current={isActive ? "page" : undefined}
-                        className={`rounded-md px-3 py-2 text-base transition-colors hover:bg-card/80 hover:text-foreground ${
-                          isActive ? "text-foreground" : "text-muted-foreground"
+                        className={`border-b border-border/30 py-4 text-base transition-colors last:border-0 hover:text-foreground ${
+                          isActive ? "font-medium text-foreground" : "text-muted-foreground"
                         }`}
                       >
                         {item.label}
@@ -99,17 +95,28 @@ export function SiteHeader() {
                     </SheetClose>
                   )
                 })}
+              </nav>
+
+              <div className="flex flex-col gap-4 border-t border-border/40 px-4 py-5">
                 <SheetClose asChild>
                   <a
                     href="https://voice.9278.ai/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="rounded-md px-3 py-2 text-base text-muted-foreground transition-colors hover:bg-card/80 hover:text-foreground"
+                    className="text-center text-sm text-muted-foreground transition-colors hover:text-foreground"
                   >
                     Sign in
                   </a>
                 </SheetClose>
-              </nav>
+                <SheetClose asChild>
+                  <Button asChild size="lg" className="group btn-ai w-full rounded-full text-primary-foreground">
+                    <Link href="/get-started">
+                      Get started
+                      <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                    </Link>
+                  </Button>
+                </SheetClose>
+              </div>
             </SheetContent>
           </Sheet>
         </div>

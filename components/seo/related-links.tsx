@@ -24,13 +24,26 @@ function FlipCard({ link, index }: { link: RelatedLink; index: number }) {
   const number = String(index + 1).padStart(2, "0")
   const accent = ACCENTS[index % ACCENTS.length]
 
-  const iconBadge = (
+  const frontIconBadge = (
     <span
       className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
       style={{
         background: `color-mix(in oklch, ${accent} 12%, transparent)`,
         boxShadow: `0 6px 16px -4px color-mix(in oklch, ${accent} 45%, transparent)`,
         color: accent,
+      }}
+    >
+      <ArrowUpRight className="h-4 w-4" aria-hidden />
+    </span>
+  )
+
+  // Back face — solid brand red, white icon (matches the pricing-page testimonial cards)
+  const backIconBadge = (
+    <span
+      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white"
+      style={{
+        background: "var(--primary)",
+        boxShadow: "0 6px 16px -4px color-mix(in oklch, var(--primary) 45%, transparent)",
       }}
     >
       <ArrowUpRight className="h-4 w-4" aria-hidden />
@@ -60,7 +73,7 @@ function FlipCard({ link, index }: { link: RelatedLink; index: number }) {
         >
           <div className="flex items-start justify-between">
             <span className="text-6xl font-bold leading-none text-primary/20">{number}</span>
-            {iconBadge}
+            {frontIconBadge}
           </div>
           <div>
             <p className="text-xl font-bold tracking-tight text-neutral-900">{link.title}</p>
@@ -78,7 +91,7 @@ function FlipCard({ link, index }: { link: RelatedLink; index: number }) {
         >
           <div className="flex items-start justify-between">
             <span className="text-6xl font-bold leading-none text-muted-foreground/25">{number}</span>
-            {iconBadge}
+            {backIconBadge}
           </div>
           <div>
             <p className="text-xl font-bold tracking-tight text-neutral-900">{link.title}</p>
