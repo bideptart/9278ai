@@ -281,6 +281,20 @@
 }
 
 @layer utilities {
+  /* Flip card utilities */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+  
   /* Glass surface — frosted white card */
   .glass {
     background: linear-gradient(180deg, oklch(1 0 0 / 0.72), oklch(1 0 0 / 0.5));
@@ -396,6 +410,13 @@
   }
   .dark .bg-dots {
     background-image: radial-gradient(oklch(1 0 0 / 0.08) 1px, transparent 1px);
+  }
+
+  /* Diamond lattice — classical trellis texture for colored panels */
+  .bg-lattice {
+    background-image:
+      repeating-linear-gradient(45deg, oklch(1 0 0 / 0.09) 0, oklch(1 0 0 / 0.09) 1px, transparent 1px, transparent 26px),
+      repeating-linear-gradient(-45deg, oklch(1 0 0 / 0.09) 0, oklch(1 0 0 / 0.09) 1px, transparent 1px, transparent 26px);
   }
 
   /* Warm-mesh: layered radial + conic gradients hinting at "compute" */

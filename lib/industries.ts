@@ -31,7 +31,7 @@ export const INDUSTRIES: Industry[] = [
     name: "Real estate",
     icon: Home,
     short:
-      "Qualify buyer & seller leads 24/7, book showings on your calendar, and follow up the moment a listing gets a hit.",
+      "Qualify buyer & seller leads 24/7, book showings, and follow up instantly when listings get hits.",
     pitch:
       "Most leads die because no one picks up in the first five minutes. 9278.ai answers every inbound call instantly, qualifies buyers and sellers, and books showings directly on your calendar — so you walk into every conversation with context, not voicemail.",
     jobs: [
@@ -52,7 +52,7 @@ export const INDUSTRIES: Industry[] = [
     name: "Dental practices",
     icon: Stethoscope,
     short:
-      "Confirm appointments, fill last-minute cancellations, and answer insurance & treatment questions without tying up the front desk.",
+      "Confirm appointments, fill cancellations, and answer insurance & treatment questions.",
     pitch:
       "Front desks miss 20–40% of inbound calls during lunch and after hours. 9278.ai picks up every one — confirms cleanings, reschedules cancellations, answers insurance questions, and only routes the genuine emergencies to your team.",
     jobs: [
@@ -93,7 +93,7 @@ export const INDUSTRIES: Industry[] = [
     name: "Home services",
     icon: Wrench,
     short:
-      "Capture every after-hours service request, dispatch the right tech, and never lose a job to a slow callback again.",
+      "Capture after-hours service requests, dispatch techs, and never lose jobs to slow callbacks.",
     pitch:
       "HVAC, plumbing, electrical and roofing contractors live and die by callback speed. 9278.ai answers every after-hours and weekend call, captures the job details, surge-prices emergencies, and books the right technician on your dispatch board.",
     jobs: [
@@ -114,7 +114,7 @@ export const INDUSTRIES: Industry[] = [
     name: "Restaurants",
     icon: UtensilsCrossed,
     short:
-      "Take reservations, confirm large parties, answer hours and menu questions — fluently, in any accent.",
+      "Take reservations, confirm parties, and answer hours & menu questions fluently.",
     pitch:
       "Phones during dinner rush are a tax on your hosts. 9278.ai handles reservations, confirms large parties, answers hours and menu questions, and routes catering inquiries — so the host stand can focus on the room.",
     jobs: [
@@ -135,7 +135,7 @@ export const INDUSTRIES: Industry[] = [
     name: "Automotive",
     icon: Car,
     short:
-      "Schedule service, follow up on test drives, and keep the BDC ringing 24 hours a day across every dealership.",
+      "Schedule service, follow up on test drives, and keep BDCs ringing 24/7.",
     pitch:
       "Dealerships still lose deals overnight. 9278.ai handles service scheduling, test-drive follow-ups, parts inquiries, and trade-in questions — for a single rooftop or a multi-state dealer group on one platform.",
     jobs: [
@@ -156,7 +156,7 @@ export const INDUSTRIES: Industry[] = [
     name: "Legal",
     icon: Scale,
     short:
-      "Intake new clients, qualify cases by jurisdiction and statute of limitations, and book consults — without a paralegal stuck on the phone.",
+      "Intake new clients, qualify cases, and book consults without tying up paralegals.",
     pitch:
       "Personal-injury, immigration and family-law firms live on lead intake. 9278.ai screens every inbound call against your conflict and qualification rules, captures the facts your attorneys actually need, and books a paid consult before the lead shops you.",
     jobs: [
@@ -177,7 +177,7 @@ export const INDUSTRIES: Industry[] = [
     name: "Education",
     icon: GraduationCap,
     short:
-      "Admissions intake, financial-aid follow-ups, and student-success calls without burning out enrollment counselors.",
+      "Handle admissions, financial-aid follow-ups, and student calls without burning out counselors.",
     pitch:
       "Higher-ed and trade schools call hundreds of inquiries every day. 9278.ai handles first-touch outreach, financial-aid document chasing, and re-enrollment campaigns — so counselors only talk to leads who are actually ready.",
     jobs: [
@@ -198,7 +198,7 @@ export const INDUSTRIES: Industry[] = [
     name: "E-commerce",
     icon: ShoppingBag,
     short:
-      "Order status, returns, fitting and sizing — handled 24/7 in any language, with a tone that matches your brand.",
+      "Handle order status, returns, sizing, and more 24/7 in any language.",
     pitch:
       "DTC brands hit support volume spikes the moment they hit a marketing milestone. 9278.ai absorbs the surge — order status, returns, sizing, and post-purchase upsells — and only escalates the genuinely angry customers to a human.",
     jobs: [
@@ -218,7 +218,7 @@ export const INDUSTRIES: Industry[] = [
     slug: "fitness",
     name: "Fitness & wellness",
     icon: Dumbbell,
-    short: "Class bookings, membership upsells, and no-show recovery for studios and gyms — without a front-desk human.",
+    short: "Handle class bookings, memberships, and no-show recovery for studios & gyms.",
     pitch:
       "Boutique gyms, yoga studios and PT clinics fill classes by phone and SMS. 9278.ai books classes, recovers no-shows, sells memberships, and re-engages lapsed members — at a fraction of the cost of an answering service.",
     jobs: [
