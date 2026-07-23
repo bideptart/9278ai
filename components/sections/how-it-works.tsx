@@ -136,11 +136,10 @@ export function HowItWorks() {
                             {String(i + 1).padStart(2, "0")}
                           </span>
                           <span
-                            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
+                            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white"
                             style={{
-                              background: `color-mix(in oklch, ${step.accent} 12%, transparent)`,
-                              boxShadow: `0 6px 16px -4px color-mix(in oklch, ${step.accent} 45%, transparent)`,
-                              color: step.accent,
+                              background: "var(--primary)",
+                              boxShadow: "0 6px 16px -4px color-mix(in oklch, var(--primary) 45%, transparent)",
                             }}
                           >
                             <Icon className="h-4 w-4" aria-hidden="true" />

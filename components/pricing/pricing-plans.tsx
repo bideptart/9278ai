@@ -7,7 +7,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react"
 import Link from "next/link"
-import { Check, ChevronLeft, ChevronRight, Loader2 } from "lucide-react"
+import { Check, ChevronLeft, ChevronRight, Loader2, TrendingUp, Clock, Rocket } from "lucide-react"
 import { animate } from "motion/react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -58,18 +58,24 @@ const TESTIMONIALS = [
     quote: "The agent handles objections better than half my SDRs — prospects don't realize it's AI until we tell them.",
     author: "Marcus Chen",
     role: "Head of Sales, Northwind Solar",
+    icon: TrendingUp,
+    accent: "var(--ai-cyan)",
   },
   {
     metric: "Saved 60 hrs/week",
     quote: "Aria handles every inbound after-hours call now. Our reply time dropped from 14 minutes to under one.",
     author: "Lina Okafor",
     role: "VP Operations, Marlowe Realty",
+    icon: Clock,
+    accent: "var(--ai-violet)",
   },
   {
     metric: "Live in 4 days",
     quote: "I was quoted 6 months by an enterprise vendor. We had a working voice agent in production by day four.",
     author: "Daniel Reyes",
     role: "CTO, Bright Dental Group",
+    icon: Rocket,
+    accent: "var(--ai-magenta)",
   },
 ]
 
@@ -323,7 +329,13 @@ export function PricingPlans() {
       </p>
 
       {/* Feature comparison table */}
-      <h3 className="mt-16 text-balance text-center text-2xl font-serif font-normal tracking-tight md:text-3xl">
+      <div className="mt-16 flex justify-center">
+        <span className="ai-pill-cyan">
+          <span className="h-1 w-1 rounded-full bg-primary" />
+          Comparison
+        </span>
+      </div>
+      <h3 className="mt-6 text-balance text-center text-2xl font-serif font-normal tracking-tight md:text-3xl">
         Compare plans <span className="text-primary">side by side.</span>
       </h3>
       <p className="mx-auto mb-8 mt-4 max-w-xl text-pretty text-center text-sm leading-relaxed text-muted-foreground md:text-base">
@@ -373,17 +385,68 @@ export function PricingPlans() {
         </table>
       </div>
 
-      {/* Testimonials with quantified results */}
+      {/* Testimonials with quantified results — flips on hover, same as the how-it-works cards */}
       <div className="mt-16 grid gap-5 md:grid-cols-3">
-        {TESTIMONIALS.map((t) => (
-          <div key={t.author} className="card-glow rounded-2xl p-6">
-            <p className="text-sm font-semibold text-primary">{t.metric}</p>
-            <p className="mt-3 text-sm leading-relaxed text-foreground">&ldquo;{t.quote}&rdquo;</p>
-            <p className="mt-4 text-xs text-muted-foreground">
-              {t.author} · {t.role}
-            </p>
-          </div>
-        ))}
+        {TESTIMONIALS.map((t) => {
+          const Icon = t.icon
+          return (
+            <div key={t.author} className="group relative h-full [perspective:1200px]">
+              <div className="relative h-full min-h-[220px] transition-transform duration-700 ease-out [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+                {/* FRONT — red gradient, shown at rest */}
+                <div
+                  className="absolute inset-0 flex h-full flex-col overflow-hidden rounded-2xl p-6 [backface-visibility:hidden]"
+                  style={{
+                    backgroundImage:
+                      "linear-gradient(135deg, color-mix(in oklch, var(--primary) 16%, white), color-mix(in oklch, var(--primary) 6%, white))",
+                  }}
+                >
+                  <div className="relative flex items-start justify-between">
+                    <span className="text-sm font-semibold" style={{ color: t.accent }}>
+                      {t.metric}
+                    </span>
+                    <span
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
+                      style={{
+                        background: `color-mix(in oklch, ${t.accent} 12%, transparent)`,
+                        boxShadow: `0 6px 16px -4px color-mix(in oklch, ${t.accent} 45%, transparent)`,
+                        color: t.accent,
+                      }}
+                    >
+                      <Icon className="h-4 w-4" aria-hidden="true" />
+                    </span>
+                  </div>
+                  <p className="relative mt-4 text-sm leading-relaxed text-foreground">&ldquo;{t.quote}&rdquo;</p>
+                  <p className="relative mt-4 text-xs text-muted-foreground">
+                    {t.author} · {t.role}
+                  </p>
+                </div>
+
+                {/* BACK — white card, revealed on hover */}
+                <div className="step-card card-glow absolute inset-0 flex h-full flex-col overflow-hidden rounded-2xl bg-white p-6 [backface-visibility:hidden] [transform:rotateY(180deg)]">
+                  <span className="scan-line" aria-hidden />
+                  <div className="relative flex items-start justify-between">
+                    <span className="text-sm font-semibold" style={{ color: t.accent }}>
+                      {t.metric}
+                    </span>
+                    <span
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white"
+                      style={{
+                        background: "var(--primary)",
+                        boxShadow: "0 6px 16px -4px color-mix(in oklch, var(--primary) 45%, transparent)",
+                      }}
+                    >
+                      <Icon className="h-4 w-4" aria-hidden="true" />
+                    </span>
+                  </div>
+                  <p className="relative mt-4 text-sm leading-relaxed text-foreground">&ldquo;{t.quote}&rdquo;</p>
+                  <p className="relative mt-4 text-xs text-muted-foreground">
+                    {t.author} · {t.role}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )
+        })}
       </div>
     </div>
   )
