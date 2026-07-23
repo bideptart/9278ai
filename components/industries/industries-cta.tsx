@@ -1,22 +1,24 @@
 "use client"
 
 import Link from "next/link"
+import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { CtaCard } from "@/components/ui/cta-card"
 
-// Same red/black theme as the pricing page CTA — content and buttons stay FAQ's own.
-export function FaqCta() {
+export function IndustriesCta() {
   return (
     <CtaCard
-      title="Still have a question?"
-      description="Talk to a live 9278.ai agent — yes, that's actually how we do support — or book 20 minutes with a solutions engineer."
+      title="Don't see your industry?"
+      description="We've deployed agents in security, recruiting, property management, insurance, finance, and more. Tell us what calls eat your day and we'll have a prototype in 48 hours."
       imageSrc="https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?auto=format&fit=crop&q=80&w=2000"
       imageClassName="grayscale"
       overlayClassName="[background-image:linear-gradient(to_bottom_right,rgba(0,0,0,0.95),var(--primary))]"
       actions={
         <>
           <Button asChild size="lg" className="h-14 rounded-full border border-black bg-white px-8 text-base text-black hover:bg-neutral-200">
-            <Link href="/get-started">Get started</Link>
+            <Link href="/get-started">
+              Get started <ArrowRight className="ml-1 h-4 w-4" />
+            </Link>
           </Button>
           <Button
             asChild
