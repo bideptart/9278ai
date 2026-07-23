@@ -14,12 +14,12 @@ import {
   Mic,
   CalendarClock,
   Network,
-  ArrowUpRight,
   ArrowRight,
   Zap,
   Sparkles,
 } from "lucide-react"
-import { motion } from "motion/react"
+import { useEffect, useState } from "react"
+import { motion, AnimatePresence } from "motion/react"
 import { Button } from "@/components/ui/button"
 import { ScrollReveal, StaggerGroup, StaggerItem } from "@/components/animation/scroll-reveal"
 
@@ -31,11 +31,57 @@ const trustPills = [
   { icon: Network, label: "Unlimited concurrency" },
 ]
 
-const ACCENTS = [
-  "var(--ai-cyan)",
-  "var(--ai-violet)",
-  "var(--ai-magenta)",
-  "var(--ai-mint)",
+const floatingIcons = [
+  {
+    Icon: AudioLines,
+    top: "4%",
+    left: "-4%",
+    duration: 4.5,
+    delay: 0,
+    title: "Real-time audio",
+    description: "Sub-300ms WebRTC voice, no delay.",
+    tooltip: "bottom",
+  },
+  {
+    Icon: ShieldCheck,
+    top: "10%",
+    left: "50%",
+    duration: 4.8,
+    delay: 0.3,
+    title: "SOC 2-aligned",
+    description: "Encrypted, compliant by default.",
+    tooltip: "bottom",
+  },
+  {
+    Icon: PhoneCall,
+    top: "6%",
+    left: "104%",
+    duration: 5,
+    delay: 0.6,
+    title: "Carrier-grade telephony",
+    description: "Inbound & outbound calls over SIP.",
+    tooltip: "bottom",
+  },
+  {
+    Icon: Webhook,
+    top: "102%",
+    left: "-2%",
+    duration: 4.2,
+    delay: 1.1,
+    title: "Webhooks & APIs",
+    description: "Pipe call events into your stack.",
+    tooltip: "top",
+  },
+  {
+    Icon: Activity,
+    top: "100%",
+    left: "102%",
+    duration: 5.4,
+    delay: 1.6,
+    title: "Live observability",
+    description: "Transcripts, sentiment, analytics.",
+    tooltip: "top",
+  },
 ] as const
 
 const features = [
@@ -125,7 +171,31 @@ const features = [
   },
 ]
 
+const featureCategories = ["All", "Voice", "Telephony", "Integrations", "Operations"] as const
+
 export function Features() {
+  const [activeIcon, setActiveIcon] = useState(0)
+  const [activeCategory, setActiveCategory] = useState<(typeof featureCategories)[number]>("All")
+  const [isCategoryPaused, setIsCategoryPaused] = useState(false)
+
+  useEffect(() => {
+    if (isCategoryPaused) return
+    const interval = setInterval(() => {
+      setActiveCategory((cur) => {
+        const idx = featureCategories.indexOf(cur)
+        return featureCategories[(idx + 1) % featureCategories.length]
+      })
+    }, 2000)
+    return () => clearInterval(interval)
+  }, [activeCategory, isCategoryPaused])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIcon((cur) => (cur + 1) % floatingIcons.length)
+    }, 2000)
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <>
       {/* Hero */}
@@ -193,39 +263,48 @@ export function Features() {
           <ScrollReveal delay={0.1} className="lg:col-span-6">
             <div className="relative mx-auto h-[380px] w-full max-w-[500px]">
               {/* Floating feature icons — related to the subheading copy, drifting slowly */}
-              {[
-                { Icon: AudioLines, top: "14%", left: "9%", duration: 4.5, delay: 0 },
-                { Icon: ShieldCheck, top: "7%", left: "50%", duration: 4.8, delay: 0.3 },
-                { Icon: PhoneCall, top: "16%", left: "91%", duration: 5, delay: 0.6 },
-                { Icon: Webhook, top: "92%", left: "8%", duration: 4.2, delay: 1.1 },
-                { Icon: Activity, top: "90%", left: "92%", duration: 5.4, delay: 1.6 },
-              ].map(({ Icon, top, left, duration, delay }, i) => (
+              {floatingIcons.map(({ Icon, top, left, duration, delay, title, description }, i) => (
                 <motion.span
                   key={i}
-                  aria-hidden
-                  className="absolute z-10 hidden h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-primary/20 bg-card text-primary shadow-sm md:flex"
+                  className="absolute z-20 hidden h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-primary/20 bg-card text-primary shadow-sm md:flex"
                   style={{ top, left }}
                   animate={{ y: [0, -8, 0] }}
                   transition={{ duration, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut", delay }}
                 >
                   <Icon className="h-4 w-4" aria-hidden="true" />
+
+                  <AnimatePresence>
+                    {activeIcon === i && (
+                      <motion.div
+                        role="tooltip"
+                        initial={{ opacity: 0, y: 6, scale: 0.96 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 6, scale: 0.96 }}
+                        transition={{ duration: 0.25, ease: "easeOut" }}
+                        className="pointer-events-none absolute bottom-[calc(100%+8px)] left-1/2 z-30 w-32 -translate-x-1/2 rounded-lg border border-border/60 bg-popover/95 p-2 text-left shadow-xl backdrop-blur-md"
+                      >
+                        <p className="text-[10px] font-semibold text-foreground">{title}</p>
+                        <p className="mt-0.5 text-[9px] leading-snug text-muted-foreground">{description}</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </motion.span>
               ))}
 
               {/* Phone + dashboard cards */}
               <div className="absolute inset-0 flex items-center justify-center gap-5">
               {/* Phone card */}
-              <div className="w-[210px] shrink-0 overflow-hidden rounded-[32px] border border-white/10 bg-[#0b0f1a] shadow-2xl">
-                <div className="flex items-center justify-between px-5 pt-5 text-xs text-white/40">
+              <div className="w-[210px] shrink-0 overflow-hidden rounded-[32px] border border-black/10 bg-white shadow-2xl">
+                <div className="flex items-center justify-between px-5 pt-5 text-xs text-black/40">
                   <span>9:41</span>
-                  <span className="h-1.5 w-8 rounded-full bg-white/15" />
+                  <span className="h-1.5 w-8 rounded-full bg-black/10" />
                 </div>
                 <div className="flex flex-col items-center gap-3 px-5 py-8 text-center">
                   <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/20 text-base font-semibold text-primary">
                     SC
                   </span>
-                  <p className="text-base font-medium text-white">Sarah Chen</p>
-                  <p className="text-xs text-white/40">00:18</p>
+                  <p className="text-base font-medium text-black">Sarah Chen</p>
+                  <p className="text-xs text-black/40">00:18</p>
                   <div className="mt-2 flex h-8 items-center gap-[3px]">
                     {Array.from({ length: 12 }).map((_, i) => {
                       const heights = [30, 60, 40, 85, 50, 70, 35, 90]
@@ -248,14 +327,14 @@ export function Features() {
               </div>
 
               {/* Browser / dashboard card */}
-              <div className="w-[260px] shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-[#0b0f1a] shadow-2xl md:w-[280px]">
-                <div className="flex items-center gap-1.5 border-b border-white/10 px-3 py-2.5">
-                  <span className="h-2 w-2 rounded-full bg-white/15" />
-                  <span className="h-2 w-2 rounded-full bg-white/15" />
-                  <span className="h-2 w-2 rounded-full bg-white/15" />
-                  <span className="ml-1 truncate font-mono text-[9px] text-white/40">app.9278.ai/agent</span>
-                  <span className="ml-auto inline-flex items-center gap-1 text-[9px] font-medium text-emerald-400">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              <div className="w-[260px] shrink-0 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-2xl md:w-[280px]">
+                <div className="flex items-center gap-1.5 border-b border-black/10 px-3 py-2.5">
+                  <span className="h-2 w-2 rounded-full bg-black/10" />
+                  <span className="h-2 w-2 rounded-full bg-black/10" />
+                  <span className="h-2 w-2 rounded-full bg-black/10" />
+                  <span className="ml-1 truncate font-mono text-[9px] text-black/40">app.9278.ai/agent</span>
+                  <span className="ml-auto inline-flex items-center gap-1 text-[9px] font-medium text-emerald-600">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
                     Live
                   </span>
                 </div>
@@ -266,8 +345,8 @@ export function Features() {
                       SC
                     </span>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-xs font-medium text-white">Sarah Chen</p>
-                      <p className="truncate text-[10px] text-white/40">+1 (312) 555-0188</p>
+                      <p className="truncate text-xs font-medium text-black">Sarah Chen</p>
+                      <p className="truncate text-[10px] text-black/40">+1 (312) 555-0188</p>
                     </div>
                     <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-primary/15 px-2 py-0.5 text-[9px] font-medium text-primary">
                       <Mic className="h-2.5 w-2.5" aria-hidden="true" />
@@ -275,8 +354,8 @@ export function Features() {
                     </span>
                   </div>
 
-                  <div className="rounded-lg border border-white/10 bg-white/[0.03] p-2.5">
-                    <p className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/30">Live transcript</p>
+                  <div className="rounded-lg border border-black/10 bg-black/[0.03] p-2.5">
+                    <p className="font-mono text-[8px] uppercase tracking-[0.18em] text-black/30">Live transcript</p>
                     <div className="mt-1.5 flex h-6 items-center gap-[2.5px]">
                       {Array.from({ length: 18 }).map((_, i) => {
                         const heights = [20, 40, 65, 30, 80, 50, 90, 45, 35, 70]
@@ -292,14 +371,14 @@ export function Features() {
                         )
                       })}
                     </div>
-                    <p className="mt-1.5 text-[10px] leading-relaxed text-white/70">
+                    <p className="mt-1.5 text-[10px] leading-relaxed text-black/70">
                       "Calling about a product demo for next week — about 15 people on our team…"
                     </p>
                   </div>
 
-                  <div className="flex flex-col gap-1 rounded-lg border border-white/10 bg-white/[0.03] px-2.5 py-2 text-[9px]">
-                    <span className="text-white/40">Route → Sales Team</span>
-                    <span className="inline-flex items-center gap-1 text-emerald-400">CRM synced ✓</span>
+                  <div className="flex flex-col gap-1 rounded-lg border border-black/10 bg-black/[0.03] px-2.5 py-2 text-[9px]">
+                    <span className="text-black/40">Route → Sales Team</span>
+                    <span className="inline-flex items-center gap-1 text-emerald-600">CRM synced ✓</span>
                   </div>
                 </div>
               </div>
@@ -311,85 +390,62 @@ export function Features() {
 
       {/* Grid — feature cards */}
       <section id="features" className="relative overflow-hidden border-t border-border/40">
-        <div className="mx-auto w-full max-w-7xl px-4 py-20 md:px-6 md:py-28">
-          <StaggerGroup className="grid gap-5 sm:grid-cols-2">
-          {features.map((f, i) => {
-            const Icon = f.icon
-            const accent = ACCENTS[i % ACCENTS.length]
-            const number = String(i + 1).padStart(2, "0")
-            return (
-              <StaggerItem key={f.title}>
-                <motion.article
-                  whileHover={{ y: -4 }}
-                  transition={{ type: "spring", stiffness: 260, damping: 22 }}
-                  className="group relative h-full overflow-hidden rounded-2xl border border-border/50 bg-card/30 p-6 backdrop-blur-md transition-colors hover:border-border/80 md:p-7"
+        <div className="mx-auto w-full max-w-7xl px-4 pb-20 pt-6 md:px-6 md:pb-28 md:pt-8">
+          <ScrollReveal className="mx-auto max-w-2xl text-center">
+            <span className="ai-pill-cyan">
+              <span className="h-1 w-1 rounded-full bg-primary" />
+              Capabilities
+            </span>
+            <h2 className="mt-3 text-balance text-4xl font-serif font-normal leading-[1.1] tracking-tight md:text-5xl">
+              Every piece of the stack,{" "}
+              <span className="text-primary">built in.</span>
+            </h2>
+            <p className="mt-3 text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
+              Voice, telephony, integrations, and observability — the twelve building blocks behind every production-ready agent.
+            </p>
+          </ScrollReveal>
+
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-2.5">
+            {featureCategories.map((category) => (
+              <button
+                key={category}
+                type="button"
+                onClick={() => setActiveCategory(category)}
+                className={`rounded-full border px-4 py-1.5 text-xs font-medium transition-colors ${
+                  activeCategory === category
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border/60 bg-card/60 text-muted-foreground hover:border-primary/50 hover:text-foreground"
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+
+          <div
+            onMouseEnter={() => setIsCategoryPaused(true)}
+            onMouseLeave={() => setIsCategoryPaused(false)}
+            className="mt-10 grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3"
+          >
+            {features.map((f) => {
+              const Icon = f.icon
+              const isMatch = activeCategory === "All" || f.tag === activeCategory
+              return (
+                <motion.div
+                  key={f.title}
+                  animate={{ opacity: isMatch ? 1 : 0.25 }}
+                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex w-full flex-row items-start gap-3"
                 >
-                  {/* Left accent bar */}
-                  <span
-                    aria-hidden
-                    className="absolute inset-y-0 left-0 w-[3px] origin-bottom scale-y-50 transition-transform duration-500 group-hover:scale-y-100"
-                    style={{ background: `linear-gradient(180deg, transparent, ${accent}, transparent)` }}
-                  />
-                  {/* Soft accent glow on hover */}
-                  <span
-                    aria-hidden
-                    className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full opacity-0 blur-[80px] transition-opacity duration-500 group-hover:opacity-40"
-                    style={{ background: accent }}
-                  />
-
-                  <div className="relative flex items-start gap-5">
-                    {/* Big numeric / icon block */}
-                    <div className="relative flex shrink-0 flex-col items-center gap-2">
-                      <span
-                        className="font-mono text-[11px] font-medium uppercase tracking-[0.22em]"
-                        style={{ color: accent }}
-                      >
-                        {number}
-                      </span>
-                      <span
-                        className="relative flex h-12 w-12 items-center justify-center rounded-2xl ring-1"
-                        style={{
-                          background: `color-mix(in oklch, ${accent} 12%, transparent)`,
-                          borderColor: `color-mix(in oklch, ${accent} 30%, transparent)`,
-                          color: accent,
-                        }}
-                      >
-                        <Icon className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" aria-hidden="true" />
-                      </span>
-                      <span
-                        aria-hidden
-                        className="h-10 w-px bg-gradient-to-b from-border/60 to-transparent"
-                      />
-                    </div>
-
-                    {/* Content */}
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center justify-between gap-3">
-                        <span
-                          className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wider"
-                          style={{
-                            color: accent,
-                            background: `color-mix(in oklch, ${accent} 10%, transparent)`,
-                            borderColor: `color-mix(in oklch, ${accent} 28%, transparent)`,
-                          }}
-                        >
-                          {f.tag}
-                        </span>
-                        <ArrowUpRight
-                          className="h-4 w-4 -translate-y-0.5 translate-x-1 text-muted-foreground/60 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100"
-                          style={{ color: accent }}
-                          aria-hidden="true"
-                        />
-                      </div>
-                      <h3 className="mt-3 text-lg font-semibold tracking-tight">{f.title}</h3>
-                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.description}</p>
-                    </div>
+                  <Icon className="mt-1 h-3.5 w-3.5 shrink-0 text-primary" aria-hidden="true" />
+                  <div className="flex flex-col gap-0.5">
+                    <p className="text-sm font-medium tracking-tight">{f.title}</p>
+                    <p className="text-xs leading-relaxed text-muted-foreground">{f.description}</p>
                   </div>
-                </motion.article>
-              </StaggerItem>
-            )
-          })}
-          </StaggerGroup>
+                </motion.div>
+              )
+            })}
+          </div>
         </div>
       </section>
     </>
