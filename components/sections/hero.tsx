@@ -1,36 +1,11 @@
 "use client"
 
-import { useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Sparkles, Mic, Volume2, Cpu, Radio } from "lucide-react"
 import { motion, useReducedMotion, type Variants } from "motion/react"
 
 export function Hero() {
   const reduced = useReducedMotion()
-  const audioRef = useRef<HTMLAudioElement | null>(null)
-  const hasPlayedRef = useRef(false)
-
-  useEffect(() => {
-    const audio = new Audio("/hpvoice.mp3")
-    audio.preload = "auto"
-    audio.load()
-    audioRef.current = audio
-    return () => {
-      audio.pause()
-      audioRef.current = null
-    }
-  }, [])
-
-  const playHoverAudio = () => {
-    if (hasPlayedRef.current) return
-    const audio = audioRef.current
-    if (!audio) return
-    hasPlayedRef.current = true
-    audio.currentTime = 0
-    audio.play().catch(() => {
-      hasPlayedRef.current = false
-    })
-  }
 
   const word: Variants = {
     hidden: { opacity: 0, y: 24, filter: "blur(8px)" },
@@ -189,10 +164,7 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="relative lg:col-span-5"
         >
-          <div
-            className="relative ring-gradient rounded-3xl card-glow overflow-hidden"
-            onPointerEnter={playHoverAudio}
-          >
+          <div className="relative ring-gradient rounded-3xl card-glow overflow-hidden">
             {/* Subtle scan line for AI feel */}
             <span className="scan-line" aria-hidden />
 
