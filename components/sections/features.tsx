@@ -16,7 +16,6 @@ import {
   Network,
   ArrowRight,
   Zap,
-  Building2,
 } from "lucide-react"
 import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
@@ -238,9 +237,9 @@ export function Features() {
                 variant="outline"
                 className="group h-12 rounded-full border-border/70 bg-card/30 px-7 backdrop-blur-md hover:border-primary/50 hover:bg-card/50"
               >
-                <Link href="/industries">
-                  <Building2 className="mr-2 h-4 w-4 transition-transform group-hover:rotate-12" aria-hidden="true" />
-                  Industries
+                <Link href="/contact">
+                  <PhoneCall className="mr-2 h-4 w-4 transition-transform group-hover:rotate-12" aria-hidden="true" />
+                  Talk to sales
                 </Link>
               </Button>
             </div>
