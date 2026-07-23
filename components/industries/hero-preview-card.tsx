@@ -6,24 +6,50 @@ import { Check } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { INDUSTRIES } from "@/lib/industries"
 
-const CYCLE_MS = 2000
-const WHEEL_SIZE = 190
-const ORBIT_RADIUS = 75
+const CYCLE_MS = 2600
 const TOP_JOBS_COUNT = 3
 
 /**
+ * Hand-placed cluster geometry, in percentages of the square stage: `x`/`y` are
+ * the bubble's centre, `size` its diameter. Spacing is tuned so no two spheres
+ * touch even when the selected one swells, and the order matches INDUSTRIES so
+ * bubble n always belongs to industry n.
+ */
+const CLUSTER = [
+  { x: 50, y: 11, size: 20 }, // Real estate
+  { x: 77, y: 22, size: 17 }, // Dental practices
+  { x: 90, y: 46, size: 19 }, // Healthcare clinics
+  { x: 76, y: 72, size: 17 }, // Home services
+  { x: 50, y: 89, size: 20 }, // Restaurants
+  { x: 24, y: 72, size: 17 }, // Automotive
+  { x: 10, y: 46, size: 19 }, // Legal
+  { x: 23, y: 22, size: 17 }, // Education
+  { x: 37, y: 47, size: 22 }, // E-commerce
+  { x: 64, y: 52, size: 18 }, // Fitness & wellness
+] as const
+
+/**
+ * Fallback placement for any industry added beyond the hand-tuned ten — parks
+ * the extras on an outer ring so the cluster degrades gracefully instead of
+ * crashing on a missing CLUSTER entry.
+ */
+function fallbackSpot(i: number) {
+  const angle = ((i * 137.5) % 360) * (Math.PI / 180)
+  return { x: 50 + Math.cos(angle) * 44, y: 50 + Math.sin(angle) * 44, size: 16 }
+}
+
+/**
  * HeroPreviewCard
- * A clickable "orbit wheel" for the Industries hero, presented inside a
- * slim mobile-device mockup — notch, side buttons, and a home indicator —
- * so it reads as a phone screenshot rather than a flat web card. All ten
- * industries ring the center emblem and auto-advance every two seconds;
- * clicking any orbit icon jumps straight to that industry and pauses the
- * auto-cycle so its short pitch and top day-one tasks stay put long enough
- * to read.
+ * A cluster of ten blown-glass bubbles — one per industry — drifting like soap
+ * spheres above the fold. The selected bubble fills with brand-red glass, swells,
+ * and picks up a sweeping halo; the caption beneath it names the playbook and
+ * lists that industry's first three day-one tasks. Selection auto-advances every
+ * 2.6s until a bubble is clicked, which pins it so the copy stays readable.
  */
 export function HeroPreviewCard() {
   const [index, setIndex] = useState(0)
   const [paused, setPaused] = useState(false)
+  const [hovered, setHovered] = useState<number | null>(null)
   const reduced = useReducedMotion()
 
   useEffect(() => {
@@ -38,153 +64,166 @@ export function HeroPreviewCard() {
   }
 
   const industry = INDUSTRIES[index]
-  const Icon = industry.icon
   const ordinal = String(index + 1).padStart(2, "0")
   const total = String(INDUSTRIES.length).padStart(2, "0")
   const topJobs = industry.jobs.slice(0, TOP_JOBS_COUNT)
 
   return (
-    <div className="relative mx-auto w-[320px] max-w-full">
-      {/* Soft glow behind */}
+    <div className="relative mx-auto w-[340px] max-w-full">
+      {/* Warm bloom behind the cluster */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[500px] rounded-full bg-primary/20 blur-[80px]"
+        className="pointer-events-none absolute left-1/2 top-4 -z-10 h-[340px] w-[340px] -translate-x-1/2 rounded-full bg-primary/15 blur-[90px]"
       />
 
-      <div className="relative flex flex-col items-center px-8 pb-10 pt-12 text-center">
-        <div className="relative mx-auto flex items-center justify-center" style={{ height: WHEEL_SIZE + 40, width: WHEEL_SIZE + 40 }}>
-          {INDUSTRIES.map((it, i) => {
-            const angle = i * (360 / INDUSTRIES.length) - 90
-            const rad = (angle * Math.PI) / 180
-            const x = Math.cos(rad) * (ORBIT_RADIUS + 15)
-            const y = Math.sin(rad) * (ORBIT_RADIUS + 15)
-            const active = i === index
-            const OrbitIcon = it.icon
-            return (
-              <div
-                key={it.slug}
-                className="absolute"
-                style={{
-                  left: `calc(50% + ${x}px)`,
-                  top: `calc(50% + ${y}px)`,
-                  transform: "translate(-50%, -50%)",
+      {/* ---- Bubble cluster ---- */}
+      <div className="relative mx-auto aspect-square w-full">
+        {INDUSTRIES.map((it, i) => {
+          const spot = CLUSTER[i] ?? fallbackSpot(i)
+          const BubbleIcon = it.icon
+          const active = i === index
+          const showLabel = active || hovered === i
+
+          return (
+            <div
+              key={it.slug}
+              className={cn("absolute -translate-x-1/2 -translate-y-1/2", active ? "z-20" : "z-10")}
+              style={{
+                left: `${spot.x}%`,
+                top: `${spot.y}%`,
+                width: `${spot.size}%`,
+                height: `${spot.size}%`,
+              }}
+            >
+              <motion.div
+                className="relative h-full w-full"
+                animate={
+                  reduced
+                    ? undefined
+                    : { y: ["0%", "-7%", "0%", "5%", "0%"], x: ["0%", "3%", "0%", "-3%", "0%"] }
+                }
+                transition={{
+                  duration: 9 + (i % 4) * 1.6,
+                  repeat: Number.POSITIVE_INFINITY,
+                  ease: "easeInOut",
+                  delay: i * 0.32,
                 }}
               >
+                {/* Halo + sweeping hairline, selected bubble only */}
+                {active && (
+                  <>
+                    <motion.span
+                      aria-hidden
+                      className="pointer-events-none absolute -inset-[18%] -z-10 rounded-full bg-primary/30 blur-xl"
+                      animate={reduced ? undefined : { opacity: [0.45, 0.85, 0.45], scale: [1, 1.12, 1] }}
+                      transition={{ duration: 3.2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+                    />
+                    <motion.span
+                      aria-hidden
+                      className="bubble-ring pointer-events-none absolute -inset-[9%] rounded-full"
+                      animate={reduced ? undefined : { rotate: 360 }}
+                      transition={{ duration: 7, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                    />
+                  </>
+                )}
+
                 <motion.button
                   type="button"
                   onClick={() => selectIndustry(i)}
+                  onPointerEnter={() => setHovered(i)}
+                  onPointerLeave={() => setHovered((h) => (h === i ? null : h))}
+                  onFocus={() => setHovered(i)}
+                  onBlur={() => setHovered((h) => (h === i ? null : h))}
                   aria-label={`Show the ${it.name} playbook`}
                   aria-current={active ? "true" : undefined}
+                  animate={{ scale: active ? 1.14 : showLabel ? 1.07 : 1 }}
+                  transition={{ type: "spring", stiffness: 260, damping: 20 }}
                   className={cn(
-                    "flex cursor-pointer items-center justify-center rounded-full border transition-all duration-500 ease-out hover:border-primary/60 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2",
-                    active
-                      ? "z-10 h-12 w-12 scale-100 border-primary/60 bg-primary/15 text-primary shadow-[0_0_20px_-5px_var(--primary)]"
-                      : "h-10 w-10 scale-90 border-border/50 bg-card/70 text-muted-foreground/40 hover:scale-100 hover:bg-card",
+                    "group relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-full",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                    active ? "bubble-active text-white" : "bubble-glass text-primary/75 hover:text-primary",
                   )}
-                  animate={reduced ? undefined : { y: [0, -5, 0] }}
-                  transition={{
-                    duration: 4 + (i % 3),
-                    repeat: Number.POSITIVE_INFINITY,
-                    ease: "easeInOut",
-                    delay: i * 0.15,
-                  }}
                 >
-                  <OrbitIcon className={active ? "size-5" : "size-4"} aria-hidden />
+                  {/* Specular catch-light */}
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "pointer-events-none absolute left-[18%] top-[13%] h-[24%] w-[32%] -rotate-[22deg] rounded-full blur-[3px]",
+                      active ? "bg-white/60" : "bg-white/90",
+                    )}
+                  />
+                  {/* Lower rim bounce-light */}
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "pointer-events-none absolute bottom-[10%] left-1/2 h-[10%] w-[42%] -translate-x-1/2 rounded-full blur-[4px]",
+                      active ? "bg-white/25" : "bg-primary/20",
+                    )}
+                  />
+                  <BubbleIcon className="relative h-[38%] w-[38%]" strokeWidth={1.6} aria-hidden />
                 </motion.button>
-              </div>
-            )
-          })}
 
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-            <motion.div
-              key={industry.slug}
-              initial={{ opacity: 0, scale: 0.85 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="relative flex h-20 w-20 items-center justify-center"
-            >
-              <motion.span
-                aria-hidden
-                className="absolute inset-0.5 rounded-full"
-                style={{
-                  background:
-                    "conic-gradient(from 0deg, var(--ai-cyan), var(--ai-violet), var(--ai-magenta), var(--ai-cyan))",
-                  filter: "blur(16px)",
-                  opacity: 0.8,
-                }}
-                animate={reduced ? undefined : { scale: [1, 1.2, 1] }}
-                transition={{ duration: 2.6, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-              />
-              <svg className="absolute inset-0 -rotate-90" viewBox="0 0 100 100" aria-hidden>
-                <circle cx="50" cy="50" r="44" fill="none" stroke="var(--border)" strokeWidth="12" opacity="0.7" />
-                {!reduced && !paused && (
-                  <motion.circle
-                    key={industry.slug}
-                    cx="50"
-                    cy="50"
-                    r="44"
-                    fill="none"
-                    stroke="var(--primary)"
-                    strokeWidth="12"
-                    strokeLinecap="round"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ duration: CYCLE_MS / 1000, ease: "linear" }}
-                  />
-                )}
-                {(reduced || paused) && (
-                  <circle
-                    cx="50"
-                    cy="50"
-                    r="44"
-                    fill="none"
-                    stroke="var(--primary)"
-                    strokeWidth="12"
-                    strokeLinecap="round"
-                  />
-                )}
-              </svg>
-              <span className="relative flex h-12 w-12 items-center justify-center rounded-full bg-background ring-2 ring-primary/30">
-                <Icon className="h-6 w-6 text-primary" aria-hidden />
-              </span>
-            </motion.div>
-          </div>
+                {/* Name plate */}
+                <motion.span
+                  aria-hidden
+                  initial={false}
+                  animate={{ opacity: showLabel ? 1 : 0, y: showLabel ? 0 : -4 }}
+                  transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                  className="pointer-events-none absolute left-1/2 top-[104%] z-30 -translate-x-1/2 whitespace-nowrap rounded-full border border-border/60 bg-background/90 px-2.5 py-0.5 font-serif text-[11px] tracking-wide text-foreground/80 shadow-sm backdrop-blur-sm"
+                >
+                  {it.name}
+                </motion.span>
+              </motion.div>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* ---- Caption ---- */}
+      <motion.div
+        key={industry.slug}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        className="mt-8 px-2 text-center"
+      >
+        <p className="font-serif text-xs uppercase tracking-[0.28em] text-muted-foreground/80">
+          Playbook {ordinal} of {total}
+        </p>
+
+        <h3 className="mt-2 text-balance font-serif text-3xl font-normal leading-tight tracking-tight text-primary">
+          {industry.name}
+        </h3>
+
+        {/* Classical rule */}
+        <div aria-hidden className="mt-3 flex items-center justify-center gap-2">
+          <span className="h-px w-12 bg-gradient-to-r from-transparent to-border" />
+          <span className="size-1.5 rotate-45 bg-primary/50" />
+          <span className="h-px w-12 bg-gradient-to-l from-transparent to-border" />
         </div>
 
-        <motion.div
-          key={industry.slug}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          className="w-full"
-        >
-          <p className="font-serif text-xs uppercase tracking-[0.25em] text-muted-foreground/80">
-            Playbook {ordinal} of {total}
-          </p>
-          <h3 className="text-aurora mt-2 text-balance font-serif text-2xl font-normal tracking-tight">
-            {industry.name}
-          </h3>
-          <p className="mx-auto mt-2 line-clamp-2 max-w-[16rem] text-pretty text-base leading-relaxed text-muted-foreground">
-            {industry.short}
-          </p>
+        <p className="mx-auto mt-3 line-clamp-2 max-w-[17rem] text-pretty text-sm leading-relaxed text-muted-foreground">
+          {industry.short}
+        </p>
 
-          <div className="mt-4 flex flex-col gap-2 text-left">
-            {topJobs.map((job, i) => (
-              <motion.div
-                key={job}
-                initial={{ opacity: 0, y: 4 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.05 + i * 0.05, duration: 0.3 }}
-                title={job}
-                className="flex items-center gap-2 rounded-lg border border-border/50 bg-card/50 px-3 py-2"
-              >
-                <Check className="size-3.5 shrink-0 text-primary" aria-hidden />
-                <span className="truncate text-sm leading-tight text-foreground/85">{job}</span>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </div>
+        <div className="mt-5 flex flex-col gap-2 text-left">
+          {topJobs.map((job, i) => (
+            <motion.div
+              key={job}
+              initial={{ opacity: 0, x: -6 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.06 + i * 0.06, duration: 0.3 }}
+              title={job}
+              className="flex items-center gap-2.5 rounded-xl border border-border/60 bg-card/60 px-3 py-2 backdrop-blur-sm"
+            >
+              <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10 ring-1 ring-primary/20">
+                <Check className="size-3 text-primary" aria-hidden />
+              </span>
+              <span className="truncate text-sm leading-tight text-foreground/85">{job}</span>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
     </div>
   )
 }
