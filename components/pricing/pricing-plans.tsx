@@ -214,7 +214,7 @@ export function PricingPlans() {
   return (
     <div>
       {/* Billing cycle toggle */}
-      <div className="mb-3 mt-40 flex justify-center">
+      <div className="mb-3 mt-6 flex justify-center">
         <div className="inline-flex items-center gap-1 rounded-full border border-border bg-card p-1 text-sm">
           <button
             type="button"
@@ -255,8 +255,8 @@ export function PricingPlans() {
 
       {/* Per-second billing callout */}
       <div className="mb-8 flex justify-center px-4">
-        <div className="flex flex-col items-center gap-1 rounded-2xl border border-primary/30 bg-primary/[0.06] px-4 py-3 text-center text-sm text-primary sm:flex-row sm:gap-2 sm:rounded-full sm:py-2">
-          <span aria-hidden>⏱️</span>
+        <div className="flex flex-row items-start gap-2 rounded-full border border-primary/30 bg-primary/[0.06] px-4 py-2 text-left text-sm text-primary sm:items-center sm:text-center">
+          <Clock className="mt-0.5 h-4 w-4 shrink-0 sm:mt-0" aria-hidden />
           <span>
             <strong>Per-second billing</strong> — pay only for the seconds you use.
           </span>
@@ -342,7 +342,37 @@ export function PricingPlans() {
         See exactly what you get at every tier — included minutes, effective rate, and support level, all in one
         view.
       </p>
-      <div className="overflow-x-auto rounded-2xl border border-border/60">
+      {/* Mobile: one stacked card per plan — no horizontal scroll needed */}
+      <div className="space-y-4 md:hidden">
+        {ordered.map((p) => (
+          <div
+            key={p.id}
+            className="overflow-hidden rounded-2xl border border-primary/40"
+          >
+            <div className={cn("flex items-center justify-between px-4 py-3", p.tag ? "bg-primary/10" : "bg-card/40")}>
+              <span className="font-semibold text-foreground">{p.label}</span>
+              {p.tag && <span className="text-xs font-medium text-primary">{p.tag}</span>}
+            </div>
+            <dl>
+              {COMPARISON_ROWS.map((row, i) => (
+                <div
+                  key={row.label}
+                  className={cn(
+                    "flex items-center justify-between border-t border-border/40 px-4 py-2.5 text-sm",
+                    i % 2 === 1 && "bg-card/20",
+                  )}
+                >
+                  <dt className="text-muted-foreground">{row.label}</dt>
+                  <dd className="font-medium text-foreground">{row.value(p)}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop: full comparison table */}
+      <div className="hidden overflow-x-auto rounded-2xl border border-border/60 md:block">
         <table className="w-full min-w-[560px] border-separate border-spacing-0 text-left text-sm">
           <thead>
             <tr className="border-b border-border/60 bg-card/40">
@@ -386,60 +416,60 @@ export function PricingPlans() {
       </div>
 
       {/* Testimonials with quantified results — flips on hover, same as the how-it-works cards */}
-      <div className="mt-16 grid gap-5 md:grid-cols-3">
+      <div className="mt-8 grid gap-3 sm:mt-16 sm:gap-5 md:grid-cols-3">
         {TESTIMONIALS.map((t) => {
           const Icon = t.icon
           return (
-            <div key={t.author} className="group relative h-full [perspective:1200px]">
-              <div className="relative h-full min-h-[220px] transition-transform duration-700 ease-out [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+            <div key={t.author} className="group relative h-full sm:[perspective:1200px]">
+              <div className="relative h-full min-h-[160px] transition-transform duration-700 ease-out sm:[transform-style:preserve-3d] sm:group-hover:[transform:rotateY(180deg)] sm:min-h-[220px]">
                 {/* FRONT — red gradient, shown at rest */}
                 <div
-                  className="absolute inset-0 flex h-full flex-col overflow-hidden rounded-2xl p-6 [backface-visibility:hidden]"
+                  className="absolute inset-0 flex h-full flex-col overflow-hidden rounded-2xl p-4 sm:[backface-visibility:hidden] sm:p-6"
                   style={{
                     backgroundImage:
                       "linear-gradient(135deg, color-mix(in oklch, var(--primary) 16%, white), color-mix(in oklch, var(--primary) 6%, white))",
                   }}
                 >
                   <div className="relative flex items-start justify-between">
-                    <span className="text-sm font-semibold" style={{ color: t.accent }}>
+                    <span className="text-xs font-semibold sm:text-sm" style={{ color: t.accent }}>
                       {t.metric}
                     </span>
                     <span
-                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
+                      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg sm:h-9 sm:w-9"
                       style={{
                         background: `color-mix(in oklch, ${t.accent} 12%, transparent)`,
                         boxShadow: `0 6px 16px -4px color-mix(in oklch, ${t.accent} 45%, transparent)`,
                         color: t.accent,
                       }}
                     >
-                      <Icon className="h-4 w-4" aria-hidden="true" />
+                      <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true" />
                     </span>
                   </div>
-                  <p className="relative mt-4 text-sm leading-relaxed text-foreground">&ldquo;{t.quote}&rdquo;</p>
-                  <p className="relative mt-4 text-xs text-muted-foreground">
+                  <p className="relative mt-2.5 text-xs leading-relaxed text-foreground sm:mt-4 sm:text-sm">&ldquo;{t.quote}&rdquo;</p>
+                  <p className="relative mt-2.5 text-[11px] text-muted-foreground sm:mt-4 sm:text-xs">
                     {t.author} · {t.role}
                   </p>
                 </div>
 
-                {/* BACK — white card, revealed on hover */}
-                <div className="step-card card-glow absolute inset-0 flex h-full flex-col overflow-hidden rounded-2xl bg-white p-6 [backface-visibility:hidden] [transform:rotateY(180deg)]">
+                {/* BACK — white card, revealed on hover (desktop only; mobile shows front face only, no 3D transform) */}
+                <div className="step-card card-glow absolute inset-0 hidden h-full flex-col overflow-hidden rounded-2xl bg-white p-4 sm:flex sm:[backface-visibility:hidden] sm:[transform:rotateY(180deg)] sm:p-6">
                   <span className="scan-line" aria-hidden />
                   <div className="relative flex items-start justify-between">
-                    <span className="text-sm font-semibold" style={{ color: t.accent }}>
+                    <span className="text-xs font-semibold sm:text-sm" style={{ color: t.accent }}>
                       {t.metric}
                     </span>
                     <span
-                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white"
+                      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-white sm:h-9 sm:w-9"
                       style={{
                         background: "var(--primary)",
                         boxShadow: "0 6px 16px -4px color-mix(in oklch, var(--primary) 45%, transparent)",
                       }}
                     >
-                      <Icon className="h-4 w-4" aria-hidden="true" />
+                      <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true" />
                     </span>
                   </div>
-                  <p className="relative mt-4 text-sm leading-relaxed text-foreground">&ldquo;{t.quote}&rdquo;</p>
-                  <p className="relative mt-4 text-xs text-muted-foreground">
+                  <p className="relative mt-2.5 text-xs leading-relaxed text-foreground sm:mt-4 sm:text-sm">&ldquo;{t.quote}&rdquo;</p>
+                  <p className="relative mt-2.5 text-[11px] text-muted-foreground sm:mt-4 sm:text-xs">
                     {t.author} · {t.role}
                   </p>
                 </div>
@@ -471,7 +501,7 @@ function PlanCard({
   return (
     <Card
       className={cn(
-        "flex h-full flex-col shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-white/10",
+        "flex h-full flex-col gap-4 py-4 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-white/10",
         featured
           ? "ring-2 ring-primary shadow-xl transform md:scale-[1.02] hover:scale-[1.04] dark:ring-primary/80 dark:shadow-primary/20"
           : "hover:ring-2 hover:ring-primary hover:shadow-primary/20",
@@ -488,7 +518,7 @@ function PlanCard({
           )}
         </div>
         <CardDescription className="mt-1 text-sm">{p.sub}</CardDescription>
-        <div className="mt-4">
+        <div className="mt-2">
           <p className="text-4xl font-extrabold text-foreground">
             {usd(animatedPrice)}
             <span className="ml-1 text-base font-normal text-muted-foreground">
@@ -508,7 +538,7 @@ function PlanCard({
             .filter((perk) => !/phone number|concurrent call/i.test(perk))
             .map((perk) => (
               <StaggerItem key={perk}>
-                <div className="flex items-start space-x-3 py-2">
+                <div className="flex items-start space-x-3 py-1">
                   <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
                   <span className="text-sm text-foreground">{perk}</span>
                 </div>

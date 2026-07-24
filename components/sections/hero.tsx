@@ -53,20 +53,20 @@ export function Hero() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.15 }}
-            className="inline-flex items-center gap-3 rounded-full border border-border/60 bg-card/40 px-4 py-1.5 text-xs text-muted-foreground backdrop-blur-md"
+            className="inline-flex max-w-full items-center gap-2 rounded-full border border-border/60 bg-card/40 px-3.5 py-1.5 text-xs text-muted-foreground backdrop-blur-md sm:gap-3 sm:px-4"
           >
-            <span className="relative flex h-2 w-2">
+            <span className="relative flex h-2 w-2 shrink-0">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
             </span>
-            <span className="font-medium text-foreground/90">Live</span>
-            <span className="h-3 w-px bg-border/80" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-primary">
+            <span className="shrink-0 font-medium text-foreground/90">Live</span>
+            <span className="h-3 w-px shrink-0 bg-border/80" />
+            <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.2em] text-primary">
               v9278.audio-1
             </span>
-            <span className="h-3 w-px bg-border/80" />
-            <Sparkles className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
-            Native audio · Sub-second latency · Self-hosted
+            <span className="hidden h-3 w-px shrink-0 bg-border/80 sm:block" />
+            <Sparkles className="hidden h-3.5 w-3.5 shrink-0 text-primary sm:block" aria-hidden="true" />
+            <span className="hidden truncate sm:inline">Native audio · Sub-second latency · Self-hosted</span>
           </motion.div>
 
           {/* Headline */}
@@ -107,11 +107,11 @@ export function Hero() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 1 }}
-            className="mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center"
+            className="mt-6 flex flex-row flex-wrap items-center gap-3"
           >
             <Button
               size="lg"
-              className="group btn-ai relative h-12 overflow-hidden rounded-full px-7 text-primary-foreground transition-all"
+              className="group btn-ai relative h-11 overflow-hidden rounded-full px-5 text-sm text-primary-foreground transition-all sm:h-12 sm:px-7 sm:text-base"
             >
               <span className="relative z-10">Build your first agent</span>
               <ArrowRight
@@ -126,7 +126,7 @@ export function Hero() {
             <Button
               size="lg"
               variant="outline"
-              className="group h-12 rounded-full border-border/70 bg-card/30 px-7 backdrop-blur-md hover:border-primary/50 hover:bg-card/50"
+              className="group h-11 rounded-full border-border/70 bg-card/30 px-5 text-sm backdrop-blur-md hover:border-primary/50 hover:bg-card/50 sm:h-12 sm:px-7 sm:text-base"
             >
               <Sparkles className="mr-2 h-4 w-4 transition-transform group-hover:rotate-12" aria-hidden="true" />
               Features
@@ -138,21 +138,21 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.25 }}
-            className="mt-8 flex flex-wrap items-center gap-x-10 gap-y-3 border-t border-border/40 pt-5"
+            className="mt-8 flex flex-row flex-nowrap items-center gap-x-3 gap-y-3 border-t border-border/40 pt-5 sm:gap-x-10"
           >
-            <div>
-              <p className="text-2xl font-semibold tracking-tight text-primary">&lt;300ms</p>
-              <p className="text-xs uppercase tracking-widest text-muted-foreground">Sub-second latency</p>
+            <div className="min-w-0">
+              <p className="truncate text-sm font-semibold tracking-tight text-primary sm:text-2xl">&lt;300ms</p>
+              <p className="truncate text-[8px] uppercase tracking-widest text-muted-foreground sm:text-xs">Sub-second latency</p>
             </div>
-            <div className="hidden h-10 w-px bg-border/60 sm:block" />
-            <div>
-              <p className="text-2xl font-semibold tracking-tight text-primary">Self-hosted</p>
-              <p className="text-xs uppercase tracking-widest text-muted-foreground">Your data, your stack</p>
+            <div className="h-8 w-px shrink-0 bg-border/60 sm:h-10" />
+            <div className="min-w-0">
+              <p className="truncate text-sm font-semibold tracking-tight text-primary sm:text-2xl">Self-hosted</p>
+              <p className="truncate text-[8px] uppercase tracking-widest text-muted-foreground sm:text-xs">Your data, your stack</p>
             </div>
-            <div className="hidden h-10 w-px bg-border/60 sm:block" />
-            <div>
-              <p className="text-2xl font-semibold tracking-tight text-primary">Unlimited</p>
-              <p className="text-xs uppercase tracking-widest text-muted-foreground">Concurrent calls</p>
+            <div className="h-8 w-px shrink-0 bg-border/60 sm:h-10" />
+            <div className="min-w-0">
+              <p className="truncate text-sm font-semibold tracking-tight text-primary sm:text-2xl">Unlimited</p>
+              <p className="truncate text-[8px] uppercase tracking-widest text-muted-foreground sm:text-xs">Concurrent calls</p>
             </div>
           </motion.div>
         </div>
@@ -332,7 +332,7 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 1.4 }}
-        className="relative border-t border-border/40 bg-background/50 py-6"
+        className="relative border-t border-border/40 bg-background/50 px-4 py-6 md:px-6"
       >
         <p className="mb-3 text-center text-[10px] font-medium uppercase tracking-[0.25em] text-muted-foreground">
           Connect your carrier account in two clicks

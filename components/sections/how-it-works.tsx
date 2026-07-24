@@ -81,11 +81,11 @@ export function HowItWorks() {
               const Icon = step.icon
               return (
                 <StaggerItem key={step.title}>
-                  <div className="group relative h-full [perspective:1200px]">
-                    <div className="relative h-full min-h-[280px] transition-transform duration-700 ease-out [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+                  <div className="group relative h-full sm:[perspective:1200px]">
+                    <div className="relative h-full min-h-[320px] transition-transform duration-700 ease-out sm:[transform-style:preserve-3d] sm:group-hover:[transform:rotateY(180deg)] sm:min-h-[280px]">
                       {/* FRONT — red gradient, shown at rest */}
                       <div
-                        className="absolute inset-0 flex flex-col overflow-hidden rounded-2xl p-6 [backface-visibility:hidden]"
+                        className="absolute inset-0 flex flex-col overflow-hidden rounded-2xl p-6 sm:[backface-visibility:hidden]"
                         style={{
                           backgroundImage:
                             "linear-gradient(135deg, color-mix(in oklch, var(--primary) 16%, white), color-mix(in oklch, var(--primary) 6%, white))",
@@ -93,7 +93,7 @@ export function HowItWorks() {
                       >
                         <div className="relative flex items-start justify-between">
                           <span
-                            className="text-6xl font-bold tracking-tight text-primary/20"
+                            className="text-4xl font-bold tracking-tight text-primary/20 sm:text-6xl"
                             style={{ fontVariantNumeric: "tabular-nums" }}
                             aria-hidden="true"
                           >
@@ -114,7 +114,7 @@ export function HowItWorks() {
                         <h3 className="relative mt-2 text-xl font-semibold tracking-tight">{step.title}</h3>
                         <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">{step.description}</p>
 
-                        <ul className="relative mt-6 space-y-2">
+                        <ul className="relative mt-3 space-y-1.5 sm:mt-6 sm:space-y-2">
                           {step.bullets.map((b) => (
                             <li key={b} className="flex items-center gap-2 text-sm text-foreground/80">
                               <span aria-hidden className="h-1.5 w-1.5 rounded-full" style={{ background: step.accent }} />
@@ -124,12 +124,12 @@ export function HowItWorks() {
                         </ul>
                       </div>
 
-                      {/* BACK — white card, revealed on hover */}
-                      <div className="step-card card-glow absolute inset-0 flex flex-col overflow-hidden rounded-2xl bg-white p-6 [backface-visibility:hidden] [transform:rotateY(180deg)]">
+                      {/* BACK — white card, revealed on hover (desktop only; mobile shows front face only, no 3D transform) */}
+                      <div className="step-card card-glow absolute inset-0 hidden flex-col overflow-hidden rounded-2xl bg-white p-6 sm:flex sm:[backface-visibility:hidden] sm:[transform:rotateY(180deg)]">
                         <span className="scan-line" aria-hidden />
                         <div className="relative flex items-start justify-between">
                           <span
-                            className="text-6xl font-bold tracking-tight text-muted-foreground/25"
+                            className="text-4xl font-bold tracking-tight text-muted-foreground/25 sm:text-6xl"
                             style={{ fontVariantNumeric: "tabular-nums" }}
                             aria-hidden="true"
                           >
@@ -149,7 +149,7 @@ export function HowItWorks() {
                         <h3 className="relative mt-2 text-xl font-semibold tracking-tight">{step.title}</h3>
                         <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">{step.description}</p>
 
-                        <ul className="relative mt-6 space-y-2">
+                        <ul className="relative mt-3 space-y-1.5 sm:mt-6 sm:space-y-2">
                           {step.bullets.map((b) => (
                             <li key={b} className="flex items-center gap-2 text-sm text-foreground/80">
                               <span aria-hidden className="h-1.5 w-1.5 rounded-full" style={{ background: step.accent }} />

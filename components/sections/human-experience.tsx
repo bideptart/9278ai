@@ -411,7 +411,7 @@ export function HumanExperience() {
             <span className="h-1 w-1 rounded-full bg-primary" />
             The human-kind experience
           </span>
-          <h2 className="mt-3 whitespace-nowrap font-serif font-normal leading-[1.1] tracking-tight text-[6.6vw] sm:text-4xl md:text-5xl">
+          <h2 className="mt-3 text-balance font-serif font-normal leading-[1.15] tracking-tight text-[7.5vw] sm:whitespace-nowrap sm:text-4xl sm:leading-[1.1] md:text-5xl">
             Conversations indistinguishable from{" "}
             <span className="text-primary">your best agent.</span>
           </h2>

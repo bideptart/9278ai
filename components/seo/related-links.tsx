@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { ArrowRight, ArrowUpRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -15,12 +15,28 @@ export type RelatedLink = {
 // used for the homepage's "01/02/03" step cards) for the icon badge.
 const ACCENTS = ["var(--ai-cyan)", "var(--ai-violet)", "var(--ai-magenta)"]
 
+// perspective/preserve-3d/backface-visibility force a 3D compositing context
+// that blurs text on mobile Safari/Chrome. Hover-flip has no touch equivalent
+// anyway, so mobile renders a flat front-face card with no 3D transform at all.
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 640px)")
+    setIsDesktop(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches)
+    mq.addEventListener("change", handler)
+    return () => mq.removeEventListener("change", handler)
+  }, [])
+  return isDesktop
+}
+
 // Tailwind v4 drops the group-hover:/group-focus-visible: variant prefix when
 // combined with an arbitrary `transform:` property, compiling it into an
 // unconditional rule (always rotated). Driving the flip from React state
 // instead of a CSS-only :hover selector sidesteps that entirely.
 function FlipCard({ link, index }: { link: RelatedLink; index: number }) {
   const [flipped, setFlipped] = useState(false)
+  const isDesktop = useIsDesktop()
   const number = String(index + 1).padStart(2, "0")
   const accent = ACCENTS[index % ACCENTS.length]
 
@@ -49,6 +65,32 @@ function FlipCard({ link, index }: { link: RelatedLink; index: number }) {
       <ArrowUpRight className="h-4 w-4" aria-hidden />
     </span>
   )
+
+  // Mobile: no perspective/preserve-3d/backface-visibility at all — a plain
+  // flat card, since those 3D properties are what blur text on mobile browsers.
+  if (!isDesktop) {
+    return (
+      <li>
+        <Link
+          href={link.href}
+          className="relative flex h-56 w-full flex-col justify-between overflow-hidden rounded-2xl p-6 outline-none"
+          style={{
+            backgroundImage:
+              "linear-gradient(135deg, color-mix(in oklch, var(--primary) 16%, white), color-mix(in oklch, var(--primary) 6%, white))",
+          }}
+        >
+          <div className="flex items-start justify-between">
+            <span className="text-6xl font-bold leading-none text-primary/20">{number}</span>
+            {frontIconBadge}
+          </div>
+          <div>
+            <p className="text-xl font-bold tracking-tight text-neutral-900">{link.title}</p>
+            <p className="mt-2 text-sm leading-relaxed text-neutral-500">{link.description}</p>
+          </div>
+        </Link>
+      </li>
+    )
+  }
 
   return (
     <li style={{ perspective: "1200px" }}>

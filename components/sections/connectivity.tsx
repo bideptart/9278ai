@@ -361,25 +361,25 @@ function CarrierGradeVoiceMockup() {
         </div>
 
         {/* architecture flow card */}
-        <div className="relative flex flex-1 items-center gap-3 overflow-hidden rounded-xl bg-black/[0.03] px-6 py-8 ring-1 ring-black/[0.05]">
+        <div className="relative flex flex-1 items-center gap-1.5 overflow-hidden rounded-xl bg-black/[0.03] px-2 py-3 ring-1 ring-black/[0.05] sm:gap-3 sm:px-6 sm:py-8">
           {/* radiating signal rings behind the AI node — fills the vertical space with intent */}
           <span className="pointer-events-none absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 animate-ping rounded-full bg-primary/10" style={{ animationDuration: "2.6s" }} />
           <span className="pointer-events-none absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 animate-ping rounded-full bg-primary/10" style={{ animationDuration: "2.6s", animationDelay: "1.3s" }} />
 
           {/* left — global carrier network */}
-          <div className="relative flex w-24 shrink-0 flex-col items-center gap-2.5">
-            <span className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-black/[0.06]">
-              <Cloud className="h-5 w-5 text-muted-foreground" strokeWidth={2} aria-hidden="true" />
-              <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-black/15 ring-2 ring-white" />
-              <span className="absolute -bottom-0.5 -left-0.5 h-1.5 w-1.5 rounded-full bg-black/15 ring-2 ring-white" />
+          <div className="relative flex w-12 shrink-0 flex-col items-center gap-1 sm:w-24 sm:gap-2.5">
+            <span className="relative flex h-7 w-7 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-black/[0.06] sm:h-12 sm:w-12">
+              <Cloud className="h-3 w-3 text-muted-foreground sm:h-5 sm:w-5" strokeWidth={2} aria-hidden="true" />
+              <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-black/15 ring-2 ring-white sm:h-2 sm:w-2" />
+              <span className="absolute -bottom-0.5 -left-0.5 h-1 w-1 rounded-full bg-black/15 ring-2 ring-white sm:h-1.5 sm:w-1.5" />
             </span>
-            <span className="text-center text-[10px] font-medium leading-tight text-muted-foreground">
+            <span className="text-center text-[6.5px] font-medium leading-tight text-muted-foreground sm:text-[10px]">
               Global carrier network
             </span>
           </div>
 
           {/* connector 1 — carrier → AI, with a continuously flowing signal dot */}
-          <div className="relative h-px flex-1" style={{ backgroundImage: "linear-gradient(90deg, rgba(0,0,0,0.12), var(--primary))" }}>
+          <div className="relative h-px w-3 shrink-0 sm:w-auto sm:flex-1" style={{ backgroundImage: "linear-gradient(90deg, rgba(0,0,0,0.12), var(--primary))" }}>
             <svg className="absolute inset-x-0 top-1/2 h-3 w-full -translate-y-1/2 overflow-visible" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true">
               <circle r="1.8" fill="var(--primary)">
                 <animateMotion dur="1.8s" repeatCount="indefinite" path="M0,5 L100,5" />
@@ -388,22 +388,24 @@ function CarrierGradeVoiceMockup() {
           </div>
 
           {/* center — AI voice engine */}
-          <div className="relative flex shrink-0 flex-col items-center gap-2.5">
+          <div className="relative flex shrink-0 flex-col items-center gap-1 sm:gap-2.5">
             <span
-              className="relative flex h-16 w-16 items-center justify-center rounded-full ring-2 ring-white"
+              className="relative flex h-9 w-9 items-center justify-center rounded-full ring-2 ring-white sm:h-16 sm:w-16"
               style={{
                 backgroundImage: "radial-gradient(circle at 35% 30%, color-mix(in oklch, var(--primary) 55%, white), var(--primary))",
                 boxShadow: "0 8px 22px color-mix(in oklch, var(--primary) 45%, transparent)",
               }}
             >
               <span className="pulse-ring absolute inline-flex h-full w-full rounded-full text-primary" />
-              <Brain className="relative h-7 w-7 text-white" strokeWidth={2.25} aria-hidden="true" />
+              <Brain className="relative h-4 w-4 text-white sm:h-7 sm:w-7" strokeWidth={2.25} aria-hidden="true" />
             </span>
-            <span className="text-center text-[10px] font-semibold leading-tight text-primary">AI voice engine</span>
+            <span className="whitespace-nowrap text-center text-[6.5px] font-semibold leading-tight text-primary sm:text-[10px]">
+              AI voice engine
+            </span>
           </div>
 
           {/* connector 2 — AI fans out into 3 lines, one per destination, lighting up in sequence */}
-          <div className="relative h-[192px] w-16 shrink-0">
+          <div className="relative h-24 w-4 shrink-0 sm:h-[192px] sm:w-16">
             <svg className="pointer-events-none absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
               {fanPaths.map((d, i) => (
                 <path
@@ -424,7 +426,7 @@ function CarrierGradeVoiceMockup() {
           </div>
 
           {/* right — business ownership layer, the active destination eases up in scale as its line lights */}
-          <div className="flex h-[192px] w-48 shrink-0 flex-col justify-between gap-4">
+          <div className="flex h-24 min-w-0 flex-1 flex-col justify-between gap-1 sm:h-[192px] sm:w-48 sm:flex-none sm:gap-4">
             {destinations.map((d, i) => {
               const Icon = d.icon
               return (
@@ -434,23 +436,25 @@ function CarrierGradeVoiceMockup() {
                   transition={{ type: "spring", stiffness: 300, damping: 22 }}
                   style={{ transformOrigin: "left center" }}
                   className={cn(
-                    "flex items-center gap-2 rounded-lg bg-white px-3 py-2.5 ring-1 ring-black/[0.06]",
+                    "flex min-w-0 items-center gap-1 rounded-md bg-white px-1.5 py-1 ring-1 ring-black/[0.06] sm:gap-2 sm:rounded-lg sm:px-3 sm:py-2.5",
                     active === i ? "shadow-md" : "shadow-sm",
                   )}
                 >
                   <span
                     className={cn(
-                      "flex h-6 w-6 shrink-0 items-center justify-center rounded-md transition-colors duration-300",
+                      "flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded sm:h-6 sm:w-6 sm:rounded-md transition-colors duration-300",
                       active === i ? "bg-primary/10" : "bg-black/[0.03]",
                     )}
                   >
                     <Icon
-                      className={cn("h-3.5 w-3.5 transition-colors duration-300", active === i ? "text-primary" : "text-primary/60")}
+                      className={cn("h-2 w-2 sm:h-3.5 sm:w-3.5 transition-colors duration-300", active === i ? "text-primary" : "text-primary/60")}
                       strokeWidth={2.5}
                       aria-hidden="true"
                     />
                   </span>
-                  <span className="whitespace-nowrap text-[11px] font-medium text-foreground/70">{d.label}</span>
+                  <span className="min-w-0 text-[6.5px] font-medium leading-tight text-foreground/70 sm:whitespace-nowrap sm:text-[11px]">
+                    {d.label}
+                  </span>
                 </motion.div>
               )
             })}
@@ -492,8 +496,16 @@ const items = [
   },
 ]
 
+function MockupFor({ index }: { index: number }) {
+  if (index === 1) return <InboundOutboundDashboardMockup />
+  if (index === 2) return <CarrierGradeVoiceMockup />
+  return <CarrierPhoneMockup />
+}
+
 export function Connectivity() {
   const [active, setActive] = useState(0)
+  // Mobile-only accordion: nothing expanded until the user taps a row.
+  const [mobileExpanded, setMobileExpanded] = useState<number | null>(null)
 
   return (
     <section className="relative overflow-hidden border-t border-border/40 bg-muted/40">
@@ -523,6 +535,7 @@ export function Connectivity() {
                   <StaggerItem key={item.title}>
                     <motion.div
                       onMouseEnter={() => setActive(i)}
+                      onClick={() => setMobileExpanded((cur) => (cur === i ? null : i))}
                       className={`group card-glow relative flex items-start gap-4 rounded-2xl p-4 transition-colors ${
                         active === i ? "border-primary/30" : ""
                       }`}
@@ -545,15 +558,36 @@ export function Connectivity() {
                         <p className="mt-0.5 text-xs leading-snug text-muted-foreground">{item.description}</p>
                       </div>
                     </motion.div>
+
+                    {/* Mobile-only accordion — the matching mockup drops down right under the tapped row */}
+                    <AnimatePresence initial={false}>
+                      {mobileExpanded === i && (
+                        <motion.div
+                          key="mobile-mockup"
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                          className="overflow-hidden lg:hidden"
+                        >
+                          <div
+                            className="ring-gradient card-glow relative mt-3 overflow-hidden rounded-3xl"
+                            style={{ height: [460, 300, 280][i] }}
+                          >
+                            <MockupFor index={i} />
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </StaggerItem>
                 )
               })}
             </StaggerGroup>
           </div>
 
-          {/* RIGHT: swaps with whichever item is hovered */}
-          <ScrollReveal className="lg:col-span-6">
-            <div className="ring-gradient card-glow relative aspect-[4/3] overflow-hidden rounded-3xl">
+          {/* RIGHT: swaps with whichever item is hovered — desktop/tablet only; mobile uses the inline accordion above */}
+          <ScrollReveal className="hidden lg:col-span-6 lg:block">
+            <div className="ring-gradient card-glow relative min-h-[460px] overflow-hidden rounded-3xl sm:aspect-[4/3] sm:min-h-0">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={active}

@@ -176,9 +176,19 @@ export function Features() {
   const [activeIcon, setActiveIcon] = useState(0)
   const [activeCategory, setActiveCategory] = useState<(typeof featureCategories)[number]>("All")
   const [isCategoryPaused, setIsCategoryPaused] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Auto-rotation is a desktop-only flourish — on mobile it just fights the user's thumb.
+  useEffect(() => {
+    const mql = window.matchMedia("(max-width: 767px)")
+    setIsMobile(mql.matches)
+    const onChange = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mql.addEventListener("change", onChange)
+    return () => mql.removeEventListener("change", onChange)
+  }, [])
 
   useEffect(() => {
-    if (isCategoryPaused) return
+    if (isCategoryPaused || isMobile) return
     const interval = setInterval(() => {
       setActiveCategory((cur) => {
         const idx = featureCategories.indexOf(cur)
@@ -186,7 +196,7 @@ export function Features() {
       })
     }, 2000)
     return () => clearInterval(interval)
-  }, [activeCategory, isCategoryPaused])
+  }, [activeCategory, isCategoryPaused, isMobile])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -224,21 +234,25 @@ export function Features() {
               Real-time audio, telephony, integrations, and observability — production-ready, all in one platform.
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Button asChild size="lg" className="group btn-ai h-12 rounded-full px-7 transition-all">
+            <div className="mt-8 flex flex-nowrap items-center gap-2 sm:gap-3">
+              <Button
+                asChild
+                size="lg"
+                className="group btn-ai h-10 shrink-0 whitespace-nowrap rounded-full px-4 text-sm transition-all sm:h-12 sm:px-7 sm:text-base"
+              >
                 <Link href="/get-started">
                   Build your first agent
-                  <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  <ArrowRight className="ml-1 h-4 w-4 shrink-0 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
               <Button
                 asChild
                 size="lg"
                 variant="outline"
-                className="group h-12 rounded-full border-border/70 bg-card/30 px-7 backdrop-blur-md hover:border-primary/50 hover:bg-card/50"
+                className="group h-10 shrink-0 whitespace-nowrap rounded-full border-border/70 bg-card/30 px-4 text-sm backdrop-blur-md hover:border-primary/50 hover:bg-card/50 sm:h-12 sm:px-7 sm:text-base"
               >
                 <Link href="/contact">
-                  <PhoneCall className="mr-2 h-4 w-4 transition-transform group-hover:rotate-12" aria-hidden="true" />
+                  <PhoneCall className="mr-1.5 h-3.5 w-3.5 shrink-0 transition-transform group-hover:rotate-12 sm:mr-2 sm:h-4 sm:w-4" aria-hidden="true" />
                   Talk to sales
                 </Link>
               </Button>
@@ -263,7 +277,7 @@ export function Features() {
 
           {/* Live call mockup — phone and dashboard side by side, no overlap */}
           <ScrollReveal delay={0.1} className="lg:col-span-6">
-            <div className="relative mx-auto h-[380px] w-full max-w-[500px]">
+            <div className="relative mx-auto h-[300px] w-full max-w-[500px] sm:h-[380px]">
               {/* Floating feature icons — related to the subheading copy, drifting slowly */}
               {floatingIcons.map(({ Icon, top, left, duration, delay, title, description }, i) => (
                 <motion.span
@@ -294,26 +308,26 @@ export function Features() {
               ))}
 
               {/* Phone + dashboard cards */}
-              <div className="absolute inset-0 flex items-center justify-center gap-5">
+              <div className="absolute inset-0 flex items-center justify-center gap-2 px-2 sm:gap-5 sm:px-0">
               {/* Phone card */}
-              <div className="w-[210px] shrink-0 overflow-hidden rounded-[32px] border border-black/10 bg-white shadow-2xl">
-                <div className="flex items-center justify-between px-5 pt-5 text-xs text-black/40">
+              <div className="w-[130px] shrink-0 overflow-hidden rounded-[20px] border border-black/10 bg-white shadow-2xl sm:w-[210px] sm:rounded-[32px]">
+                <div className="flex items-center justify-between px-3 pt-3 text-[9px] text-black/40 sm:px-5 sm:pt-5 sm:text-xs">
                   <span>9:41</span>
-                  <span className="h-1.5 w-8 rounded-full bg-black/10" />
+                  <span className="h-1 w-5 rounded-full bg-black/10 sm:h-1.5 sm:w-8" />
                 </div>
-                <div className="flex flex-col items-center gap-3 px-5 py-8 text-center">
-                  <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/20 text-base font-semibold text-primary">
+                <div className="flex flex-col items-center gap-1.5 px-3 py-4 text-center sm:gap-3 sm:px-5 sm:py-8">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/20 text-xs font-semibold text-primary sm:h-14 sm:w-14 sm:text-base">
                     SC
                   </span>
-                  <p className="text-base font-medium text-black">Sarah Chen</p>
-                  <p className="text-xs text-black/40">00:18</p>
-                  <div className="mt-2 flex h-8 items-center gap-[3px]">
+                  <p className="text-xs font-medium text-black sm:text-base">Sarah Chen</p>
+                  <p className="text-[9px] text-black/40 sm:text-xs">00:18</p>
+                  <div className="mt-1 flex h-5 items-center gap-[2px] sm:mt-2 sm:h-8 sm:gap-[3px]">
                     {Array.from({ length: 12 }).map((_, i) => {
                       const heights = [30, 60, 40, 85, 50, 70, 35, 90]
                       return (
                         <span
                           key={i}
-                          className="voice-bar w-[3px] rounded-full bg-primary/70"
+                          className="voice-bar w-[2px] rounded-full bg-primary/70 sm:w-[3px]"
                           style={{
                             height: `${heights[i % heights.length]}%`,
                             animationDelay: `${(i * 90) % 900}ms`,
@@ -322,14 +336,14 @@ export function Features() {
                       )
                     })}
                   </div>
-                  <span className="mt-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_8px_20px_-6px_oklch(0.577_0.245_27.33/0.7)]">
-                    <Mic className="h-5 w-5" aria-hidden="true" />
+                  <span className="mt-2 flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_8px_20px_-6px_oklch(0.577_0.245_27.33/0.7)] sm:mt-4 sm:h-12 sm:w-12">
+                    <Mic className="h-3.5 w-3.5 sm:h-5 sm:w-5" aria-hidden="true" />
                   </span>
                 </div>
               </div>
 
               {/* Browser / dashboard card */}
-              <div className="w-[260px] shrink-0 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-2xl md:w-[280px]">
+              <div className="w-[175px] shrink-0 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-2xl sm:w-[260px] md:w-[280px]">
                 <div className="flex items-center gap-1.5 border-b border-black/10 px-3 py-2.5">
                   <span className="h-2 w-2 rounded-full bg-black/10" />
                   <span className="h-2 w-2 rounded-full bg-black/10" />
@@ -432,6 +446,22 @@ export function Features() {
             {features.map((f) => {
               const Icon = f.icon
               const isMatch = activeCategory === "All" || f.tag === activeCategory
+
+              // Mobile: truly filter the list (no dimmed, still-occupying-space items), no animation.
+              if (isMobile) {
+                if (!isMatch) return null
+                return (
+                  <div key={f.title} className="flex w-full flex-row items-start gap-3">
+                    <Icon className="mt-1 h-3.5 w-3.5 shrink-0 text-primary" aria-hidden="true" />
+                    <div className="flex flex-col gap-0.5">
+                      <p className="text-sm font-medium tracking-tight">{f.title}</p>
+                      <p className="text-xs leading-relaxed text-muted-foreground">{f.description}</p>
+                    </div>
+                  </div>
+                )
+              }
+
+              // Desktop: original behaviour — every card stays in the grid, non-matching ones just dim.
               return (
                 <motion.div
                   key={f.title}
