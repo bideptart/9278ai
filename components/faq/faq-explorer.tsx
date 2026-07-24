@@ -5,12 +5,12 @@
 // "Popular" tag. None of this touches FAQ_GROUPS content — same questions,
 // same answers, same grouping — only how they're presented.
 
-import { useEffect, useRef, useState } from "react"
-import { ArrowRight, Check, Flame, Search, ThumbsDown, ThumbsUp } from "lucide-react"
+import { useState } from "react"
+import { Check, Flame, ThumbsDown, ThumbsUp } from "lucide-react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { Input } from "@/components/ui/input"
 import { ScrollReveal } from "@/components/animation/scroll-reveal"
 import { cn } from "@/lib/utils"
+import { useFaqSearch } from "@/components/faq/faq-search-context"
 import type { FaqGroup } from "@/lib/faq"
 
 // Deterministic "trending" flag seeded from the question text itself, so it's
@@ -77,84 +77,15 @@ function FeedbackButtons() {
 }
 
 export function FaqExplorer({ groups }: { groups: FaqGroup[] }) {
-  const [query, setQuery] = useState("")
-  const [activeId, setActiveId] = useState(groups[0]?.id ?? "")
-  const sectionRefs = useRef<Record<string, HTMLElement | null>>({})
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveId(entry.target.id)
-        })
-      },
-      { rootMargin: "-40% 0px -55% 0px", threshold: 0 },
-    )
-    Object.values(sectionRefs.current).forEach((el) => el && observer.observe(el))
-    return () => observer.disconnect()
-  }, [groups])
+  const { query } = useFaqSearch()
 
   return (
     <>
-      {/* Search + category pill scroll-spy */}
-      <ScrollReveal className="mt-36 px-4">
-        <form
-          className="mx-auto flex max-w-lg items-center gap-1 rounded-full border border-primary/40 bg-background p-1.5 shadow-[0_0_0_4px_color-mix(in_oklch,var(--primary)_10%,transparent),0_12px_30px_-12px_color-mix(in_oklch,var(--primary)_35%,transparent)] transition-shadow focus-within:border-primary/60 focus-within:shadow-[0_0_0_4px_color-mix(in_oklch,var(--primary)_16%,transparent),0_12px_30px_-12px_color-mix(in_oklch,var(--primary)_45%,transparent)]"
-          onSubmit={(e) => {
-            e.preventDefault()
-            const q = query.trim().toLowerCase()
-            if (!q) return
-            const match = groups.flatMap((g) => g.items).find((item) => item.q.toLowerCase().includes(q))
-            if (match) {
-              const groupId = groups.find((g) => g.items.includes(match))?.id
-              if (groupId) document.getElementById(groupId)?.scrollIntoView({ behavior: "smooth", block: "start" })
-            }
-          }}
-        >
-          <Search className="ml-3 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
-          <Input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search questions…"
-            aria-label="Search FAQ"
-            className="h-9 border-0 bg-transparent shadow-none focus-visible:ring-0"
-          />
-          <button
-            type="submit"
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Search
-            <ArrowRight className="h-4 w-4" aria-hidden />
-          </button>
-        </form>
-
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
-          {groups.map((g) => (
-            <a
-              key={g.id}
-              href={`#${g.id}`}
-              className={cn(
-                "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs transition-colors",
-                activeId === g.id
-                  ? "border-primary/50 bg-primary/10 text-primary"
-                  : "border-border/60 bg-card/30 text-muted-foreground hover:border-primary/40 hover:text-foreground",
-              )}
-            >
-              {g.title}
-            </a>
-          ))}
-        </div>
-      </ScrollReveal>
-
       <div className="mx-auto w-full max-w-6xl px-4 py-16 md:px-6 md:py-24">
         {groups.map((group) => (
           <section
             key={group.id}
             id={group.id}
-            ref={(el) => {
-              sectionRefs.current[group.id] = el
-            }}
             className="scroll-mt-24 border-b border-border/50 py-10 first:pt-0 last:border-b-0"
           >
             <ScrollReveal>

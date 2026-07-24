@@ -3,6 +3,8 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { ScrollReveal } from "@/components/animation/scroll-reveal"
 import { FaqExplorer } from "@/components/faq/faq-explorer"
+import { FaqSearchBar } from "@/components/faq/faq-search-bar"
+import { FaqSearchProvider } from "@/components/faq/faq-search-context"
 import { FaqCta } from "@/components/faq/faq-cta"
 import { FAQ_GROUPS, FLAT_FAQ } from "@/lib/faq"
 import { pageSeo } from "@/lib/seo"
@@ -29,33 +31,39 @@ export default function FaqPage() {
       />
       <FaqJsonLd items={FLAT_FAQ} />
 
-      <section className="relative flex min-h-[calc(100svh-4rem)] items-center overflow-hidden border-b border-border/50">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(60%_60%_at_50%_0%,rgba(220,38,38,0.10),transparent_70%)]"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
-        />
-        <div className="relative mx-auto w-full max-w-4xl px-4 md:px-6">
-          <ScrollReveal className="text-center">
-            <span className="ai-pill-magenta">
-              <span className="h-1 w-1 rounded-full bg-accent" />
-              FAQ
-            </span>
-            <h1 className="mt-6 text-balance text-4xl font-serif font-normal tracking-tight md:text-6xl">
-              Everything you <span className="text-primary">wanted to know.</span>
-            </h1>
-            <p className="mt-5 text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
-              Pricing, credit expiry, phone numbers, compliance, and account access — all in one place. Still stuck?
-              The team replies within an hour during business days.
-            </p>
-          </ScrollReveal>
-        </div>
-      </section>
+      <FaqSearchProvider groups={FAQ_GROUPS}>
+        <section className="relative flex min-h-[calc(100svh-4rem)] items-center overflow-hidden border-b border-border/50">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(60%_60%_at_50%_0%,rgba(220,38,38,0.10),transparent_70%)]"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
+          />
+          <div className="relative mx-auto w-full max-w-4xl px-4 md:px-6">
+            <ScrollReveal className="text-center">
+              <span className="ai-pill-magenta">
+                <span className="h-1 w-1 rounded-full bg-accent" />
+                FAQ
+              </span>
+              <h1 className="mt-6 text-balance text-4xl font-serif font-normal tracking-tight md:text-6xl">
+                Everything you <span className="text-primary">wanted to know.</span>
+              </h1>
+              <p className="mt-5 text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
+                Pricing, credit expiry, phone numbers, compliance, and account access — all in one place. Still stuck?
+                The team replies within an hour during business days.
+              </p>
+            </ScrollReveal>
 
-      <FaqExplorer groups={FAQ_GROUPS} />
+            <ScrollReveal className="mt-10">
+              <FaqSearchBar />
+            </ScrollReveal>
+          </div>
+        </section>
+
+        <FaqExplorer groups={FAQ_GROUPS} />
+      </FaqSearchProvider>
 
       <FaqCta />
 
