@@ -36,9 +36,11 @@ const LEGAL: FooterLink[] = [
 
 function FooterColumn({ title, links }: { title: string; links: FooterLink[] }) {
   return (
-    <div>
-      <h3 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-200">{title}</h3>
-      <ul className="mt-5 space-y-3 text-sm">
+    <div className="min-w-0">
+      <h3 className="text-[8px] font-semibold uppercase tracking-[0.1em] text-slate-200 sm:text-[11px] sm:tracking-[0.2em]">
+        {title}
+      </h3>
+      <ul className="mt-3 space-y-2 text-[10px] leading-snug sm:mt-5 sm:space-y-3 sm:text-sm">
         {links.map((link) => (
           <li key={link.label}>
             {link.external ? (
@@ -91,23 +93,17 @@ export function SiteFooter() {
           </a>
         </div>
 
-        {/* Link columns */}
-        <div className="md:col-span-2">
+        {/* Link columns — all 4 in one row, even on mobile */}
+        <div className="grid grid-cols-4 gap-x-2 gap-y-10 sm:gap-x-4 md:col-span-8 md:gap-8">
           <FooterColumn title="Platform" links={PLATFORM} />
-        </div>
-        <div className="md:col-span-2">
           <FooterColumn title="Industries" links={INDUSTRIES} />
-        </div>
-        <div className="md:col-span-2">
           <FooterColumn title="Company" links={COMPANY} />
-        </div>
-        <div className="md:col-span-2">
           <FooterColumn title="Legal" links={LEGAL} />
         </div>
       </div>
 
       {/* Live status — just above the footer divider */}
-      <div className="relative mx-auto w-full max-w-7xl px-4 pb-6 md:px-6">
+      <div className="relative mx-auto flex w-full max-w-7xl justify-center px-4 pb-6 md:justify-start md:px-6">
         <div className="inline-flex items-center gap-2 text-xs text-slate-400">
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
@@ -118,10 +114,10 @@ export function SiteFooter() {
       </div>
 
       <div className="relative border-t border-white/10">
-        <div className="mx-auto flex w-full max-w-7xl flex-col items-start justify-between gap-3 px-4 py-6 text-xs text-slate-400 md:flex-row md:items-center md:px-6">
+        <div className="mx-auto flex w-full max-w-7xl flex-row flex-wrap items-center justify-between gap-x-3 gap-y-2 px-4 py-6 text-[10px] text-slate-400 sm:text-xs md:px-6">
           <p>© {new Date().getFullYear()} 9278.ai. All rights reserved.</p>
           <p className="inline-flex items-center gap-2">
-            <span className="h-1 w-1 rounded-full bg-primary" />
+            <span className="h-1 w-1 shrink-0 rounded-full bg-primary" />
             Made for human conversations.
           </p>
         </div>

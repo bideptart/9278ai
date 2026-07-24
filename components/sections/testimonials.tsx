@@ -84,19 +84,21 @@ export function Testimonials() {
           </p>
         </ScrollReveal>
 
-        {/* Metrics row */}
-        <StaggerGroup className="mt-6 flex flex-wrap justify-center gap-2.5">
+        {/* Metrics row — small stacked cards on mobile so labels wrap instead of truncating, back to inline pills from sm: up */}
+        <StaggerGroup className="mt-6 flex w-full flex-row flex-nowrap justify-center gap-2 sm:flex-wrap sm:gap-2.5">
           {metrics.map((m) => {
             const Icon = m.icon
             return (
-              <StaggerItem key={m.label}>
-                <div className="flex items-center gap-2 rounded-full border border-border/60 bg-card/60 py-1.5 pl-1.5 pr-3.5">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-primary">
-                    <Icon className="h-3.5 w-3.5" />
+              <StaggerItem key={m.label} className="min-w-0 flex-1 sm:flex-none">
+                <div className="flex h-full flex-col items-center gap-1 rounded-2xl border border-border/60 bg-card/60 px-1.5 py-2.5 text-center sm:flex-row sm:gap-2 sm:rounded-full sm:py-1.5 sm:pl-1.5 sm:pr-3.5 sm:text-left">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary sm:h-6 sm:w-6">
+                    <Icon className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                   </span>
-                  <p className="text-xs font-medium whitespace-nowrap">
-                    <span className="text-primary">{m.value}</span>{" "}
-                    <span className="text-muted-foreground">{m.label}</span>
+                  <p className="text-[9px] font-semibold leading-tight text-primary sm:text-xs sm:font-medium">
+                    {m.value}
+                  </p>
+                  <p className="text-[8px] leading-tight text-muted-foreground sm:whitespace-nowrap sm:text-xs">
+                    {m.label}
                   </p>
                 </div>
               </StaggerItem>
@@ -137,10 +139,10 @@ export function Testimonials() {
                   &ldquo;{t.quote}&rdquo;
                 </blockquote>
 
-                <figcaption className="relative mt-4 flex items-center justify-between border-t border-border/40 pt-3">
-                  <div className="flex items-center gap-3">
+                <figcaption className="relative mt-4 flex items-center justify-between gap-2 border-t border-border/40 pt-3">
+                  <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
                     <span
-                      className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold ring-1"
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold ring-1 sm:h-9 sm:w-9"
                       style={{
                         background: `color-mix(in oklch, ${t.metricAccent} 14%, transparent)`,
                         color: t.metricAccent,
@@ -150,15 +152,15 @@ export function Testimonials() {
                       {t.initial}
                     </span>
                     <div className="min-w-0">
-                      <p className="text-sm font-semibold tracking-tight">{t.author}</p>
+                      <p className="truncate text-sm font-semibold tracking-tight">{t.author}</p>
                       <p className="truncate text-xs text-muted-foreground">
                         {t.role} · {t.company}
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-0.5 text-amber-300">
+                  <div className="flex shrink-0 items-center gap-0.5 text-amber-300">
                     {Array.from({ length: 5 }).map((_, i) => (
-                      <Star key={i} className="h-3.5 w-3.5 fill-current" aria-hidden="true" />
+                      <Star key={i} className="h-3 w-3 shrink-0 fill-current sm:h-3.5 sm:w-3.5" aria-hidden="true" />
                     ))}
                   </div>
                 </figcaption>
