@@ -31,7 +31,7 @@ export default function FeaturesPage() {
         <Features />
 
         <section className="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
-          <div className="rounded-[28px] border border-primary/35 px-6 py-12 shadow-[0_24px_60px_-20px_color-mix(in_oklch,var(--primary)_28%,transparent),0_8px_20px_-8px_color-mix(in_oklch,var(--primary)_16%,transparent)] md:px-12 md:py-14 [background-image:radial-gradient(circle_at_top_right,white,transparent_60%),linear-gradient(135deg,color-mix(in_oklch,var(--primary)_16%,white),color-mix(in_oklch,var(--primary)_6%,white))]">
+          <div className="ring-gradient relative overflow-hidden rounded-[28px] border border-primary/35 px-6 py-12 shadow-[0_24px_60px_-20px_color-mix(in_oklch,var(--primary)_28%,transparent),0_8px_20px_-8px_color-mix(in_oklch,var(--primary)_16%,transparent)] md:px-12 md:py-14 [background-image:radial-gradient(circle_at_top_right,white,transparent_60%),linear-gradient(135deg,color-mix(in_oklch,var(--primary)_16%,white),color-mix(in_oklch,var(--primary)_6%,white))]">
             <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
               <div className="max-w-xl">
                 <h3 className="text-balance text-2xl font-semibold tracking-tight md:text-3xl">

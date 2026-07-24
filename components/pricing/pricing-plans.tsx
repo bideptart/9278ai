@@ -501,7 +501,7 @@ function PlanCard({
   return (
     <Card
       className={cn(
-        "flex h-full flex-col shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-white/10",
+        "flex h-full flex-col gap-4 py-4 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-white/10",
         featured
           ? "ring-2 ring-primary shadow-xl transform md:scale-[1.02] hover:scale-[1.04] dark:ring-primary/80 dark:shadow-primary/20"
           : "hover:ring-2 hover:ring-primary hover:shadow-primary/20",
@@ -518,7 +518,7 @@ function PlanCard({
           )}
         </div>
         <CardDescription className="mt-1 text-sm">{p.sub}</CardDescription>
-        <div className="mt-4">
+        <div className="mt-2">
           <p className="text-4xl font-extrabold text-foreground">
             {usd(animatedPrice)}
             <span className="ml-1 text-base font-normal text-muted-foreground">
@@ -538,7 +538,7 @@ function PlanCard({
             .filter((perk) => !/phone number|concurrent call/i.test(perk))
             .map((perk) => (
               <StaggerItem key={perk}>
-                <div className="flex items-start space-x-3 py-2">
+                <div className="flex items-start space-x-3 py-1">
                   <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
                   <span className="text-sm text-foreground">{perk}</span>
                 </div>
