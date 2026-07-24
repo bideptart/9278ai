@@ -65,12 +65,12 @@ export function UseCases() {
               <StaggerItem key={item.title}>
                 <div className="group relative h-full">
                   <motion.div
-                    whileHover={{ x: 6 }}
+                    whileHover={{ x: 6, scale: 1.04 }}
                     transition={{ type: "spring", stiffness: 280, damping: 22 }}
-                    className="usecase-card card-glow relative h-full overflow-hidden rounded-2xl p-8"
+                    className="usecase-card card-glow relative h-full overflow-hidden rounded-2xl p-5 sm:p-8"
                   >
                     <Icon
-                      className="pointer-events-none absolute -bottom-8 -right-8 h-36 w-36 text-primary/[0.06]"
+                      className="pointer-events-none absolute -bottom-8 -right-8 h-36 w-36 text-primary/[0.16] transition-transform duration-500 ease-out group-hover:scale-110 group-hover:rotate-6"
                       aria-hidden="true"
                     />
                     {item.chips.map((c) => (
@@ -83,9 +83,9 @@ export function UseCases() {
                       </span>
                     ))}
                     <div className="relative flex items-start justify-between">
-                      <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/20">
+                      <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/20 transition-transform duration-500 ease-out group-hover:scale-110 group-hover:rotate-6">
                         <Icon
-                          className="h-5 w-5 transition-transform duration-300 group-hover:scale-110"
+                          className="h-5 w-5 transition-transform duration-500 ease-out group-hover:scale-110"
                           aria-hidden="true"
                         />
                       </span>
@@ -93,7 +93,7 @@ export function UseCases() {
                         {item.tag}
                       </span>
                     </div>
-                    <p className="relative mt-6 text-xs font-mono text-muted-foreground/60">/ 0{i + 1}</p>
+                    <p className="relative mt-4 text-xs font-mono text-muted-foreground/60 sm:mt-6">/ 0{i + 1}</p>
                     <h3 className="relative mt-2 text-lg font-semibold tracking-tight transition-colors group-hover:text-primary">
                       {item.title}
                     </h3>

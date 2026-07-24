@@ -290,8 +290,8 @@ export function Hero() {
               {/* Footer telemetry */}
               <div className="mt-5 grid grid-cols-3 gap-2 rounded-xl border border-border/40 bg-background/30 p-3 text-center">
                 <div>
-                  <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground">Latency</p>
-                  <p className="mt-0.5 text-sm font-semibold text-primary">&lt;300ms</p>
+                  <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground">Ticket</p>
+                  <p className="mt-0.5 text-sm font-semibold text-primary">#9278-4821</p>
                 </div>
                 <div className="border-x border-border/40">
                   <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground">Sentiment</p>

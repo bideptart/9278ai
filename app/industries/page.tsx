@@ -142,6 +142,7 @@ export default function IndustriesPage() {
         heading="Related guides"
         description="Explore pricing, FAQs, and the get-started flow used by thousands of teams."
         variant="flip"
+        showNumber={false}
         links={[
           {
             href: "/pricing",

@@ -228,6 +228,8 @@ export default async function IndustryPage({
       <RelatedLinks
         heading="Other industries we power"
         description="Pre-tuned playbooks for the calls your peers in adjacent verticals already automate."
+        variant="flip"
+        showNumber={false}
         links={[
           ...related.map((r) => ({
             href: `/industries/${r.slug}`,

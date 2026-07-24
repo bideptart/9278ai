@@ -220,6 +220,8 @@ export default function AboutPage() {
       <RelatedLinks
         heading="Explore 9278.ai"
         description="Features, pricing, and the fastest way to get started."
+        variant="flip"
+        showNumber={false}
         links={[
           {
             href: "/features",

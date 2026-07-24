@@ -82,7 +82,7 @@ export function HowItWorks() {
               return (
                 <StaggerItem key={step.title}>
                   <div className="group relative h-full sm:[perspective:1200px]">
-                    <div className="relative h-full min-h-[320px] transition-transform duration-700 ease-out sm:[transform-style:preserve-3d] sm:group-hover:[transform:rotateY(180deg)] sm:min-h-[280px]">
+                    <div className="relative h-full min-h-[290px] transition-transform duration-700 ease-out sm:[transform-style:preserve-3d] sm:group-hover:[transform:rotateY(180deg)] sm:min-h-[280px]">
                       {/* FRONT — red gradient, shown at rest */}
                       <div
                         className="absolute inset-0 flex flex-col overflow-hidden rounded-2xl p-6 sm:[backface-visibility:hidden]"

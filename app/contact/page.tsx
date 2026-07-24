@@ -145,6 +145,8 @@ export default function ContactPage() {
       <RelatedLinks
         heading="Before you reach out"
         description="A few answers might already be waiting for you."
+        variant="flip"
+        showNumber={false}
         links={[
           {
             href: "/pricing",

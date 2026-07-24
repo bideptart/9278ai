@@ -423,11 +423,11 @@ export function HumanExperience() {
 
         <ScrollReveal className="mt-8">
           <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-6">
-            {/* LEFT: visual panel, swaps with the active item */}
-            <div className="lg:col-span-6">
+            {/* LEFT: visual panel, swaps with the active item — below the text on mobile, back to the left column at lg+ */}
+            <div className="order-2 lg:order-1 lg:col-span-6">
               <div
                 className="experience-visual relative aspect-square w-full max-w-[300px] overflow-hidden rounded-3xl bg-white mx-auto lg:ml-auto lg:max-w-[320px] xl:max-w-[360px]"
-                style={{ border: "none", boxShadow: "0 10px 30px -12px rgba(0,0,0,0.12)" }}
+                style={{ border: "1px solid rgba(0,0,0,0.65)", boxShadow: "0 10px 30px -12px rgba(0,0,0,0.12)" }}
               >
                 {!active.image && (
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,oklch(0.577_0.245_27.33/0.08),transparent_60%)]" />
@@ -462,9 +462,9 @@ export function HumanExperience() {
               </div>
             </div>
 
-            {/* RIGHT: content, arrows + dots to navigate manually */}
+            {/* RIGHT: content, arrows + dots to navigate manually — above the visual on mobile, back to the right column at lg+ */}
             <div
-              className="lg:col-span-6"
+              className="order-1 lg:order-2 lg:col-span-6"
               onMouseEnter={() => setPaused(true)}
               onMouseLeave={() => setPaused(false)}
             >
@@ -473,7 +473,7 @@ export function HumanExperience() {
                 0{index + 1} / 0{items.length}
               </span>
 
-              <div className="relative min-h-[230px] md:min-h-[210px]">
+              <div className="relative min-h-[300px] sm:min-h-[230px] md:min-h-[210px]">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={index}
@@ -491,7 +491,8 @@ export function HumanExperience() {
                 </AnimatePresence>
               </div>
 
-              <div className="mt-8 flex items-center gap-3">
+              {/* Desktop/tablet: separate round arrow buttons + dots */}
+              <div className="mt-8 hidden items-center gap-3 sm:flex">
                 <button
                   type="button"
                   onClick={prev}
@@ -524,6 +525,40 @@ export function HumanExperience() {
                   ))}
                 </div>
               </div>
+            </div>
+
+            {/* Mobile: single pill — prev arrow, dots, next arrow, below the visual */}
+            <div className="order-3 mt-2 flex items-center justify-center gap-4 rounded-full bg-card/40 px-4 py-2 sm:hidden">
+              <button
+                type="button"
+                onClick={prev}
+                aria-label="Previous"
+                className="flex h-6 w-6 shrink-0 items-center justify-center text-muted-foreground transition-colors hover:text-primary"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <div className="flex items-center gap-1.5">
+                {items.map((item, i) => (
+                  <button
+                    key={item.title}
+                    type="button"
+                    onClick={() => setIndex(i)}
+                    aria-label={`Go to ${item.title}`}
+                    className={cn(
+                      "h-1.5 shrink-0 rounded-full transition-colors",
+                      i === index ? "w-6 bg-primary" : "w-1.5 bg-border",
+                    )}
+                  />
+                ))}
+              </div>
+              <button
+                type="button"
+                onClick={next}
+                aria-label="Next"
+                className="flex h-6 w-6 shrink-0 items-center justify-center text-muted-foreground transition-colors hover:text-primary"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
             </div>
           </div>
         </ScrollReveal>

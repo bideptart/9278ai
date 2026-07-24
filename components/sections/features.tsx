@@ -179,8 +179,10 @@ export function Features() {
   const [isMobile, setIsMobile] = useState(false)
 
   // Auto-rotation is a desktop-only flourish — on mobile it just fights the user's thumb.
+  // The "All" pill is hidden on mobile, so default to "Voice" there instead of an empty list.
   useEffect(() => {
     const mql = window.matchMedia("(max-width: 767px)")
+    if (mql.matches) setActiveCategory((cur) => (cur === "All" ? "Voice" : cur))
     setIsMobile(mql.matches)
     const onChange = (e: MediaQueryListEvent) => setIsMobile(e.matches)
     mql.addEventListener("change", onChange)
@@ -428,6 +430,8 @@ export function Features() {
                 type="button"
                 onClick={() => setActiveCategory(category)}
                 className={`rounded-full border px-4 py-1.5 text-xs font-medium transition-colors ${
+                  category === "All" ? "hidden sm:inline-flex" : ""
+                } ${
                   activeCategory === category
                     ? "border-primary bg-primary text-primary-foreground"
                     : "border-border/60 bg-card/60 text-muted-foreground hover:border-primary/50 hover:text-foreground"
@@ -448,8 +452,10 @@ export function Features() {
               const isMatch = activeCategory === "All" || f.tag === activeCategory
 
               // Mobile: truly filter the list (no dimmed, still-occupying-space items), no animation.
+              // The "All" pill is hidden on mobile, so "All" shows nothing instead of everything —
+              // only a picked category (Voice/Telephony/Integrations/Operations) renders its list.
               if (isMobile) {
-                if (!isMatch) return null
+                if (activeCategory === "All" || !isMatch) return null
                 return (
                   <div key={f.title} className="flex w-full flex-row items-start gap-3">
                     <Icon className="mt-1 h-3.5 w-3.5 shrink-0 text-primary" aria-hidden="true" />

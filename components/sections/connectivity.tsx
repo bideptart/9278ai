@@ -17,10 +17,25 @@ import {
   Brain,
   CreditCard,
   Zap,
+  ChevronDown,
 } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 import { ScrollReveal, StaggerGroup, StaggerItem } from "@/components/animation/scroll-reveal"
 import { cn } from "@/lib/utils"
+
+// Below lg, hover and the 3s auto-cycle don't make sense (no cursor, no
+// desktop mockup panel) — the mobile accordion is tap-only instead.
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)")
+    setIsDesktop(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches)
+    mq.addEventListener("change", handler)
+    return () => mq.removeEventListener("change", handler)
+  }, [])
+  return isDesktop
+}
 
 /** Counts up from 0 to `target` once the component mounts. */
 function useCountUp(target: number, duration = 1300) {
@@ -506,6 +521,16 @@ export function Connectivity() {
   const [active, setActive] = useState(0)
   // Mobile-only accordion: nothing expanded until the user taps a row.
   const [mobileExpanded, setMobileExpanded] = useState<number | null>(null)
+  const isDesktop = useIsDesktop()
+
+  // Auto-cycle the mockup every 3s, desktop only. Restarts from whatever is
+  // active whenever it changes (hover or auto-advance), so hovering doesn't
+  // fight the cycle — it just gives that item a fresh 3s before advancing.
+  useEffect(() => {
+    if (!isDesktop) return
+    const id = setTimeout(() => setActive((a) => (a + 1) % items.length), 3000)
+    return () => clearTimeout(id)
+  }, [active, isDesktop])
 
   return (
     <section className="relative overflow-hidden border-t border-border/40 bg-muted/40">
@@ -534,12 +559,20 @@ export function Connectivity() {
                 return (
                   <StaggerItem key={item.title}>
                     <motion.div
-                      onMouseEnter={() => setActive(i)}
-                      onClick={() => setMobileExpanded((cur) => (cur === i ? null : i))}
+                      onMouseEnter={() => isDesktop && setActive(i)}
+                      onClick={() => {
+                        setActive(i)
+                        setMobileExpanded((cur) => (cur === i ? null : i))
+                      }}
                       className={`group card-glow relative flex items-start gap-4 rounded-2xl p-4 transition-colors ${
                         active === i ? "border-primary/30" : ""
                       }`}
-                      whileHover={{ x: 6 }}
+                      animate={
+                        isDesktop
+                          ? { x: active === i ? 6 : 0, scale: active === i ? 1.03 : 1 }
+                          : { x: 0, scale: 1 }
+                      }
+                      style={{ transformOrigin: "left center" }}
                       transition={{ type: "spring", stiffness: 280, damping: 22 }}
                     >
                       <span
@@ -551,12 +584,19 @@ export function Connectivity() {
                       >
                         <Icon className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" aria-hidden="true" />
                       </span>
-                      <div>
+                      <div className="min-w-0 flex-1">
                         <h3 className="text-sm font-semibold tracking-tight transition-colors group-hover:text-primary">
                           {item.title}
                         </h3>
                         <p className="mt-0.5 text-xs leading-snug text-muted-foreground">{item.description}</p>
                       </div>
+                      <motion.span
+                        animate={{ rotate: mobileExpanded === i ? 180 : 0 }}
+                        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                        className="mt-0.5 shrink-0 text-muted-foreground lg:hidden"
+                      >
+                        <ChevronDown className="h-4 w-4" aria-hidden="true" />
+                      </motion.span>
                     </motion.div>
 
                     {/* Mobile-only accordion — the matching mockup drops down right under the tapped row */}
