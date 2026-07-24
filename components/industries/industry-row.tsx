@@ -128,33 +128,33 @@ export function IndustryRow({ slug, index, reverse }: { slug: string; index: num
           <p className="mt-8 text-xs font-medium uppercase tracking-wider text-muted-foreground">
             What the agent does on day one
           </p>
-          <StaggerGroup className="mt-4 space-y-2.5">
+          <StaggerGroup className="mt-3 space-y-0.5 sm:mt-4 sm:space-y-2.5">
             {industry.jobs.map((job) => (
               <StaggerItem key={job}>
                 <motion.div
                   whileHover={{ x: 4 }}
                   transition={{ type: "spring", stiffness: 300, damping: 24 }}
-                  className="group flex items-start gap-3 rounded-lg border border-transparent px-2 py-1.5 -mx-2 transition-colors hover:border-border/50 hover:bg-card/40"
+                  className="group flex items-start gap-3 rounded-lg border border-transparent px-2 py-0.5 -mx-2 transition-colors hover:border-border/50 hover:bg-card/40 sm:py-1.5"
                 >
                   <span className="mt-0.5 flex size-5 flex-none items-center justify-center rounded-full bg-primary/10 text-primary ring-1 ring-primary/20 transition-all group-hover:ring-primary/40">
                     <Check className="size-3" aria-hidden />
                   </span>
-                  <span className="text-sm leading-relaxed text-foreground/90">{job}</span>
+                  <span className="text-sm leading-snug text-foreground/90 sm:leading-relaxed">{job}</span>
                 </motion.div>
               </StaggerItem>
             ))}
           </StaggerGroup>
 
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-8 flex flex-wrap gap-2 lg:flex-nowrap">
             <Link
               href={`/get-started?industry=${industry.slug}`}
-              className="btn-ai inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all"
+              className="btn-ai inline-flex items-center gap-2 whitespace-nowrap rounded-full px-3.5 py-2 text-xs font-medium transition-all"
             >
               Launch a {industry.name.toLowerCase()} agent
             </Link>
             <Link
               href={`/industries/${industry.slug}`}
-              className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/30 px-5 py-2.5 text-sm text-foreground/90 backdrop-blur-md transition-colors hover:border-primary/40 hover:text-foreground"
+              className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-border/60 bg-card/30 px-4 py-2 text-xs text-foreground/90 backdrop-blur-md transition-colors hover:border-primary/40 hover:text-foreground"
             >
               Read the full {industry.name.toLowerCase()} playbook
             </Link>

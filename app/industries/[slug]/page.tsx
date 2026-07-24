@@ -89,8 +89,8 @@ export default async function IndustryPage({
               </ol>
             </nav>
 
-            <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/40 px-3 py-1 text-xs text-muted-foreground">
-              <Icon className="size-3.5 text-primary" aria-hidden />
+            <span className="ai-pill-magenta">
+              <Icon className="size-3.5" aria-hidden />
               {industry.name}
             </span>
             <h1 className="mt-6 text-balance text-4xl font-semibold tracking-tight md:text-6xl">

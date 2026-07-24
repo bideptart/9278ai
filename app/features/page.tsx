@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Features } from "@/components/sections/features"
-import { CTASection } from "@/components/sections/cta-section"
+import { CtaPanel } from "@/components/ui/cta-panel"
 import { pageSeo } from "@/lib/seo"
 import { BreadcrumbJsonLd } from "@/components/seo/jsonld"
 import { RelatedLinks } from "@/components/seo/related-links"
@@ -29,12 +29,15 @@ export default function FeaturesPage() {
       <main className="flex-1">
         <Features />
 
-        <CTASection
-          title="Ready to hear it"
-          highlight="for yourself?"
+        <CtaPanel
+          title={
+            <>
+              Ready to hear it <span className="text-primary">for yourself?</span>
+            </>
+          }
           description="Spin up an agent in minutes and place a real test call — no credit card to try."
-          primary={{ label: "Get started", href: "/get-started" }}
-          secondary={{ label: "View pricing", href: "/pricing" }}
+          primary={{ label: "Get started", href: "/get-started", icon: "arrow" }}
+          secondary={{ label: "View pricing", href: "/pricing", variant: "outline" }}
         />
 
         <RelatedLinks

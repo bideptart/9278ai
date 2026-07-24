@@ -63,7 +63,7 @@ export function LegalPage({
         </div>
       </section>
 
-      <article className="legal mx-auto w-full max-w-3xl px-4 py-10 md:px-6 md:py-12">{children}</article>
+      <article className="legal mx-auto w-full max-w-5xl px-4 py-10 md:px-6 md:py-12">{children}</article>
 
       <SiteFooter />
     </main>

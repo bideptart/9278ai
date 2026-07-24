@@ -61,11 +61,11 @@ export function HeroPreviewCard() {
   }
 
   return (
-    <div className="relative mx-auto w-[340px] max-w-full">
+    <div className="relative mx-auto w-[340px] max-w-full lg:w-[420px] xl:w-[450px]">
       {/* Warm bloom behind the cluster */}
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-4 -z-10 h-[340px] w-[340px] -translate-x-1/2 rounded-full bg-primary/15 blur-[90px]"
+        className="pointer-events-none absolute left-1/2 top-4 -z-10 aspect-square w-full -translate-x-1/2 rounded-full bg-primary/15 blur-[90px]"
       />
 
       {/* ---- Bubble cluster ---- */}

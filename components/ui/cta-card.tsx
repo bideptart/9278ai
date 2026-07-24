@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { motion, type Variants } from "motion/react"
+import { motion, useReducedMotion, type Variants } from "motion/react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -63,6 +63,7 @@ const CtaCard = React.forwardRef<HTMLDivElement, CtaCardProps>(
     ref,
   ) => {
     const [email, setEmail] = React.useState("")
+    const reduced = useReducedMotion()
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
@@ -73,11 +74,24 @@ const CtaCard = React.forwardRef<HTMLDivElement, CtaCardProps>(
       <div
         ref={ref}
         className={cn(
-          "relative w-full overflow-hidden rounded-[2rem] border border-primary/35 shadow-[0_24px_60px_-20px_color-mix(in_oklch,var(--primary)_28%,transparent),0_8px_20px_-8px_color-mix(in_oklch,var(--primary)_16%,transparent)]",
+          "ring-gradient relative w-full overflow-hidden rounded-[28px] border border-primary/35 shadow-[0_24px_60px_-20px_color-mix(in_oklch,var(--primary)_28%,transparent),0_8px_20px_-8px_color-mix(in_oklch,var(--primary)_16%,transparent)]",
           className,
         )}
         {...props}
       >
+        {/* Drifting glow — matches the homepage CTA card */}
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/3 top-0 -z-10 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px] [will-change:transform]"
+          animate={reduced ? undefined : { x: [0, 60, -20, 0], y: [0, -30, 20, 0], scale: [1, 1.15, 1] }}
+          transition={{ duration: 14, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+        />
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute right-1/4 bottom-0 -z-10 h-[24rem] w-[24rem] translate-x-1/2 translate-y-1/2 rounded-full bg-accent/8 blur-[120px] [will-change:transform]"
+          animate={reduced ? undefined : { x: [0, -40, 20, 0], y: [0, 30, -10, 0], scale: [1, 1.1, 1] }}
+          transition={{ duration: 18, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+        />
         <img
           src={imageSrc}
           alt=""
@@ -86,9 +100,14 @@ const CtaCard = React.forwardRef<HTMLDivElement, CtaCardProps>(
         />
         {/* Brand-red tinted overlay by default; pass overlayClassName to swap in another palette */}
         <div className={cn("absolute inset-0", overlayClassName ?? "bg-gradient-to-br from-black/80 via-primary/25 to-primary/70")} />
+        {/* Subtle dot grid overlay — matches the homepage CTA card */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-dots opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
+        />
 
         <motion.div
-          className="relative z-10 grid h-full grid-cols-1 items-center gap-8 p-8 md:grid-cols-2 md:p-12 lg:p-16"
+          className="relative z-10 grid h-full grid-cols-1 items-center gap-8 px-6 py-6 md:grid-cols-2 md:px-8 md:py-8"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"

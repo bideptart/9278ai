@@ -1,13 +1,13 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ArrowRight, Globe2, ShieldCheck, Sparkles, Zap, PhoneCall, Server } from "lucide-react"
+import { Globe2, ShieldCheck, Sparkles, Zap, PhoneCall, Server } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
-import { Button } from "@/components/ui/button"
 import { ScrollReveal } from "@/components/animation/scroll-reveal"
 import { pageSeo } from "@/lib/seo"
 import { BreadcrumbJsonLd } from "@/components/seo/jsonld"
 import { RelatedLinks } from "@/components/seo/related-links"
+import { CtaPanel } from "@/components/ui/cta-panel"
 
 export const metadata: Metadata = pageSeo({
   title: "About",
@@ -63,7 +63,7 @@ export default function AboutPage() {
       />
 
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-border/50">
+      <section className="relative flex min-h-[60svh] items-center overflow-hidden border-b border-border/50 py-12 md:min-h-[calc(100svh-4rem)] md:py-0">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(60%_60%_at_50%_0%,rgba(220,38,38,0.10),transparent_70%)]"
@@ -72,7 +72,7 @@ export default function AboutPage() {
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
         />
-        <div className="relative mx-auto w-full max-w-4xl px-4 py-20 text-center md:px-6 md:py-24">
+        <div className="relative mx-auto w-full max-w-4xl px-4 text-center md:px-6">
           <ScrollReveal>
             <span className="ai-pill-magenta">
               <span className="h-1 w-1 rounded-full bg-accent" />
@@ -90,7 +90,7 @@ export default function AboutPage() {
       </section>
 
       {/* Story */}
-      <section className="mx-auto w-full max-w-3xl px-4 py-16 md:px-6 md:py-20">
+      <section className="mx-auto w-full max-w-5xl px-4 py-16 md:px-6 md:py-20">
         <ScrollReveal className="space-y-5 text-pretty leading-relaxed text-muted-foreground md:text-lg">
           <h2 className="text-balance text-3xl font-serif font-normal tracking-tight text-foreground md:text-4xl">
             Why we built it
@@ -196,26 +196,16 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
-        <ScrollReveal className="rounded-2xl border border-border/60 bg-card/30 px-6 py-12 text-center md:px-12 md:py-14">
-          <h2 className="text-balance text-2xl font-serif font-normal tracking-tight md:text-3xl">
-            Hear it for yourself.
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-            Spin up your first agent and place a real test call — live in an afternoon, no credit card to try.
-          </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <Button asChild size="lg" className="btn-ai rounded-full text-primary-foreground">
-              <Link href="/get-started">
-                Build your first agent <ArrowRight className="ml-1 h-4 w-4" aria-hidden />
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link href="/pricing">View pricing</Link>
-            </Button>
-          </div>
-        </ScrollReveal>
-      </section>
+      <CtaPanel
+        title={
+          <>
+            Hear it <span className="text-primary">for yourself.</span>
+          </>
+        }
+        description="Spin up your first agent and place a real test call — live in an afternoon, no credit card to try."
+        primary={{ label: "Build your first agent", href: "/get-started", icon: "arrow" }}
+        secondary={{ label: "View pricing", href: "/pricing", variant: "outline" }}
+      />
 
       <RelatedLinks
         heading="Explore 9278.ai"

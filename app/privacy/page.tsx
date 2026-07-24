@@ -50,7 +50,7 @@ export default function PrivacyPolicyPage() {
       </section>
 
       {/* Body */}
-      <article className="legal mx-auto w-full max-w-3xl px-4 py-10 md:px-6 md:py-12">
+      <article className="legal mx-auto w-full max-w-5xl px-4 py-10 md:px-6 md:py-12">
         <p>
           Welcome to 9278.ai. This Privacy Policy explains how Ace Peak Invest Pte Ltd (&ldquo;us,&rdquo;
           &ldquo;we,&rdquo; &ldquo;our,&rdquo; &ldquo;9278.ai&rdquo;), a company registered in Singapore that operates

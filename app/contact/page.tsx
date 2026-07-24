@@ -53,7 +53,7 @@ export default function ContactPage() {
       />
 
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-border/50">
+      <section className="relative flex min-h-[calc(100svh-4rem)] items-center overflow-hidden border-b border-border/50 py-12 md:py-0">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(60%_60%_at_50%_0%,rgba(220,38,38,0.10),transparent_70%)]"
@@ -62,7 +62,7 @@ export default function ContactPage() {
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
         />
-        <div className="relative mx-auto w-full max-w-4xl px-4 py-20 text-center md:px-6 md:py-28">
+        <div className="relative mx-auto w-full max-w-4xl px-4 text-center md:px-6">
           <ScrollReveal>
             <span className="ai-pill-magenta">
               <span className="h-1 w-1 rounded-full bg-accent" />
@@ -75,8 +75,8 @@ export default function ContactPage() {
               Whether you have a question about pricing, want to see a live demo, or need help with your AI voice
               agents — the 9278.ai team is here.
             </p>
-            <p className="mt-6 inline-flex items-center gap-2 text-sm text-muted-foreground">
-              <Clock className="h-4 w-4 text-primary" aria-hidden />
+            <p className="mt-6 inline-flex max-w-full items-center gap-1.5 whitespace-nowrap rounded-full border border-primary/25 bg-primary/5 px-3 py-1.5 text-[11px] font-medium text-primary sm:gap-2 sm:px-4 sm:py-2 sm:text-sm">
+              <Clock className="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4" aria-hidden />
               Mon–Sat, 9 AM – 7 PM IST · Critical support 24/7
             </p>
           </ScrollReveal>
@@ -84,7 +84,7 @@ export default function ContactPage() {
       </section>
 
       {/* Form + channels */}
-      <section className="mx-auto w-full max-w-7xl px-4 py-20 md:px-6 md:py-24">
+      <section className="mx-auto w-full max-w-7xl px-4 pb-20 pt-28 md:px-6 md:pb-24 md:pt-24">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
           {/* Form */}
           <ScrollReveal className="lg:col-span-7">
