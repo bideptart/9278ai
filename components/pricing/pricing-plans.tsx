@@ -420,11 +420,11 @@ export function PricingPlans() {
         {TESTIMONIALS.map((t) => {
           const Icon = t.icon
           return (
-            <div key={t.author} className="group relative h-full [perspective:1200px]">
-              <div className="relative h-full min-h-[160px] transition-transform duration-700 ease-out [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] sm:min-h-[220px]">
+            <div key={t.author} className="group relative h-full sm:[perspective:1200px]">
+              <div className="relative h-full min-h-[160px] transition-transform duration-700 ease-out sm:[transform-style:preserve-3d] sm:group-hover:[transform:rotateY(180deg)] sm:min-h-[220px]">
                 {/* FRONT — red gradient, shown at rest */}
                 <div
-                  className="absolute inset-0 flex h-full flex-col overflow-hidden rounded-2xl p-4 [backface-visibility:hidden] sm:p-6"
+                  className="absolute inset-0 flex h-full flex-col overflow-hidden rounded-2xl p-4 sm:[backface-visibility:hidden] sm:p-6"
                   style={{
                     backgroundImage:
                       "linear-gradient(135deg, color-mix(in oklch, var(--primary) 16%, white), color-mix(in oklch, var(--primary) 6%, white))",
@@ -451,8 +451,8 @@ export function PricingPlans() {
                   </p>
                 </div>
 
-                {/* BACK — white card, revealed on hover */}
-                <div className="step-card card-glow absolute inset-0 flex h-full flex-col overflow-hidden rounded-2xl bg-white p-4 [backface-visibility:hidden] [transform:rotateY(180deg)] sm:p-6">
+                {/* BACK — white card, revealed on hover (desktop only; mobile shows front face only, no 3D transform) */}
+                <div className="step-card card-glow absolute inset-0 hidden h-full flex-col overflow-hidden rounded-2xl bg-white p-4 sm:flex sm:[backface-visibility:hidden] sm:[transform:rotateY(180deg)] sm:p-6">
                   <span className="scan-line" aria-hidden />
                   <div className="relative flex items-start justify-between">
                     <span className="text-xs font-semibold sm:text-sm" style={{ color: t.accent }}>
