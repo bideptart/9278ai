@@ -97,7 +97,7 @@ export function FaqExplorer({ groups }: { groups: FaqGroup[] }) {
   return (
     <>
       {/* Search + category pill scroll-spy */}
-      <ScrollReveal className="mt-36">
+      <ScrollReveal className="mt-36 px-4">
         <form
           className="mx-auto flex max-w-lg items-center gap-1 rounded-full border border-primary/40 bg-background p-1.5 shadow-[0_0_0_4px_color-mix(in_oklch,var(--primary)_10%,transparent),0_12px_30px_-12px_color-mix(in_oklch,var(--primary)_35%,transparent)] transition-shadow focus-within:border-primary/60 focus-within:shadow-[0_0_0_4px_color-mix(in_oklch,var(--primary)_16%,transparent),0_12px_30px_-12px_color-mix(in_oklch,var(--primary)_45%,transparent)]"
           onSubmit={(e) => {
