@@ -49,10 +49,10 @@ export function CTA() {
                 </p>
               </div>
 
-              <div className="flex w-full flex-wrap items-center gap-3 md:justify-end">
+              <div className="flex w-full flex-col items-center gap-3 sm:flex-row sm:flex-wrap md:justify-end">
                 <Button
                   size="lg"
-                  className="h-14 rounded-full border border-black bg-black px-8 text-base text-white hover:bg-neutral-800"
+                  className="h-11 w-48 rounded-full border border-black bg-black px-6 text-sm text-white hover:bg-neutral-800 sm:w-auto"
                 >
                   View pricing
                   <ArrowRight className="ml-1 h-4 w-4" />
@@ -60,7 +60,7 @@ export function CTA() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="h-14 rounded-full border-black/15 bg-black/5 px-8 text-base text-black hover:bg-black/10"
+                  className="h-11 w-48 rounded-full border-black/15 bg-black/5 px-6 text-sm text-black hover:bg-black/10 sm:w-auto"
                 >
                   <CalendarDays className="mr-2 h-4 w-4" />
                   Schedule a meeting
@@ -69,21 +69,21 @@ export function CTA() {
             </div>
 
             {/* Trust strip */}
-            <div className="relative mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 text-xs text-muted-foreground">
-              <span className="inline-flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+            <div className="relative mt-8 grid grid-cols-2 gap-x-2 gap-y-3 text-[11px] tracking-tight text-muted-foreground sm:flex sm:flex-wrap sm:items-center sm:gap-x-8 sm:text-xs sm:tracking-normal">
+              <span className="inline-flex items-center gap-2 whitespace-nowrap">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
                 Sub-second latency
               </span>
-              <span className="inline-flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+              <span className="inline-flex items-center gap-2 whitespace-nowrap">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
                 Bring your own carrier
               </span>
-              <span className="inline-flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+              <span className="inline-flex items-center gap-2 whitespace-nowrap">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
                 Self-hosted control panel
               </span>
-              <span className="inline-flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+              <span className="inline-flex items-center gap-2 whitespace-nowrap">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
                 No contracts
               </span>
             </div>

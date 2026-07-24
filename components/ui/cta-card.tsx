@@ -105,7 +105,7 @@ const CtaCard = React.forwardRef<HTMLDivElement, CtaCardProps>(
 
           <motion.div className="flex w-full max-w-md flex-col items-center justify-center md:justify-self-end" variants={itemVariants}>
             {actions ? (
-              <div className="flex w-full flex-wrap items-center gap-3 sm:justify-end">{actions}</div>
+              <div className="flex w-full flex-col items-center gap-3 sm:flex-row sm:flex-wrap sm:justify-end">{actions}</div>
             ) : (
               <form onSubmit={handleSubmit} className="flex w-full flex-col gap-3 sm:flex-row">
                 <Input

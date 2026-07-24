@@ -17,14 +17,18 @@ export function FaqCta() {
       descriptionClassName="text-neutral-500"
       actions={
         <>
-          <Button asChild size="lg" className="h-14 rounded-full border border-black bg-black px-8 text-base text-white hover:bg-neutral-800">
+          <Button
+            asChild
+            size="lg"
+            className="h-11 w-48 rounded-full border border-black bg-black px-6 text-sm text-white hover:bg-neutral-800 sm:h-14 sm:w-auto sm:px-8 sm:text-base"
+          >
             <Link href="/get-started">Get started</Link>
           </Button>
           <Button
             asChild
             size="lg"
             variant="outline"
-            className="h-14 rounded-full border-black/15 bg-black/5 px-8 text-base text-black hover:bg-black/10"
+            className="h-11 w-48 rounded-full border-black/15 bg-black/5 px-6 text-sm text-black hover:bg-black/10 sm:h-14 sm:w-auto sm:px-8 sm:text-base"
           >
             <Link href="/pricing">View pricing</Link>
           </Button>
