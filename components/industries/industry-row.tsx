@@ -128,18 +128,18 @@ export function IndustryRow({ slug, index, reverse }: { slug: string; index: num
           <p className="mt-8 text-xs font-medium uppercase tracking-wider text-muted-foreground">
             What the agent does on day one
           </p>
-          <StaggerGroup className="mt-4 space-y-2.5">
+          <StaggerGroup className="mt-3 space-y-0.5 sm:mt-4 sm:space-y-2.5">
             {industry.jobs.map((job) => (
               <StaggerItem key={job}>
                 <motion.div
                   whileHover={{ x: 4 }}
                   transition={{ type: "spring", stiffness: 300, damping: 24 }}
-                  className="group flex items-start gap-3 rounded-lg border border-transparent px-2 py-1.5 -mx-2 transition-colors hover:border-border/50 hover:bg-card/40"
+                  className="group flex items-start gap-3 rounded-lg border border-transparent px-2 py-0.5 -mx-2 transition-colors hover:border-border/50 hover:bg-card/40 sm:py-1.5"
                 >
                   <span className="mt-0.5 flex size-5 flex-none items-center justify-center rounded-full bg-primary/10 text-primary ring-1 ring-primary/20 transition-all group-hover:ring-primary/40">
                     <Check className="size-3" aria-hidden />
                   </span>
-                  <span className="text-sm leading-relaxed text-foreground/90">{job}</span>
+                  <span className="text-sm leading-snug text-foreground/90 sm:leading-relaxed">{job}</span>
                 </motion.div>
               </StaggerItem>
             ))}

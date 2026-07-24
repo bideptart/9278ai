@@ -45,8 +45,8 @@ export default function IndustriesPage() {
           className="pointer-events-none absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
         />
         <AmbientGlow />
-        <div className="relative mx-auto w-full max-w-6xl px-4 py-12 md:px-6 md:py-16">
-          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-8">
+        <div className="relative mx-auto w-full max-w-6xl px-4 pb-12 pt-4 md:px-6 md:pb-16 md:pt-6">
+          <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-8">
             <ScrollReveal className="lg:col-span-6">
               <span className="ai-pill-magenta">
                 <span className="h-1 w-1 rounded-full bg-accent" />
