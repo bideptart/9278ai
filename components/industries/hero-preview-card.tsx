@@ -61,7 +61,7 @@ export function HeroPreviewCard() {
   }
 
   return (
-    <div className="relative mx-auto w-[360px] max-w-full lg:w-[460px] xl:w-[500px]">
+    <div className="relative mx-auto w-[340px] max-w-full lg:w-[420px] xl:w-[450px]">
       {/* Warm bloom behind the cluster */}
       <div
         aria-hidden

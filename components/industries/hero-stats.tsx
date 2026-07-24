@@ -39,14 +39,14 @@ export function HeroStats() {
 
   return (
     <StaggerGroup
-      className="mt-6 grid grid-cols-2 gap-4 border-t border-border/40 pt-5 sm:grid-cols-4"
+      className="mt-2 grid grid-cols-2 gap-4 border-t border-border/40 pt-2 sm:grid-cols-4"
       stagger={0.08}
     >
       {STATS.map((s, i) => {
         const Icon = s.icon
         return (
           <StaggerItem key={s.label}>
-            <div className="group relative aspect-square w-full overflow-hidden rounded-2xl border border-primary/35 bg-card/80 shadow-[0_24px_60px_-20px_color-mix(in_oklch,var(--primary)_28%,transparent),0_8px_20px_-8px_color-mix(in_oklch,var(--primary)_16%,transparent)] backdrop-blur-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/55 hover:shadow-[0_30px_66px_-20px_color-mix(in_oklch,var(--primary)_36%,transparent),0_10px_24px_-8px_color-mix(in_oklch,var(--primary)_20%,transparent)]">
+            <div className="group relative mx-auto aspect-square w-full max-w-[100px] overflow-hidden rounded-2xl border border-primary/35 bg-card/80 shadow-[0_24px_60px_-20px_color-mix(in_oklch,var(--primary)_28%,transparent),0_8px_20px_-8px_color-mix(in_oklch,var(--primary)_16%,transparent)] backdrop-blur-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/55 hover:shadow-[0_30px_66px_-20px_color-mix(in_oklch,var(--primary)_36%,transparent),0_10px_24px_-8px_color-mix(in_oklch,var(--primary)_20%,transparent)]">
               {/* Light sweep */}
               <motion.span
                 aria-hidden
@@ -73,9 +73,9 @@ export function HeroStats() {
               <span aria-hidden className="pointer-events-none absolute bottom-2.5 left-2.5 size-3 border-b border-l border-primary/25 transition-colors duration-500 group-hover:border-primary/70" />
               <span aria-hidden className="pointer-events-none absolute bottom-2.5 right-2.5 size-3 border-b border-r border-primary/25 transition-colors duration-500 group-hover:border-primary/70" />
 
-              <div className="relative flex h-full flex-col items-center justify-center gap-2 px-3 text-center">
+              <div className="relative flex h-full flex-col items-center justify-center gap-1.5 px-2.5 text-center">
                 {/* Medallion */}
-                <span className="relative flex size-12 items-center justify-center rounded-full bg-primary/10 ring-1 ring-primary/25 transition-colors duration-500 group-hover:bg-primary group-hover:ring-primary/60">
+                <span className="relative flex size-9 items-center justify-center rounded-full bg-primary/10 ring-1 ring-primary/25 transition-colors duration-500 group-hover:bg-primary group-hover:ring-primary/60">
                   <motion.span
                     aria-hidden
                     className="bubble-ring pointer-events-none absolute -inset-1 rounded-full"
@@ -83,13 +83,13 @@ export function HeroStats() {
                     transition={{ duration: 9, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
                   />
                   <Icon
-                    className="relative size-5 text-primary transition-all duration-500 group-hover:scale-110 group-hover:text-primary-foreground"
+                    className="relative size-4 text-primary transition-all duration-500 group-hover:scale-110 group-hover:text-primary-foreground"
                     strokeWidth={1.7}
                     aria-hidden
                   />
                 </span>
 
-                <p className="font-serif text-2xl leading-none text-primary">
+                <p className="font-serif text-lg leading-none text-primary">
                   <CountUpStat value={s.value} prefix={s.prefix} suffix={s.suffix} decimals={s.decimals} />
                 </p>
 
