@@ -41,17 +41,15 @@ export function Industries() {
         className="pointer-events-none absolute inset-0 bg-dots opacity-60 [mask-image:radial-gradient(ellipse_at_center,black_25%,transparent_72%)]"
       />
       <div className="relative mx-auto w-full max-w-6xl px-4 py-16 md:px-6 md:py-20">
-        <div className="flex flex-wrap items-end justify-between gap-4 border-b border-border/50 pb-6">
-          <div>
-            <span className="ai-pill-magenta">
-              <span className="h-1 w-1 rounded-full bg-accent" />
-              At a glance
-            </span>
-            <h2 className="mt-2 text-balance font-serif text-2xl font-normal tracking-tight md:text-3xl">
-              Ten playbooks, <span className="text-primary">one platform.</span>
-            </h2>
-          </div>
-          <p className="max-w-xs text-pretty text-sm text-muted-foreground">
+        <div className="border-b border-border/50 pb-8">
+          <span className="ai-pill-magenta">
+            <span className="h-1 w-1 rounded-full bg-accent" />
+            At a glance
+          </span>
+          <h2 className="mt-6 text-balance font-serif text-3xl font-normal leading-[1.05] tracking-tight md:text-5xl">
+            Ten playbooks, <span className="text-primary">one platform.</span>
+          </h2>
+          <p className="mt-5 max-w-2xl text-pretty text-sm leading-snug text-muted-foreground md:text-base">
             Hover any card to read its playbook, then tap to open it.
           </p>
         </div>
@@ -62,7 +60,7 @@ export function Industries() {
               <Link
                 href={`/industries/${industry.slug}`}
                 aria-label={`Open the ${industry.name} playbook`}
-                className="group mx-auto block aspect-[5/7] w-full max-w-[240px] sm:max-w-[180px] [perspective:1400px]"
+                className="group mx-auto block aspect-square w-full max-w-[220px] sm:max-w-[175px] [perspective:1400px]"
               >
                 <div className="relative h-full w-full transition-transform duration-700 ease-out [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
                   {/* Front — illustration composed onto the card */}
@@ -70,24 +68,24 @@ export function Industries() {
                     <WaveLines />
 
                     {/* Number */}
-                    <span className="absolute right-4 top-4 z-10 rounded-md bg-primary/10 px-1.5 py-0.5 text-xs font-bold tracking-wide text-primary ring-1 ring-primary/15">
+                    <span className="absolute right-2.5 top-2.5 z-10 rounded-md bg-primary/10 px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-primary ring-1 ring-primary/15">
                       {String(i + 1).padStart(2, "0")}
                     </span>
 
                     {/* Illustration */}
-                    <div className="relative flex flex-1 items-center justify-center px-6 pt-6">
+                    <div className="relative flex flex-1 items-center justify-center px-4 pt-4">
                       <Image
                         src={`/industries/${industry.slug}.png`}
                         alt={`${industry.name} illustration`}
                         fill
-                        sizes="(max-width: 640px) 60vw, (max-width: 1280px) 24vw, 180px"
+                        sizes="(max-width: 640px) 45vw, (max-width: 1280px) 18vw, 150px"
                         className="object-contain object-center transition-transform duration-500 group-hover:scale-105 [filter:drop-shadow(0_8px_14px_oklch(0.577_0.245_27.33_/_0.28))]"
                       />
                     </div>
 
                     {/* Name */}
-                    <div className="relative px-3 pb-6 text-center">
-                      <h3 className="text-balance text-base font-semibold leading-tight tracking-tight text-neutral-800">
+                    <div className="relative px-2 pb-3 text-center">
+                      <h3 className="text-balance text-xs font-semibold leading-tight tracking-tight text-neutral-800">
                         {industry.name}
                       </h3>
                     </div>
@@ -95,24 +93,17 @@ export function Industries() {
 
                   {/* Back — red gradient playbook panel */}
                   <div
-                    className="absolute inset-0 flex flex-col overflow-hidden rounded-[22px] border border-primary/35 p-5 text-white shadow-[0_24px_60px_-20px_color-mix(in_oklch,var(--primary)_28%,transparent),0_8px_20px_-8px_color-mix(in_oklch,var(--primary)_16%,transparent)] [backface-visibility:hidden] [transform:rotateY(180deg)]"
+                    className="absolute inset-0 flex flex-col justify-center overflow-hidden rounded-[22px] border border-primary/35 p-4 text-white shadow-[0_24px_60px_-20px_color-mix(in_oklch,var(--primary)_28%,transparent),0_8px_20px_-8px_color-mix(in_oklch,var(--primary)_16%,transparent)] [backface-visibility:hidden] [transform:rotateY(180deg)]"
                     style={{
                       // Exact red sampled from the real-estate house walls (#E45444)
                       background: "linear-gradient(150deg, #EF6C5B 0%, #E45444 52%, #CE4C3D 100%)",
                     }}
                   >
                     <span aria-hidden className="pointer-events-none absolute inset-0 opacity-20 bg-lattice" />
-                    <span className="relative text-xs font-bold tracking-widest text-white/70">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <h3 className="relative mt-2 font-serif text-lg font-normal leading-tight">
-                      {industry.name}
-                    </h3>
-                    <span aria-hidden className="relative mt-2 h-px w-8 bg-white/40" />
-                    <p className="relative mt-3 text-[13px] leading-relaxed text-white/90">
+                    <p className="relative text-[11.5px] leading-snug text-white/95">
                       {industry.short}
                     </p>
-                    <span className="relative mt-4 inline-flex items-center gap-1 text-xs font-semibold text-white">
+                    <span className="relative mt-3 inline-flex items-center gap-1 text-xs font-semibold text-white">
                       View playbook
                       <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
                     </span>
