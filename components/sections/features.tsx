@@ -443,12 +443,15 @@ export function Features() {
             onMouseLeave={() => setIsCategoryPaused(false)}
             className="mt-10 grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3"
           >
-            {features
-              .filter((f) => activeCategory === "All" || f.tag === activeCategory)
-              .map((f) => {
-                const Icon = f.icon
-                const card = (
-                  <div className="flex w-full flex-row items-start gap-3">
+            {features.map((f) => {
+              const Icon = f.icon
+              const isMatch = activeCategory === "All" || f.tag === activeCategory
+
+              // Mobile: truly filter the list (no dimmed, still-occupying-space items), no animation.
+              if (isMobile) {
+                if (!isMatch) return null
+                return (
+                  <div key={f.title} className="flex w-full flex-row items-start gap-3">
                     <Icon className="mt-1 h-3.5 w-3.5 shrink-0 text-primary" aria-hidden="true" />
                     <div className="flex flex-col gap-0.5">
                       <p className="text-sm font-medium tracking-tight">{f.title}</p>
@@ -456,19 +459,24 @@ export function Features() {
                     </div>
                   </div>
                 )
-                // Mobile skips the fade-in — it just shows the filtered list instantly.
-                if (isMobile) return <div key={f.title}>{card}</div>
-                return (
-                  <motion.div
-                    key={f.title}
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    {card}
-                  </motion.div>
-                )
-              })}
+              }
+
+              // Desktop: original behaviour — every card stays in the grid, non-matching ones just dim.
+              return (
+                <motion.div
+                  key={f.title}
+                  animate={{ opacity: isMatch ? 1 : 0.25 }}
+                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex w-full flex-row items-start gap-3"
+                >
+                  <Icon className="mt-1 h-3.5 w-3.5 shrink-0 text-primary" aria-hidden="true" />
+                  <div className="flex flex-col gap-0.5">
+                    <p className="text-sm font-medium tracking-tight">{f.title}</p>
+                    <p className="text-xs leading-relaxed text-muted-foreground">{f.description}</p>
+                  </div>
+                </motion.div>
+              )
+            })}
           </div>
         </div>
       </section>
