@@ -46,8 +46,8 @@ export default function IndustriesPage() {
         />
         <AmbientGlow />
         <div className="relative mx-auto w-full max-w-6xl px-4 py-12 md:px-6 md:py-16">
-          <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-8">
-            <ScrollReveal className="lg:col-span-7">
+          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-8">
+            <ScrollReveal className="lg:col-span-6">
               <span className="ai-pill-magenta">
                 <span className="h-1 w-1 rounded-full bg-accent" />
                 Industries
@@ -80,7 +80,7 @@ export default function IndustriesPage() {
               <HeroStats />
             </ScrollReveal>
 
-            <ScrollReveal delay={0.15} className="flex items-center justify-center lg:col-span-5 lg:items-end lg:self-stretch">
+            <ScrollReveal delay={0.15} className="flex items-center justify-center lg:col-span-6">
               <HeroPreviewCard />
             </ScrollReveal>
           </div>

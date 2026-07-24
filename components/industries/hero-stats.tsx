@@ -39,14 +39,14 @@ export function HeroStats() {
 
   return (
     <StaggerGroup
-      className="mt-12 grid grid-cols-2 gap-4 border-t border-border/40 pt-8 sm:grid-cols-4"
+      className="mt-6 grid grid-cols-2 gap-4 border-t border-border/40 pt-5 sm:grid-cols-4"
       stagger={0.08}
     >
       {STATS.map((s, i) => {
         const Icon = s.icon
         return (
           <StaggerItem key={s.label}>
-            <div className="group relative aspect-square w-full overflow-hidden rounded-2xl border border-border/70 bg-card/80 shadow-sm backdrop-blur-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/40 hover:shadow-[0_22px_45px_-22px_oklch(0.577_0.245_27.33_/_0.55)]">
+            <div className="group relative aspect-square w-full overflow-hidden rounded-2xl border border-primary/35 bg-card/80 shadow-[0_24px_60px_-20px_color-mix(in_oklch,var(--primary)_28%,transparent),0_8px_20px_-8px_color-mix(in_oklch,var(--primary)_16%,transparent)] backdrop-blur-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/55 hover:shadow-[0_30px_66px_-20px_color-mix(in_oklch,var(--primary)_36%,transparent),0_10px_24px_-8px_color-mix(in_oklch,var(--primary)_20%,transparent)]">
               {/* Light sweep */}
               <motion.span
                 aria-hidden
