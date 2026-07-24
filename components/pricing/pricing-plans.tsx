@@ -255,8 +255,8 @@ export function PricingPlans() {
 
       {/* Per-second billing callout */}
       <div className="mb-8 flex justify-center px-4">
-        <div className="flex flex-col items-center gap-1 rounded-2xl border border-primary/30 bg-primary/[0.06] px-4 py-3 text-center text-sm text-primary sm:flex-row sm:gap-2 sm:rounded-full sm:py-2">
-          <span aria-hidden>⏱️</span>
+        <div className="flex flex-row items-start gap-2 rounded-full border border-primary/30 bg-primary/[0.06] px-4 py-2 text-left text-sm text-primary sm:items-center sm:text-center">
+          <Clock className="mt-0.5 h-4 w-4 shrink-0 sm:mt-0" aria-hidden />
           <span>
             <strong>Per-second billing</strong> — pay only for the seconds you use.
           </span>
