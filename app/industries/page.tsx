@@ -97,9 +97,7 @@ export default function IndustriesPage() {
 
       <Ornament />
 
-      <section className="mx-auto w-full max-w-6xl px-4 py-24 md:px-6">
-        <IndustriesCta />
-      </section>
+      <IndustriesCta />
 
       <RelatedLinks
         heading="Related guides"

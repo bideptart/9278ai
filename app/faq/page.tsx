@@ -57,9 +57,7 @@ export default function FaqPage() {
 
       <FaqExplorer groups={FAQ_GROUPS} />
 
-      <section className="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
-        <FaqCta />
-      </section>
+      <FaqCta />
 
       <RelatedLinks
         variant="flip"

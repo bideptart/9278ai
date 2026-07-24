@@ -1,9 +1,8 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Features } from "@/components/sections/features"
-import { Button } from "@/components/ui/button"
+import { CtaPanel } from "@/components/ui/cta-panel"
 import { pageSeo } from "@/lib/seo"
 import { BreadcrumbJsonLd } from "@/components/seo/jsonld"
 import { RelatedLinks } from "@/components/seo/related-links"
@@ -30,37 +29,16 @@ export default function FeaturesPage() {
       <main className="flex-1">
         <Features />
 
-        <section className="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
-          <div className="ring-gradient relative overflow-hidden rounded-[28px] border border-primary/35 px-6 py-12 shadow-[0_24px_60px_-20px_color-mix(in_oklch,var(--primary)_28%,transparent),0_8px_20px_-8px_color-mix(in_oklch,var(--primary)_16%,transparent)] md:px-12 md:py-14 [background-image:radial-gradient(circle_at_top_right,white,transparent_60%),linear-gradient(135deg,color-mix(in_oklch,var(--primary)_16%,white),color-mix(in_oklch,var(--primary)_6%,white))]">
-            <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
-              <div className="max-w-xl">
-                <h3 className="text-balance text-2xl font-semibold tracking-tight md:text-3xl">
-                  Ready to hear it for yourself?
-                </h3>
-                <p className="mt-3 text-muted-foreground">
-                  Spin up an agent in minutes and place a real test call — no credit card to try.
-                </p>
-              </div>
-              <div className="flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row sm:flex-wrap">
-                <Button
-                  asChild
-                  size="lg"
-                  className="h-11 w-48 rounded-full border border-black bg-black px-6 text-sm text-white hover:bg-neutral-800 sm:h-14 sm:w-auto sm:px-8 sm:text-base"
-                >
-                  <Link href="/get-started">Get started</Link>
-                </Button>
-                <Button
-                  asChild
-                  size="lg"
-                  variant="outline"
-                  className="h-11 w-48 rounded-full border-black/15 bg-black/5 px-6 text-sm text-black hover:bg-black/10 sm:h-14 sm:w-auto sm:px-8 sm:text-base"
-                >
-                  <Link href="/pricing">View pricing</Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
+        <CtaPanel
+          title={
+            <>
+              Ready to hear it <span className="text-primary">for yourself?</span>
+            </>
+          }
+          description="Spin up an agent in minutes and place a real test call — no credit card to try."
+          primary={{ label: "Get started", href: "/get-started", icon: "arrow" }}
+          secondary={{ label: "View pricing", href: "/pricing", variant: "outline" }}
+        />
 
         <RelatedLinks
           heading="Keep exploring"

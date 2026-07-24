@@ -114,9 +114,7 @@ export default async function PricingPage({
       </section>
 
       {/* CTA */}
-      <section className="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
-        <PricingCta />
-      </section>
+      <PricingCta />
 
       <RelatedLinks
         variant="flip"

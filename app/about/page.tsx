@@ -1,13 +1,13 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ArrowRight, Globe2, ShieldCheck, Sparkles, Zap, PhoneCall, Server } from "lucide-react"
+import { Globe2, ShieldCheck, Sparkles, Zap, PhoneCall, Server } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
-import { Button } from "@/components/ui/button"
 import { ScrollReveal } from "@/components/animation/scroll-reveal"
 import { pageSeo } from "@/lib/seo"
 import { BreadcrumbJsonLd } from "@/components/seo/jsonld"
 import { RelatedLinks } from "@/components/seo/related-links"
+import { CtaPanel } from "@/components/ui/cta-panel"
 
 export const metadata: Metadata = pageSeo({
   title: "About",
@@ -196,26 +196,16 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
-        <ScrollReveal className="rounded-2xl border border-border/60 bg-card/30 px-6 py-12 text-center md:px-12 md:py-14">
-          <h2 className="text-balance text-2xl font-serif font-normal tracking-tight md:text-3xl">
-            Hear it for yourself.
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-            Spin up your first agent and place a real test call — live in an afternoon, no credit card to try.
-          </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <Button asChild size="lg" className="btn-ai rounded-full text-primary-foreground">
-              <Link href="/get-started">
-                Build your first agent <ArrowRight className="ml-1 h-4 w-4" aria-hidden />
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link href="/pricing">View pricing</Link>
-            </Button>
-          </div>
-        </ScrollReveal>
-      </section>
+      <CtaPanel
+        title={
+          <>
+            Hear it <span className="text-primary">for yourself.</span>
+          </>
+        }
+        description="Spin up your first agent and place a real test call — live in an afternoon, no credit card to try."
+        primary={{ label: "Build your first agent", href: "/get-started", icon: "arrow" }}
+        secondary={{ label: "View pricing", href: "/pricing", variant: "outline" }}
+      />
 
       <RelatedLinks
         heading="Explore 9278.ai"
