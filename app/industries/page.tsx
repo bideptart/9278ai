@@ -80,7 +80,7 @@ export default function IndustriesPage() {
               <HeroStats />
             </ScrollReveal>
 
-            <ScrollReveal delay={0.15} className="flex items-center justify-center lg:col-span-6 lg:self-start">
+            <ScrollReveal delay={0.15} className="flex items-center justify-center lg:col-span-6 lg:justify-end lg:self-start lg:translate-x-8 xl:translate-x-16">
               <HeroPreviewCard />
             </ScrollReveal>
           </div>
