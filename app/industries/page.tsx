@@ -9,6 +9,7 @@ import { AmbientGlow } from "@/components/industries/ambient-glow"
 import { HeroPreviewCard } from "@/components/industries/hero-preview-card"
 import { HeroStats } from "@/components/industries/hero-stats"
 import { IndustryRow } from "@/components/industries/industry-row"
+import { MobileIndustryExplorer } from "@/components/industries/mobile-industry-explorer"
 import { IndustriesCta } from "@/components/industries/industries-cta"
 import { Industries } from "@/components/sections/industries"
 import { INDUSTRIES } from "@/lib/industries"
@@ -89,7 +90,11 @@ export default function IndustriesPage() {
 
       <Industries />
 
-      <div className="mx-auto w-full max-w-6xl px-4 md:px-6">
+      <div className="py-8 sm:hidden">
+        <MobileIndustryExplorer />
+      </div>
+
+      <div className="mx-auto hidden w-full max-w-6xl px-4 sm:block md:px-6">
         {INDUSTRIES.map((industry, i) => (
           <IndustryRow key={industry.slug} slug={industry.slug} index={i} reverse={i % 2 === 1} />
         ))}
