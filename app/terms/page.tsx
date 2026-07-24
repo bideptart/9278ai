@@ -50,7 +50,7 @@ export default function TermsOfServicePage() {
       </section>
 
       {/* Body */}
-      <article className="legal mx-auto w-full max-w-3xl px-4 py-10 md:px-6 md:py-12">
+      <article className="legal mx-auto w-full max-w-5xl px-4 py-10 md:px-6 md:py-12">
         <p>
           These Terms of Service (&ldquo;Agreement&rdquo;) govern your access to and use of the 9278.ai platform
           operated by Ace Peak Invest Pte Ltd. Please read them carefully before using the Services.

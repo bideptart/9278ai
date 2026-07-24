@@ -56,11 +56,17 @@ export default function FaqPage() {
               </p>
             </ScrollReveal>
 
-            <ScrollReveal className="mt-10">
+            {/* Mobile only — search bar lives in the hero on small screens */}
+            <ScrollReveal className="mt-10 sm:hidden">
               <FaqSearchBar />
             </ScrollReveal>
           </div>
         </section>
+
+        {/* Desktop/tablet only — search bar sits in its own block below the hero */}
+        <ScrollReveal className="mt-36 hidden px-4 sm:block">
+          <FaqSearchBar />
+        </ScrollReveal>
 
         <FaqExplorer groups={FAQ_GROUPS} />
       </FaqSearchProvider>
