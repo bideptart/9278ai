@@ -1,12 +1,17 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { useReducedMotion } from "motion/react"
+import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 import { Check } from "lucide-react"
 import { INDUSTRIES } from "@/lib/industries"
 import { cn } from "@/lib/utils"
 
 const CYCLE_MS = 2000
+
+// These industries' copy runs a touch longer than the rest, wrapping to extra
+// lines and blowing past the shared card height — trim the type down a notch
+// just for them so every card lands on the same height.
+const TIGHT_SLUGS = new Set(["education", "legal", "real-estate", "dental"])
 
 /**
  * MobileIndustryExplorer
@@ -22,6 +27,7 @@ export function MobileIndustryExplorer() {
   const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
   const stripRef = useRef<HTMLDivElement>(null)
+  const resumeTimeoutRef = useRef<ReturnType<typeof setTimeout>>()
   const reduced = useReducedMotion()
   const industry = INDUSTRIES[active]
 
@@ -39,9 +45,15 @@ export function MobileIndustryExplorer() {
     btn?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" })
   }, [active])
 
+  useEffect(() => () => clearTimeout(resumeTimeoutRef.current), [])
+
+  // Tapping a pill jumps there and briefly pauses the auto-advance so the tap
+  // doesn't get immediately overridden — then resumes cycling from there.
   function selectIndustry(i: number) {
     setActive(i)
     setPaused(true)
+    clearTimeout(resumeTimeoutRef.current)
+    resumeTimeoutRef.current = setTimeout(() => setPaused(false), CYCLE_MS)
   }
 
   return (
@@ -70,24 +82,52 @@ export function MobileIndustryExplorer() {
       </div>
 
       {/* Centered detail card */}
-      <div className="mx-4 mt-6 rounded-2xl border border-primary/35 bg-card/60 p-6 shadow-[0_24px_60px_-20px_color-mix(in_oklch,var(--primary)_28%,transparent),0_8px_20px_-8px_color-mix(in_oklch,var(--primary)_16%,transparent)]">
-        <h3 className="text-balance text-center font-serif text-xl font-normal leading-snug tracking-tight text-foreground">
-          {industry.short}
-        </h3>
+      <div className="relative mx-4 mt-6 min-h-[353px] overflow-hidden rounded-2xl border border-primary/35 bg-card/60 p-4 shadow-[0_24px_60px_-20px_color-mix(in_oklch,var(--primary)_28%,transparent),0_8px_20px_-8px_color-mix(in_oklch,var(--primary)_16%,transparent)]">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={industry.slug}
+            initial={reduced ? undefined : { opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduced ? undefined : { opacity: 0, y: -10 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <h3
+              className={cn(
+                "text-left font-serif font-semibold leading-snug tracking-tight text-foreground",
+                TIGHT_SLUGS.has(industry.slug) ? "text-lg" : "text-xl",
+              )}
+            >
+              {industry.short}
+            </h3>
 
-        <p className="mt-6 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
-          What the agent does on day one
-        </p>
-        <div className="mt-4 space-y-1">
-          {industry.jobs.map((job) => (
-            <div key={job} className="flex items-start gap-3 rounded-lg px-2 py-1.5">
-              <span className="mt-0.5 flex size-5 flex-none items-center justify-center rounded-full bg-primary/10 text-primary ring-1 ring-primary/20">
-                <Check className="size-3" aria-hidden />
-              </span>
-              <span className="text-sm leading-snug text-foreground/90">{job}</span>
+            <p className="mt-4 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              What the agent does on day one
+            </p>
+            <div className="mt-2">
+              {industry.jobs.map((job) => (
+                <div
+                  key={job}
+                  className={cn(
+                    "flex items-start gap-3 rounded-lg px-1",
+                    TIGHT_SLUGS.has(industry.slug) ? "py-0.5" : "py-1",
+                  )}
+                >
+                  <span className="mt-0.5 flex size-5 flex-none items-center justify-center rounded-full bg-primary/10 text-primary ring-1 ring-primary/20">
+                    <Check className="size-3" aria-hidden />
+                  </span>
+                  <span
+                    className={cn(
+                      "text-foreground/90",
+                      TIGHT_SLUGS.has(industry.slug) ? "text-[13px] leading-tight" : "text-sm leading-snug",
+                    )}
+                  >
+                    {job}
+                  </span>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   )
