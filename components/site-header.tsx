@@ -103,7 +103,7 @@ export function SiteHeader() {
                     href="https://voice.9278.ai/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-center text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    className="rounded-full border border-primary py-2 text-center text-sm text-muted-foreground transition-colors hover:text-foreground"
                   >
                     Sign in
                   </a>
