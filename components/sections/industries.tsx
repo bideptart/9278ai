@@ -189,7 +189,7 @@ export function Industries() {
           </p>
         </div>
 
-        <StaggerGroup className="mt-14 grid grid-cols-2 gap-3 sm:gap-5 md:gap-6 lg:grid-cols-3 xl:grid-cols-5">
+        <StaggerGroup className="mt-8 grid grid-cols-2 gap-3 sm:mt-14 sm:gap-5 md:gap-6 lg:grid-cols-3 xl:grid-cols-5">
           {INDUSTRIES.map((industry, i) => (
             <StaggerItem key={industry.slug}>
               <MobileIndustryCard industry={industry} index={i} />

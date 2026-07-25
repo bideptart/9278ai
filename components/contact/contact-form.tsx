@@ -6,10 +6,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { cn } from "@/lib/utils"
 
 type Status = "idle" | "submitting" | "success"
 
-export function ContactForm() {
+export function ContactForm({ className }: { className?: string }) {
   const [status, setStatus] = useState<Status>("idle")
   const [error, setError] = useState<string | null>(null)
 
@@ -39,7 +40,7 @@ export function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="card-glow flex flex-col items-center justify-center rounded-2xl px-6 py-16 text-center">
+      <div className={cn("card-glow flex h-full flex-col items-center justify-center rounded-2xl px-6 py-16 text-center", className)}>
         <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
           <CheckCircle2 className="h-7 w-7" aria-hidden />
         </span>
@@ -57,7 +58,7 @@ export function ContactForm() {
   const submitting = status === "submitting"
 
   return (
-    <form onSubmit={handleSubmit} className="card-glow rounded-2xl p-6 md:p-8">
+    <form onSubmit={handleSubmit} className={cn("card-glow flex h-full flex-col rounded-2xl p-6 md:p-8", className)}>
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="name">

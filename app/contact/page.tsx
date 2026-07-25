@@ -8,6 +8,7 @@ import { ContactForm } from "@/components/contact/contact-form"
 import { pageSeo } from "@/lib/seo"
 import { BreadcrumbJsonLd } from "@/components/seo/jsonld"
 import { RelatedLinks } from "@/components/seo/related-links"
+import { cn } from "@/lib/utils"
 
 export const metadata: Metadata = pageSeo({
   title: "Contact",
@@ -87,28 +88,29 @@ export default function ContactPage() {
       <section className="mx-auto w-full max-w-7xl px-4 pb-20 pt-28 md:px-6 md:pb-24 md:pt-24">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
           {/* Form */}
-          <ScrollReveal className="lg:col-span-7">
+          <ScrollReveal className="flex h-full flex-col lg:col-span-7">
             <h2 className="text-2xl font-serif font-normal tracking-tight md:text-3xl">Send us a message</h2>
             <p className="mt-2 text-sm text-muted-foreground">
               Fill in the form and we&apos;ll get back to you by email, usually within one business day.
             </p>
-            <div className="mt-7">
-              <ContactForm />
+            <div className="mt-7 flex flex-1 flex-col">
+              <ContactForm className="flex-1" />
             </div>
           </ScrollReveal>
 
           {/* Other ways to reach us */}
-          <ScrollReveal className="lg:col-span-5">
+          <ScrollReveal className="flex h-full flex-col lg:col-span-5">
             <h2 className="text-2xl font-serif font-normal tracking-tight md:text-3xl">Other ways to reach us</h2>
             <p className="mt-2 text-sm text-muted-foreground">
               Prefer email, or want to hear it live? Take your pick.
             </p>
-            <div className="mt-7 flex flex-col gap-4">
-              {CHANNELS.map((c) => {
+            <div className="mt-7 flex flex-1 flex-col gap-4">
+              {CHANNELS.map((c, i) => {
                 const Icon = c.icon
                 const isExternal = c.href.startsWith("mailto:")
+                const isLast = i === CHANNELS.length - 1
                 return (
-                  <div key={c.title} className="card-glow rounded-2xl p-5">
+                  <div key={c.title} className={cn("card-glow rounded-2xl p-5", isLast && "flex flex-1 flex-col justify-center")}>
                     <div className="flex items-start gap-4">
                       <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/20">
                         <Icon className="h-5 w-5" aria-hidden />

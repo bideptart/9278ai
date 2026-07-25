@@ -694,17 +694,12 @@
     background: linear-gradient(135deg, oklch(0.637 0.237 25.33) 0%, oklch(0.704 0.191 22) 50%, oklch(0.72 0.2 13) 100%);
   }
 
-  /* Pins the "how it sounds" panel while its industry row scrolls past —
-     desktop only, since the two columns stack on mobile. Declared after
-     .ring-gradient so it wins the position: relative vs sticky conflict. */
+  /* Was sticky (pinned while its industry row scrolls past), but with ten
+     rows stacked back to back, each card's native sticky reattachment
+     snaps in abruptly at every row boundary — most noticeable scrolling
+     up through several rows in a row. Kept static to avoid that jump. */
   .industry-reel-sticky {
     position: static;
-  }
-  @media (min-width: 768px) {
-    .industry-reel-sticky {
-      position: sticky;
-      top: 6rem;
-    }
   }
 }
 
