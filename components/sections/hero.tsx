@@ -334,11 +334,8 @@ export function Hero() {
         transition={{ duration: 0.6, delay: 1.4 }}
         className="relative border-t border-border/40 bg-background/50 px-4 py-6 md:px-6"
       >
-        <p className="mb-3 text-center text-[10px] font-medium uppercase tracking-[0.25em] text-muted-foreground">
+        <p className="text-center text-[10px] font-semibold uppercase tracking-[0.25em] text-muted-foreground">
           Connect your carrier account in two clicks
-        </p>
-        <p className="mx-auto max-w-2xl text-center text-sm leading-relaxed text-muted-foreground/90">
-          Phone numbers, SIP trunks, and inbound routing flow through the carrier you already know and trust — your numbers, your billing, unchanged.
         </p>
       </motion.div>
     </section>
