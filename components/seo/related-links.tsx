@@ -201,7 +201,7 @@ export function RelatedLinks({
         </div>
       </div>
 
-      <ul className={cn("grid", variant === "flip" ? "gap-3 sm:gap-4 md:grid-cols-3" : "gap-4 md:grid-cols-2 lg:grid-cols-3")}>
+      <ul className={cn("grid", variant === "flip" ? "gap-2 sm:gap-4 md:grid-cols-3" : "gap-4 md:grid-cols-2 lg:grid-cols-3")}>
         {links.map((l, i) =>
           variant === "flip" ? (
             <FlipCard key={l.href} link={l} index={i} showNumber={showNumber} />

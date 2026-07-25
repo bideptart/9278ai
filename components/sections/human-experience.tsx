@@ -422,7 +422,7 @@ export function HumanExperience() {
         </ScrollReveal>
 
         <ScrollReveal className="mt-8">
-          <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-6">
+          <div className="grid items-start gap-4 lg:grid-cols-12 lg:gap-6">
             {/* LEFT: visual panel, swaps with the active item — below the text on mobile, back to the left column at lg+ */}
             <div className="order-2 lg:order-1 lg:col-span-6">
               <div
@@ -473,7 +473,7 @@ export function HumanExperience() {
                 0{index + 1} / 0{items.length}
               </span>
 
-              <div className="relative min-h-[300px] sm:min-h-[230px] md:min-h-[210px]">
+              <div className="relative min-h-[290px] sm:min-h-[230px] md:min-h-[210px]">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={index}
