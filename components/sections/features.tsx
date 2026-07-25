@@ -423,13 +423,13 @@ export function Features() {
             </p>
           </ScrollReveal>
 
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-2.5">
+          <div className="mt-6 flex flex-nowrap items-center justify-start gap-2 overflow-x-auto px-4 [scrollbar-width:none] sm:flex-wrap sm:justify-center sm:gap-2.5 sm:overflow-visible sm:px-0 [&::-webkit-scrollbar]:hidden">
             {featureCategories.map((category) => (
               <button
                 key={category}
                 type="button"
                 onClick={() => setActiveCategory(category)}
-                className={`rounded-full border px-4 py-1.5 text-xs font-medium transition-colors ${
+                className={`shrink-0 rounded-full border px-4 py-1.5 text-xs font-medium transition-colors ${
                   category === "All" ? "hidden sm:inline-flex" : ""
                 } ${
                   activeCategory === category
