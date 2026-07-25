@@ -120,6 +120,7 @@ export default async function PricingPage({
         variant="flip"
         heading="More on 9278.ai"
         description="Industry playbooks, FAQs, and the get-started flow."
+        showNumber={false}
         links={[
           {
             href: "/industries",

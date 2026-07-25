@@ -77,6 +77,7 @@ export default function FaqPage() {
         variant="flip"
         heading="Keep reading"
         description="The pages most teams visit right after the FAQ."
+        showNumber={false}
         links={[
           {
             href: "/pricing",
