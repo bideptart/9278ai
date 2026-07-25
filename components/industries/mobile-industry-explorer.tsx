@@ -37,12 +37,18 @@ export function MobileIndustryExplorer() {
     return () => clearInterval(id)
   }, [reduced, paused])
 
-  // Keep the active pill scrolled into view, whether it changed by auto-advance or a tap.
+  // Keep the active pill scrolled into view within the strip only. Deliberately NOT
+  // using btn.scrollIntoView() here — with block: "nearest" it still walks every
+  // scrollable ancestor including the page itself, so whenever the auto-advance
+  // interval changed `active` while this section was off-screen (e.g. the user had
+  // scrolled back up to the hero), it would yank the whole page down to bring the
+  // pill strip into view. Scrolling only the strip's own scrollLeft avoids that.
   useEffect(() => {
     const strip = stripRef.current
-    if (!strip) return
-    const btn = strip.children[active] as HTMLElement | undefined
-    btn?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" })
+    const btn = strip?.children[active] as HTMLElement | undefined
+    if (!strip || !btn) return
+    const target = btn.offsetLeft - strip.clientWidth / 2 + btn.clientWidth / 2
+    strip.scrollTo({ left: target, behavior: "smooth" })
   }, [active])
 
   useEffect(() => () => clearTimeout(resumeTimeoutRef.current), [])
