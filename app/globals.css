@@ -41,7 +41,7 @@
   --ai-cyan: oklch(0.637 0.237 25.33); /* red-500 */
   --ai-violet: oklch(0.505 0.213 27.5);/* red-700 */
   --ai-magenta: oklch(0.646 0.222 14); /* rose */
-  --ai-mint: oklch(0.828 0.189 84.43); /* amber-400 */
+  --ai-mint: oklch(0.577 0.245 27.33); /* red-600 — was amber-400; brought in line with the rest of this set */
 
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
@@ -90,7 +90,7 @@
   --ai-cyan: oklch(0.7 0.2 25);
   --ai-violet: oklch(0.637 0.237 27.5);
   --ai-magenta: oklch(0.72 0.2 13);
-  --ai-mint: oklch(0.85 0.17 85);
+  --ai-mint: oklch(0.637 0.237 25.33); /* was amber; matches the light-mode fix */
 
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
@@ -200,6 +200,32 @@
   animation: voice-bar 1.1s ease-in-out infinite;
 }
 
+/* Live-audio waveform bar.
+   Unlike .voice-bar (one shared 0.2 → 1 pulse), every bar carries its own
+   amplitude window, duration and phase offset via custom properties. Neighbours
+   therefore peak slightly out of step, which reads as a travelling wave rather
+   than a row of blinking bars. Set --wave-delay negative so the wave is already
+   mid-flight on mount instead of starting flat and in unison. */
+@keyframes wave-bar {
+  0%,
+  100% {
+    transform: scaleY(var(--wave-min, 0.3));
+  }
+  50% {
+    transform: scaleY(var(--wave-max, 1));
+  }
+}
+.wave-bar {
+  transform-origin: var(--wave-origin, center);
+  animation: wave-bar var(--wave-duration, 2.6s) cubic-bezier(0.37, 0, 0.63, 1) var(--wave-delay, 0s)
+    infinite;
+  will-change: transform;
+}
+/* Deliberately no `prefers-reduced-motion` opt-out, matching .voice-bar above:
+   the waveform is the one thing on the card that signals "call in progress", so
+   freezing it reads as a broken widget rather than a calmer page. It is a small,
+   in-place scale — no travel, no parallax, no flashing. */
+
 /* Live-drawing chart line — pair with pathLength="1" on the SVG element */
 @keyframes draw-line {
   to { stroke-dashoffset: 0; }
@@ -292,21 +318,24 @@
 }
 
 @layer utilities {
-  /* Industry bubbles — blown-glass spheres for the Industries hero cluster */
+  /* Industry bubbles — blown-glass spheres for the Industries hero cluster.
+     Neutral black/white/gray palette: resting bubbles are crisp white glass,
+     the selected bubble is a soft gray glass (the tone resting bubbles used to
+     carry) — no red tint or red-tinted glow on either. */
   .bubble-glass {
     background: radial-gradient(
       circle at 32% 26%,
       oklch(1 0 0 / 0.98),
-      oklch(1 0 0 / 0.72) 38%,
-      oklch(0.93 0.05 22 / 0.5) 72%,
-      oklch(1 0 0 / 0.24) 100%
+      oklch(1 0 0 / 0.85) 38%,
+      oklch(0.97 0 0 / 0.6) 72%,
+      oklch(0.92 0 0 / 0.3) 100%
     );
     box-shadow:
-      0 36px 62px -18px oklch(0.2 0 0 / 0.52),
-      0 18px 30px -12px oklch(0.2 0 0 / 0.4),
+      0 12px 24px -14px oklch(0.2 0 0 / 0.14),
+      0 4px 10px -6px oklch(0.2 0 0 / 0.08),
       inset 0 1px 2px oklch(1 0 0 / 0.95),
-      inset 0 -10px 18px -10px oklch(0.577 0.245 27.33 / 0.3),
-      0 0 0 1px oklch(0.577 0.245 27.33 / 0.1);
+      inset 0 -10px 18px -10px oklch(0.2 0 0 / 0.1),
+      0 0 0 1px oklch(0.2 0 0 / 0.08);
     backdrop-filter: blur(6px);
   }
   .dark .bubble-glass {
@@ -314,40 +343,61 @@
       circle at 32% 26%,
       oklch(1 0 0 / 0.26),
       oklch(1 0 0 / 0.1) 40%,
-      oklch(0.637 0.237 25.33 / 0.18) 72%,
+      oklch(1 0 0 / 0.06) 72%,
       oklch(1 0 0 / 0.04) 100%
     );
     box-shadow:
-      0 38px 66px -18px oklch(0 0 0 / 0.9),
-      0 18px 30px -12px oklch(0 0 0 / 0.7),
+      0 12px 24px -14px oklch(0 0 0 / 0.45),
+      0 4px 10px -6px oklch(0 0 0 / 0.3),
       inset 0 1px 2px oklch(1 0 0 / 0.35),
-      inset 0 -10px 18px -10px oklch(0.637 0.237 25.33 / 0.45),
+      inset 0 -10px 18px -10px oklch(0 0 0 / 0.4),
       0 0 0 1px oklch(1 0 0 / 0.1);
   }
 
-  /* Selected bubble — molten brand-red glass */
-  .bubble-active {
-    background: linear-gradient(
-      150deg,
-      oklch(0.68 0.23 26),
-      oklch(0.577 0.245 27.33) 48%,
-      oklch(0.47 0.2 27.5)
+  /* Deep, glossy red fill for the hub bubble. Layered as an overlay on top of
+     the always-present .bubble-glass base and crossfaded via opacity, rather
+     than swapping the whole background on the button — two different
+     gradients can't interpolate against each other, so a class swap would
+     snap instead of transition. The overlay is what animates smoothly.
+     A small, near-white specular highlight up top reads as a glossy sphere;
+     the glow is kept to a tight contact shadow rather than a soft coloured
+     halo, so the bubble looks like a solid, lit object instead of a faded
+     wash of colour. */
+  .bubble-coral-fill {
+    background: radial-gradient(
+      circle at 30% 24%,
+      oklch(0.94 0.02 30 / 0.95) 0%,
+      oklch(0.6 0.22 25) 24%,
+      oklch(0.5 0.23 24) 58%,
+      oklch(0.36 0.19 20) 100%
     );
     box-shadow:
-      0 42px 70px -18px oklch(0.577 0.245 27.33 / 0.78),
-      0 20px 34px -12px oklch(0.2 0 0 / 0.5),
-      inset 0 2px 4px oklch(1 0 0 / 0.5),
-      inset 0 -12px 22px -12px oklch(0 0 0 / 0.42),
-      0 0 0 1px oklch(1 0 0 / 0.35);
+      inset 0 3px 6px oklch(1 0 0 / 0.5),
+      inset 0 -14px 24px -10px oklch(0.15 0 0 / 0.45),
+      0 8px 16px -10px oklch(0.15 0 0 / 0.35);
+  }
+  .dark .bubble-coral-fill {
+    background: radial-gradient(
+      circle at 30% 24%,
+      oklch(0.9 0.03 30 / 0.9) 0%,
+      oklch(0.56 0.21 24) 24%,
+      oklch(0.46 0.22 22) 58%,
+      oklch(0.3 0.18 19) 100%
+    );
+    box-shadow:
+      inset 0 3px 6px oklch(1 0 0 / 0.25),
+      inset 0 -14px 24px -10px oklch(0 0 0 / 0.5),
+      0 8px 16px -10px oklch(0 0 0 / 0.4);
   }
 
-  /* Hairline halo that sweeps around the selected bubble */
+  /* Hairline halo that sweeps around the selected bubble — neutral gray, no
+     red/orange glow. */
   .bubble-ring {
     background: conic-gradient(
       from 0deg,
       transparent 0deg,
-      oklch(0.577 0.245 27.33 / 0.7) 70deg,
-      oklch(0.828 0.189 84.43 / 0.55) 130deg,
+      oklch(0.2 0 0 / 0.4) 70deg,
+      oklch(0.5 0 0 / 0.3) 130deg,
       transparent 220deg,
       transparent 360deg
     );
@@ -694,12 +744,18 @@
     background: linear-gradient(135deg, oklch(0.637 0.237 25.33) 0%, oklch(0.704 0.191 22) 50%, oklch(0.72 0.2 13) 100%);
   }
 
-  /* Was sticky (pinned while its industry row scrolls past), but with ten
-     rows stacked back to back, each card's native sticky reattachment
-     snaps in abruptly at every row boundary — most noticeable scrolling
-     up through several rows in a row. Kept static to avoid that jump. */
+  /* Pinned below the sticky header while its own industry row scrolls past,
+     then released so it travels with the page once the row ends. Only from
+     `md` up, where the row is two columns — in the single-column mobile
+     stack there is nothing beside it to scroll against. */
   .industry-reel-sticky {
     position: static;
+  }
+  @media (min-width: 768px) {
+    .industry-reel-sticky {
+      position: sticky;
+      top: 6rem;
+    }
   }
 }
 

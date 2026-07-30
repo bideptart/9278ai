@@ -32,7 +32,7 @@ export default function FaqPage() {
       <FaqJsonLd items={FLAT_FAQ} />
 
       <FaqSearchProvider groups={FAQ_GROUPS}>
-        <section className="relative flex min-h-[calc(100svh-4rem)] items-center overflow-hidden border-b border-border/50">
+        <section className="relative flex items-center overflow-hidden border-b border-border/50 py-14 md:py-20">
           <div
             aria-hidden
             className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(60%_60%_at_50%_0%,rgba(220,38,38,0.10),transparent_70%)]"
@@ -64,7 +64,7 @@ export default function FaqPage() {
         </section>
 
         {/* Desktop/tablet only — search bar sits in its own block below the hero */}
-        <ScrollReveal className="mt-36 hidden px-4 sm:block">
+        <ScrollReveal className="mt-10 hidden px-4 sm:block">
           <FaqSearchBar />
         </ScrollReveal>
 

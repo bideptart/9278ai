@@ -2,7 +2,6 @@
 
 import type { LucideIcon } from "lucide-react"
 import { Building2, PhoneCall, PhoneIncoming, Rocket } from "lucide-react"
-import { motion, useReducedMotion } from "motion/react"
 import { StaggerGroup, StaggerItem } from "@/components/animation/scroll-reveal"
 import { CountUpStat } from "@/components/industries/count-up-stat"
 
@@ -28,68 +27,38 @@ const STATS: Stat[] = [
 
 /**
  * HeroStats
- * Four square proof-points under the Industries hero copy. Idle motion is
- * deliberately quiet — a hairline halo turning behind each medallion and a
- * light sweep that crosses the face every few seconds, offset per tile so the
- * row shimmers in sequence rather than in unison. Hover lifts the card, brightens
- * the corner brackets, and floods the medallion with brand red.
+ * Four square proof-points under the Industries hero copy. Flat by design —
+ * border, corner brackets, and medallion only, no glow or drop shadow. Hover
+ * lifts the card, brightens the brackets, and floods the medallion with brand red.
  */
 export function HeroStats() {
-  const reduced = useReducedMotion()
-
   return (
     <StaggerGroup
       className="mt-2 grid grid-cols-4 gap-2 border-t border-border/40 pt-2 sm:gap-4"
       stagger={0.08}
     >
-      {STATS.map((s, i) => {
+      {STATS.map((s) => {
         const Icon = s.icon
         return (
           <StaggerItem key={s.label}>
-            <div className="group relative mx-auto aspect-square w-full max-w-[100px] overflow-hidden rounded-xl border border-primary/35 bg-card/80 sm:rounded-2xl shadow-[0_24px_60px_-20px_color-mix(in_oklch,var(--primary)_28%,transparent),0_8px_20px_-8px_color-mix(in_oklch,var(--primary)_16%,transparent)] backdrop-blur-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/55 hover:shadow-[0_30px_66px_-20px_color-mix(in_oklch,var(--primary)_36%,transparent),0_10px_24px_-8px_color-mix(in_oklch,var(--primary)_20%,transparent)]">
-              {/* Light sweep */}
-              <motion.span
-                aria-hidden
-                className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-primary/15 to-transparent"
-                animate={reduced ? undefined : { x: ["0%", "400%"] }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Number.POSITIVE_INFINITY,
-                  repeatDelay: 4.5,
-                  ease: "easeInOut",
-                  delay: i * 0.55,
-                }}
-              />
-
-              {/* Warm bloom that rises on hover */}
-              <span
-                aria-hidden
-                className="pointer-events-none absolute -bottom-10 left-1/2 h-24 w-24 -translate-x-1/2 rounded-full bg-primary/0 blur-2xl transition-all duration-500 group-hover:bg-primary/25"
-              />
-
+            <div className="group relative mx-auto aspect-square w-full max-w-[100px] overflow-hidden rounded-xl border border-neutral-300 bg-card sm:rounded-2xl transition-all duration-500 hover:-translate-y-1.5 hover:border-neutral-400 hover:bg-neutral-100 dark:border-white/15 dark:hover:border-white/30 dark:hover:bg-white/5">
               {/* Classical corner brackets */}
-              <span aria-hidden className="pointer-events-none absolute left-1.5 top-1.5 size-2 border-l border-t border-primary/25 transition-colors duration-500 group-hover:border-primary/70 sm:left-2.5 sm:top-2.5 sm:size-3" />
-              <span aria-hidden className="pointer-events-none absolute right-1.5 top-1.5 size-2 border-r border-t border-primary/25 transition-colors duration-500 group-hover:border-primary/70 sm:right-2.5 sm:top-2.5 sm:size-3" />
-              <span aria-hidden className="pointer-events-none absolute bottom-1.5 left-1.5 size-2 border-b border-l border-primary/25 transition-colors duration-500 group-hover:border-primary/70 sm:bottom-2.5 sm:left-2.5 sm:size-3" />
-              <span aria-hidden className="pointer-events-none absolute bottom-1.5 right-1.5 size-2 border-b border-r border-primary/25 transition-colors duration-500 group-hover:border-primary/70 sm:bottom-2.5 sm:right-2.5 sm:size-3" />
+              <span aria-hidden className="pointer-events-none absolute left-1.5 top-1.5 size-2 border-l border-t border-neutral-400 transition-colors duration-500 group-hover:border-neutral-700 dark:border-white/25 dark:group-hover:border-white/60 sm:left-2.5 sm:top-2.5 sm:size-3" />
+              <span aria-hidden className="pointer-events-none absolute right-1.5 top-1.5 size-2 border-r border-t border-neutral-400 transition-colors duration-500 group-hover:border-neutral-700 dark:border-white/25 dark:group-hover:border-white/60 sm:right-2.5 sm:top-2.5 sm:size-3" />
+              <span aria-hidden className="pointer-events-none absolute bottom-1.5 left-1.5 size-2 border-b border-l border-neutral-400 transition-colors duration-500 group-hover:border-neutral-700 dark:border-white/25 dark:group-hover:border-white/60 sm:bottom-2.5 sm:left-2.5 sm:size-3" />
+              <span aria-hidden className="pointer-events-none absolute bottom-1.5 right-1.5 size-2 border-b border-r border-neutral-400 transition-colors duration-500 group-hover:border-neutral-700 dark:border-white/25 dark:group-hover:border-white/60 sm:bottom-2.5 sm:right-2.5 sm:size-3" />
 
               <div className="relative flex h-full flex-col items-center justify-center gap-1.5 px-1.5 text-center sm:gap-2.5 sm:px-2.5">
                 {/* Medallion */}
-                <span className="relative flex size-7 items-center justify-center rounded-full bg-primary/10 ring-1 ring-primary/25 transition-colors duration-500 group-hover:bg-primary group-hover:ring-primary/60 sm:size-10">
-                  <motion.span
-                    aria-hidden
-                    className="bubble-ring pointer-events-none absolute -inset-1 rounded-full"
-                    animate={reduced ? undefined : { rotate: 360 }}
-                    transition={{ duration: 9, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-                  />
+                <span className="relative flex size-7 items-center justify-center rounded-full bg-neutral-100 ring-1 ring-neutral-200 transition-colors duration-500 group-hover:bg-white group-hover:ring-neutral-300 dark:bg-white/10 dark:ring-white/15 dark:group-hover:bg-white/15 dark:group-hover:ring-white/25 sm:size-10">
                   <Icon
-                    className="relative size-3.5 text-primary transition-all duration-500 group-hover:scale-110 group-hover:text-primary-foreground sm:size-[18px]"
+                    className="relative size-3.5 text-neutral-700 transition-all duration-500 group-hover:scale-110 group-hover:text-neutral-900 dark:text-neutral-300 dark:group-hover:text-white sm:size-[18px]"
                     strokeWidth={1.7}
                     aria-hidden
                   />
                 </span>
 
-                <p className="font-serif text-sm leading-none text-primary sm:text-xl">
+                <p className="font-serif text-sm leading-none text-neutral-900 dark:text-white sm:text-xl">
                   <CountUpStat value={s.value} prefix={s.prefix} suffix={s.suffix} decimals={s.decimals} />
                 </p>
 

@@ -24,6 +24,7 @@ import {
 import { motion, useReducedMotion } from "motion/react"
 import { cn } from "@/lib/utils"
 import { ScrollReveal, StaggerGroup, StaggerItem } from "@/components/animation/scroll-reveal"
+import { HighlightedShort } from "@/components/industries/highlighted-short"
 import { getIndustry } from "@/lib/industries"
 
 const VOICE_BAR_HEIGHTS = [5, 9, 13, 7, 10]
@@ -78,7 +79,7 @@ export function IndustryRow({ slug, index, reverse }: { slug: string; index: num
     <section
       id={industry.slug}
       className={cn(
-        "relative scroll-mt-24 border-b border-border/50 py-20 last:border-b-0 md:py-28",
+        "relative scroll-mt-24 border-b border-border/50 py-12 last:border-b-0 md:py-16",
         index % 2 === 1 && "bg-card/25",
       )}
     >
@@ -119,8 +120,11 @@ export function IndustryRow({ slug, index, reverse }: { slug: string; index: num
           </div>
 
           <h2 className="mt-3 text-balance font-serif text-3xl font-normal leading-[1.15] tracking-tight md:text-4xl">
-            <Link href={`/industries/${industry.slug}`} className="transition-colors hover:text-primary">
-              {industry.short}
+            <Link
+              href={`/industries/${industry.slug}`}
+              className="transition-opacity hover:opacity-80"
+            >
+              <HighlightedShort industry={industry} />
             </Link>
           </h2>
           <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">{industry.pitch}</p>
@@ -194,6 +198,7 @@ export function IndustryRow({ slug, index, reverse }: { slug: string; index: num
                 return (
                   <motion.div
                     key={i}
+                    className="flex"
                     initial={{ opacity: 0, y: 14 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -207,7 +212,7 @@ export function IndustryRow({ slug, index, reverse }: { slug: string; index: num
                         ease: "easeInOut",
                         delay: 0.6 + i * 0.1,
                       }}
-                      className="flex flex-col items-center gap-3 rounded-xl border border-border/40 bg-background/40 p-3 text-center"
+                      className="flex w-full flex-col items-center gap-3 rounded-xl border border-border/40 bg-background/40 p-4 text-center"
                     >
                       {/* "Portrait" image, built from the industry's icon set instead of a photo */}
                       <div className="ring-gradient relative flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-full shadow-md">
@@ -222,7 +227,7 @@ export function IndustryRow({ slug, index, reverse }: { slug: string; index: num
                         <span className="absolute inset-[2px] rounded-full bg-background" />
                         <ReelIcon className="relative size-6 text-primary" aria-hidden />
                       </div>
-                      <p className="text-pretty text-[11px] leading-relaxed text-foreground/90">
+                      <p className="line-clamp-3 min-h-[3.35rem] text-balance text-[11px] leading-relaxed text-foreground/90">
                         &ldquo;
                         <RisingText text={line} baseDelay={0.15 + i * 0.1} />
                         &rdquo;

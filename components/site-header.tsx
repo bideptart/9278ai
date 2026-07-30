@@ -28,7 +28,7 @@ export function SiteHeader() {
 
         <nav
           aria-label="Primary"
-          className="hidden items-center gap-1 rounded-full border border-white/50 bg-gradient-to-b from-white/55 to-white/20 px-2 py-1.5 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.7),0_8px_24px_-8px_rgba(0,0,0,0.22)] backdrop-blur-2xl backdrop-saturate-200 dark:border-white/15 dark:from-white/10 dark:to-white/[0.04] dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1)] md:flex"
+          className="hidden items-center gap-1 px-2 py-1.5 md:flex"
         >
           {NAV.map((item) => {
             const isActive =
@@ -38,7 +38,7 @@ export function SiteHeader() {
                 key={item.href}
                 href={item.href}
                 aria-current={isActive ? "page" : undefined}
-                className={`relative rounded-full px-4 py-1.5 text-sm transition-all hover:bg-card/80 hover:text-foreground ${
+                className={`relative px-4 py-1.5 text-sm transition-colors hover:text-foreground ${
                   isActive ? "text-foreground" : "text-muted-foreground"
                 }`}
               >

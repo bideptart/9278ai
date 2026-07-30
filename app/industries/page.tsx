@@ -9,10 +9,12 @@ import { AmbientGlow } from "@/components/industries/ambient-glow"
 import { HeroPreviewCard } from "@/components/industries/hero-preview-card"
 import { HeroStats } from "@/components/industries/hero-stats"
 import { IndustryRow } from "@/components/industries/industry-row"
+import { IndustryThread } from "@/components/industries/industry-thread"
+import { IndustryPipeline } from "@/components/industries/industry-pipeline"
+import { IndustryTicker } from "@/components/industries/industry-ticker"
 import { MobileIndustryExplorer } from "@/components/industries/mobile-industry-explorer"
 import { IndustriesCta } from "@/components/industries/industries-cta"
 import { Industries } from "@/components/sections/industries"
-import { INDUSTRIES } from "@/lib/industries"
 import { pageSeo } from "@/lib/seo"
 import { BreadcrumbJsonLd } from "@/components/seo/jsonld"
 import { RelatedLinks } from "@/components/seo/related-links"
@@ -63,7 +65,11 @@ export default function IndustriesPage() {
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
-                <Button asChild size="lg" className="group btn-ai h-12 rounded-full px-7">
+                <Button
+                  asChild
+                  size="lg"
+                  className="group h-12 rounded-full bg-neutral-900 px-7 text-sm font-medium text-white hover:bg-neutral-800 has-[>svg]:px-7 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
+                >
                   <Link href="/get-started">
                     Get started <ArrowRight className="ml-1 size-4 transition-transform group-hover:translate-x-1" />
                   </Link>
@@ -72,7 +78,7 @@ export default function IndustriesPage() {
                   asChild
                   size="lg"
                   variant="outline"
-                  className="h-12 rounded-full border-border/70 bg-card/30 px-7 backdrop-blur-md hover:border-primary/50 hover:bg-card/50"
+                  className="h-12 rounded-full border border-neutral-300 bg-white px-7 text-sm font-medium text-neutral-900 hover:border-neutral-400 hover:bg-neutral-50 dark:border-white/20 dark:bg-transparent dark:text-white dark:hover:border-white/40 dark:hover:bg-white/5"
                 >
                   <Link href="/pricing">View pricing</Link>
                 </Button>
@@ -94,10 +100,15 @@ export default function IndustriesPage() {
         <MobileIndustryExplorer />
       </div>
 
+      {/* Four long-form sections, each with its own composition — the two-column
+          reel, a live transcript, a dispatch pipeline and an inbound ticker.
+          The remaining industries are covered by the grid above and their own
+          playbook pages. */}
       <div className="mx-auto hidden w-full max-w-6xl px-4 sm:block md:px-6">
-        {INDUSTRIES.map((industry, i) => (
-          <IndustryRow key={industry.slug} slug={industry.slug} index={i} reverse={i % 2 === 1} />
-        ))}
+        <IndustryRow slug="real-estate" index={0} />
+        <IndustryThread slug="healthcare" index={1} />
+        <IndustryPipeline slug="home-services" index={2} />
+        <IndustryTicker slug="restaurants" index={3} />
       </div>
 
       <Ornament />

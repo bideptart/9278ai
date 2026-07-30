@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState, type MouseEvent } from "react"
 import Link from "next/link"
 import { ArrowRight, ArrowUpRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -34,6 +34,19 @@ function useIsDesktop() {
 // combined with an arbitrary `transform:` property, compiling it into an
 // unconditional rule (always rotated). Driving the flip from React state
 // instead of a CSS-only :hover selector sidesteps that entirely.
+//
+// The flip is click-triggered, not hover/focus-triggered: a click on the card
+// body turns it by one more half-turn and it stays put until the next click
+// (on the card, to keep turning, or outside it, which also settles it back to
+// front) — never an ongoing/repeated animation from the pointer merely
+// passing over it. The corner arrow icon is carved out of that turn so it
+// still navigates immediately regardless of face, it's the one genuine "go"
+// affordance on the card.
+//
+// Rotation is tracked as an ever-increasing turn count rather than a
+// front/back boolean, so the card always spins the same direction — click,
+// click, click keeps winding forward through back → front → back rather than
+// the second click winding back the way it came.
 function FlipCard({
   link,
   index,
@@ -43,13 +56,35 @@ function FlipCard({
   index: number
   showNumber?: boolean
 }) {
-  const [flipped, setFlipped] = useState(false)
+  const [turns, setTurns] = useState(0)
+  const flipped = turns % 2 === 1
   const isDesktop = useIsDesktop()
+  const cardRef = useRef<HTMLAnchorElement>(null)
   const number = String(index + 1).padStart(2, "0")
   const accent = ACCENTS[index % ACCENTS.length]
 
+  // A click outside the card settles it back to the front face — by
+  // finishing the turn already in progress, never spinning backward.
+  useEffect(() => {
+    if (!flipped) return
+    const onPointerDown = (e: PointerEvent) => {
+      if (cardRef.current && !cardRef.current.contains(e.target as Node)) setTurns((t) => t + 1)
+    }
+    document.addEventListener("pointerdown", onPointerDown)
+    return () => document.removeEventListener("pointerdown", onPointerDown)
+  }, [flipped])
+
+  function handleCardClick(e: MouseEvent<HTMLAnchorElement>) {
+    // The arrow badge is the real "go" control — let its click through to the
+    // native anchor navigation untouched, whatever the current face.
+    if ((e.target as HTMLElement).closest("[data-flip-nav]")) return
+    e.preventDefault()
+    setTurns((t) => t + 1)
+  }
+
   const frontIconBadge = (
     <span
+      data-flip-nav
       className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
       style={{
         background: `color-mix(in oklch, ${accent} 12%, transparent)`,
@@ -64,6 +99,7 @@ function FlipCard({
   // Back face — solid brand red, white icon (matches the pricing-page testimonial cards)
   const backIconBadge = (
     <span
+      data-flip-nav
       className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white"
       style={{
         background: "var(--primary)",
@@ -112,16 +148,15 @@ function FlipCard({
   return (
     <li style={{ perspective: "1200px" }}>
       <Link
+        ref={cardRef}
         href={link.href}
         className={cn(
-          "relative block w-full outline-none transition-transform duration-700 will-change-transform",
+          "relative block w-full cursor-pointer outline-none transition-transform duration-700 will-change-transform",
           showNumber ? "h-56" : "h-[210px]",
         )}
-        style={{ transformStyle: "preserve-3d", transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)" }}
-        onMouseEnter={() => setFlipped(true)}
-        onMouseLeave={() => setFlipped(false)}
-        onFocus={() => setFlipped(true)}
-        onBlur={() => setFlipped(false)}
+        style={{ transformStyle: "preserve-3d", transform: `rotateY(${turns * 180}deg)` }}
+        aria-pressed={flipped}
+        onClick={handleCardClick}
       >
         {/* Front face — red gradient, shown at rest (matches the homepage how-it-works cards) */}
         <div

@@ -42,8 +42,9 @@ export default async function PricingPage({
         </div>
       )}
 
-      {/* Hero — vertically centered in the viewport, matching /features */}
-      <section className="relative flex min-h-[60svh] items-center overflow-hidden border-b border-border/50 py-12 md:min-h-[calc(100svh-4rem)] md:py-0">
+      {/* Hero — sized to its own copy rather than the viewport, so the plan
+          toggle sits just under the heading instead of a screen below it. */}
+      <section className="relative flex items-center overflow-hidden border-b border-border/50 py-14 md:py-20">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(60%_60%_at_50%_0%,rgba(220,38,38,0.10),transparent_70%)]"

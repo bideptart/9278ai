@@ -20,6 +20,7 @@ import {
 import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 import { ScrollReveal, StaggerGroup, StaggerItem } from "@/components/animation/scroll-reveal"
 
 const trustPills = [
@@ -207,6 +208,17 @@ export function Features() {
     return () => clearInterval(interval)
   }, [])
 
+  // A picked category shows only its own items, laid out as one equal-width row.
+  // "All" keeps the twelve-item grid — twelve across would be unreadable — and is
+  // hidden on mobile, where it therefore renders nothing.
+  const visibleFeatures =
+    activeCategory === "All"
+      ? isMobile
+        ? []
+        : features
+      : features.filter((f) => f.tag === activeCategory)
+  const singleRow = !isMobile && activeCategory !== "All"
+
   return (
     <>
       {/* Hero */}
@@ -240,7 +252,7 @@ export function Features() {
               <Button
                 asChild
                 size="lg"
-                className="group btn-ai h-10 shrink-0 whitespace-nowrap rounded-full px-4 text-sm transition-all sm:h-12 sm:px-7 sm:text-base"
+                className="group h-10 shrink-0 whitespace-nowrap rounded-full bg-neutral-900 px-4 text-sm text-white transition-all hover:bg-neutral-800 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200 sm:h-12 sm:px-7 sm:text-base"
               >
                 <Link href="/get-started">
                   Build your first agent
@@ -251,7 +263,7 @@ export function Features() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="group h-10 shrink-0 whitespace-nowrap rounded-full border-border/70 bg-card/30 px-4 text-sm backdrop-blur-md hover:border-primary/50 hover:bg-card/50 sm:h-12 sm:px-7 sm:text-base"
+                className="group h-10 shrink-0 whitespace-nowrap rounded-full border-neutral-300 bg-white px-4 text-sm text-neutral-900 hover:border-neutral-400 hover:bg-neutral-50 dark:border-white/20 dark:bg-transparent dark:text-white dark:hover:border-white/40 dark:hover:bg-white/5 sm:h-12 sm:px-7 sm:text-base"
               >
                 <Link href="/contact">
                   <PhoneCall className="mr-1.5 h-3.5 w-3.5 shrink-0 transition-transform group-hover:rotate-12 sm:mr-2 sm:h-4 sm:w-4" aria-hidden="true" />
@@ -445,17 +457,18 @@ export function Features() {
           <div
             onMouseEnter={() => setIsCategoryPaused(true)}
             onMouseLeave={() => setIsCategoryPaused(false)}
-            className="mt-10 grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3"
+            className={cn(
+              "mt-10",
+              singleRow
+                ? "flex flex-row flex-nowrap items-start gap-8"
+                : "grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3",
+            )}
           >
-            {features.map((f) => {
+            {visibleFeatures.map((f) => {
               const Icon = f.icon
-              const isMatch = activeCategory === "All" || f.tag === activeCategory
 
-              // Mobile: truly filter the list (no dimmed, still-occupying-space items), no animation.
-              // The "All" pill is hidden on mobile, so "All" shows nothing instead of everything —
-              // only a picked category (Voice/Telephony/Integrations/Operations) renders its list.
+              // Mobile keeps the plain stacked list — a four-across row is unreadable at 375px.
               if (isMobile) {
-                if (activeCategory === "All" || !isMatch) return null
                 return (
                   <div key={f.title} className="flex w-full flex-row items-start gap-3">
                     <Icon className="mt-1 h-3.5 w-3.5 shrink-0 text-primary" aria-hidden="true" />
@@ -467,16 +480,22 @@ export function Features() {
                 )
               }
 
-              // Desktop: original behaviour — every card stays in the grid, non-matching ones just dim.
               return (
                 <motion.div
-                  key={f.title}
-                  animate={{ opacity: isMatch ? 1 : 0.25 }}
+                  key={`${activeCategory}-${f.title}`}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                  className="flex w-full flex-row items-start gap-3"
+                  className={cn(
+                    "flex flex-row items-start gap-3",
+                    // basis-0 + flex-1 gives every item in the row identical width; the
+                    // max-width stops a two-item category from stretching to half the page
+                    // and keeps columns lined up with the "All" grid.
+                    singleRow ? "min-w-0 max-w-sm flex-1 basis-0" : "w-full",
+                  )}
                 >
                   <Icon className="mt-1 h-3.5 w-3.5 shrink-0 text-primary" aria-hidden="true" />
-                  <div className="flex flex-col gap-0.5">
+                  <div className="flex min-w-0 flex-col gap-0.5">
                     <p className="text-sm font-medium tracking-tight">{f.title}</p>
                     <p className="text-xs leading-relaxed text-muted-foreground">{f.description}</p>
                   </div>

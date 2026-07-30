@@ -10,7 +10,7 @@ import { ScrollReveal } from "@/components/animation/scroll-reveal"
 /**
  * CtaPanel
  * The single source of truth for the site's closing CTA. This is the exact
- * layout and styling used by the homepage CTA — pink-gradient card, drifting
+ * layout and styling used by the homepage CTA — near-white card, drifting
  * glows, dot grid, "Live demo" pill, headline + description, two buttons, and a
  * trust strip — so every page's CTA renders identically. Pages pass their own
  * headline/description/buttons; the pill and trust strip default to the shared
@@ -81,17 +81,17 @@ export function CtaPanel({
     <section id={id} className="relative overflow-hidden border-t border-border/40">
       <div className="relative mx-auto w-full max-w-7xl px-4 py-10 md:px-6 md:py-14">
         <ScrollReveal>
-          <div className="ring-gradient relative overflow-hidden rounded-[28px] border border-primary/35 px-6 py-6 shadow-[0_24px_60px_-20px_color-mix(in_oklch,var(--primary)_28%,transparent),0_8px_20px_-8px_color-mix(in_oklch,var(--primary)_16%,transparent)] md:px-8 md:py-8 [background-image:radial-gradient(circle_at_top_right,white,transparent_60%),linear-gradient(135deg,color-mix(in_oklch,var(--primary)_16%,white),color-mix(in_oklch,var(--primary)_6%,white))]">
+          <div className="relative overflow-hidden rounded-[28px] border border-primary/15 px-6 py-6 shadow-[0_12px_28px_-18px_color-mix(in_oklch,var(--primary)_12%,transparent),0_4px_10px_-8px_color-mix(in_oklch,var(--primary)_7%,transparent)] md:px-8 md:py-8 [background-image:radial-gradient(circle_at_top_right,white,transparent_60%),linear-gradient(135deg,color-mix(in_oklch,var(--primary)_5%,white),color-mix(in_oklch,var(--primary)_2%,white))]">
             {/* Drifting glow */}
             <motion.div
               aria-hidden="true"
-              className="pointer-events-none absolute left-1/3 top-0 -z-10 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px] [will-change:transform]"
+              className="pointer-events-none absolute left-1/3 top-0 -z-10 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-primary/5 blur-[120px] [will-change:transform]"
               animate={reduced ? undefined : { x: [0, 60, -20, 0], y: [0, -30, 20, 0], scale: [1, 1.15, 1] }}
               transition={{ duration: 14, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
             />
             <motion.div
               aria-hidden="true"
-              className="pointer-events-none absolute right-1/4 bottom-0 -z-10 h-[24rem] w-[24rem] translate-x-1/2 translate-y-1/2 rounded-full bg-accent/8 blur-[120px] [will-change:transform]"
+              className="pointer-events-none absolute right-1/4 bottom-0 -z-10 h-[24rem] w-[24rem] translate-x-1/2 translate-y-1/2 rounded-full bg-accent/[0.04] blur-[120px] [will-change:transform]"
               animate={reduced ? undefined : { x: [0, -40, 20, 0], y: [0, 30, -10, 0], scale: [1, 1.1, 1] }}
               transition={{ duration: 18, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
             />

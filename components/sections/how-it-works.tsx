@@ -9,8 +9,7 @@ const steps = [
     icon: Wand2,
     label: "Step 01",
     title: "Design your agent",
-    description:
-      "Pick a voice, write the prompt, set guardrails. Describe the agent in plain English and ship it.",
+    description: "Pick a voice, write the prompt, set guardrails — all in plain English.",
     bullets: ["System prompt + personas", "Guardrails and conversation flow", "Plain-English agent definition"],
     pillClass: "ai-pill-cyan",
     accent: "var(--ai-cyan)",
@@ -19,8 +18,7 @@ const steps = [
     icon: BookOpen,
     label: "Step 02",
     title: "Connect your knowledge",
-    description:
-      "Point the agent at your knowledge base, FAQs, or product docs. It answers from your source of truth, not a generic model.",
+    description: "Point the agent at your docs and FAQs. It answers from your source of truth.",
     bullets: ["RAG over your knowledge base", "Live document sync", "Source citations on every answer"],
     pillClass: "ai-pill-violet",
     accent: "var(--ai-violet)",
@@ -29,8 +27,7 @@ const steps = [
     icon: Rocket,
     label: "Step 03",
     title: "Launch & scale",
-    description:
-      "Plug in your phone number, route inbound or outbound, and go live. Scale from one call to thousands without a queue.",
+    description: "Plug in your number, route inbound or outbound, and scale without a queue.",
     bullets: ["Phone number routing (inbound + outbound)", "Real-time latency tracking", "Self-hosted control panel"],
     pillClass: "ai-pill-magenta",
     accent: "var(--ai-magenta)",
@@ -82,10 +79,10 @@ export function HowItWorks() {
               return (
                 <StaggerItem key={step.title}>
                   <div className="group relative h-full sm:[perspective:1200px]">
-                    <div className="relative h-full min-h-[290px] transition-transform duration-700 ease-out sm:[transform-style:preserve-3d] sm:group-hover:[transform:rotateY(180deg)] sm:min-h-[280px]">
+                    <div className="relative h-full min-h-[305px] transition-transform duration-700 ease-out sm:[transform-style:preserve-3d] sm:group-hover:[transform:rotateY(180deg)] sm:min-h-[305px]">
                       {/* FRONT — red gradient, shown at rest */}
                       <div
-                        className="absolute inset-0 flex flex-col overflow-hidden rounded-2xl p-6 sm:[backface-visibility:hidden]"
+                        className="absolute inset-0 flex flex-col overflow-hidden rounded-2xl px-6 pb-8 pt-6 sm:[backface-visibility:hidden]"
                         style={{
                           backgroundImage:
                             "linear-gradient(135deg, color-mix(in oklch, var(--primary) 16%, white), color-mix(in oklch, var(--primary) 6%, white))",
@@ -112,9 +109,11 @@ export function HowItWorks() {
                         </div>
                         <span className="sr-only">{step.label}</span>
                         <h3 className="relative mt-2 text-xl font-semibold tracking-tight">{step.title}</h3>
-                        <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">{step.description}</p>
+                        <p className="relative mt-2 line-clamp-2 min-h-[2.85rem] text-sm leading-relaxed text-muted-foreground">
+                          {step.description}
+                        </p>
 
-                        <ul className="relative mt-3 space-y-1.5 sm:mt-6 sm:space-y-2">
+                        <ul className="relative mt-5 space-y-2">
                           {step.bullets.map((b) => (
                             <li key={b} className="flex items-center gap-2 text-sm text-foreground/80">
                               <span aria-hidden className="h-1.5 w-1.5 rounded-full" style={{ background: step.accent }} />
@@ -125,7 +124,7 @@ export function HowItWorks() {
                       </div>
 
                       {/* BACK — white card, revealed on hover (desktop only; mobile shows front face only, no 3D transform) */}
-                      <div className="step-card card-glow absolute inset-0 hidden flex-col overflow-hidden rounded-2xl bg-white p-6 sm:flex sm:[backface-visibility:hidden] sm:[transform:rotateY(180deg)]">
+                      <div className="step-card card-glow absolute inset-0 hidden flex-col overflow-hidden rounded-2xl bg-white px-6 pb-8 pt-6 sm:flex sm:[backface-visibility:hidden] sm:[transform:rotateY(180deg)]">
                         <span className="scan-line" aria-hidden />
                         <div className="relative flex items-start justify-between">
                           <span
@@ -147,9 +146,11 @@ export function HowItWorks() {
                         </div>
                         <span className="sr-only">{step.label}</span>
                         <h3 className="relative mt-2 text-xl font-semibold tracking-tight">{step.title}</h3>
-                        <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">{step.description}</p>
+                        <p className="relative mt-2 line-clamp-2 min-h-[2.85rem] text-sm leading-relaxed text-muted-foreground">
+                          {step.description}
+                        </p>
 
-                        <ul className="relative mt-3 space-y-1.5 sm:mt-6 sm:space-y-2">
+                        <ul className="relative mt-5 space-y-2">
                           {step.bullets.map((b) => (
                             <li key={b} className="flex items-center gap-2 text-sm text-foreground/80">
                               <span aria-hidden className="h-1.5 w-1.5 rounded-full" style={{ background: step.accent }} />

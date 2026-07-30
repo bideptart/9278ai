@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils"
 /**
  * Faint contour lines echoing the illustration style — drawn by the card itself
  * (not baked into the image) so the artwork sits on a surface that belongs to
- * the card. Brand red at a whisper of opacity.
+ * the card. Neutral gray at a whisper of opacity.
  */
 function WaveLines() {
   return (
@@ -19,7 +19,7 @@ function WaveLines() {
       aria-hidden
       viewBox="0 0 240 120"
       preserveAspectRatio="none"
-      className="pointer-events-none absolute inset-x-0 bottom-6 h-24 w-full text-primary opacity-[0.1]"
+      className="pointer-events-none absolute inset-x-0 bottom-6 h-24 w-full text-neutral-500 opacity-[0.16]"
       fill="none"
       stroke="currentColor"
       strokeWidth="1"
@@ -37,11 +37,11 @@ function WaveLines() {
 
 function CardFront({ industry, index }: { industry: Industry; index: number }) {
   return (
-    <div className="absolute inset-0 flex flex-col overflow-hidden rounded-[22px] border border-primary/35 bg-gradient-to-b from-white to-[oklch(0.968_0.022_20)] shadow-[0_24px_60px_-20px_color-mix(in_oklch,var(--primary)_28%,transparent),0_8px_20px_-8px_color-mix(in_oklch,var(--primary)_16%,transparent)] transition-shadow duration-500 [backface-visibility:hidden] group-hover:shadow-[0_30px_66px_-20px_color-mix(in_oklch,var(--primary)_36%,transparent),0_10px_24px_-8px_color-mix(in_oklch,var(--primary)_20%,transparent)]">
+    <div className="absolute inset-0 flex flex-col overflow-hidden rounded-[22px] border border-neutral-300 bg-white shadow-[0_8px_20px_-16px_rgb(0_0_0_/_0.1),0_2px_6px_-6px_rgb(0_0_0_/_0.07)] transition-shadow duration-500 [backface-visibility:hidden] group-hover:shadow-[0_12px_26px_-16px_rgb(0_0_0_/_0.14),0_3px_8px_-6px_rgb(0_0_0_/_0.09)]">
       <WaveLines />
 
       {/* Number */}
-      <span className="absolute right-2.5 top-2.5 z-10 rounded-md bg-primary/10 px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-primary ring-1 ring-primary/15">
+      <span className="absolute right-2.5 top-2.5 z-10 rounded-md bg-neutral-100 px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-neutral-600 ring-1 ring-neutral-200">
         {String(index + 1).padStart(2, "0")}
       </span>
 
@@ -52,7 +52,7 @@ function CardFront({ industry, index }: { industry: Industry; index: number }) {
           alt={`${industry.name} illustration`}
           fill
           sizes="(max-width: 640px) 45vw, (max-width: 1280px) 18vw, 150px"
-          className="object-contain object-center transition-transform duration-500 group-hover:scale-105 [filter:drop-shadow(0_8px_14px_oklch(0.577_0.245_27.33_/_0.28))]"
+          className="object-contain object-center transition-transform duration-500 group-hover:scale-105 [filter:drop-shadow(0_6px_10px_rgb(0_0_0_/_0.12))]"
         />
       </div>
 
@@ -69,14 +69,14 @@ function CardFront({ industry, index }: { industry: Industry; index: number }) {
 function CardBack({ industry, cta }: { industry: Industry; cta: ReactNode }) {
   return (
     <div
-      className="absolute inset-0 flex flex-col justify-center overflow-hidden rounded-[22px] border border-primary/35 p-4 text-white shadow-[0_24px_60px_-20px_color-mix(in_oklch,var(--primary)_28%,transparent),0_8px_20px_-8px_color-mix(in_oklch,var(--primary)_16%,transparent)] [backface-visibility:hidden] [transform:rotateY(180deg)]"
+      className="absolute inset-0 flex flex-col justify-center overflow-hidden rounded-[22px] border border-neutral-300 p-4 text-neutral-900 shadow-[0_8px_20px_-16px_rgb(0_0_0_/_0.12),0_2px_6px_-6px_rgb(0_0_0_/_0.08)] [backface-visibility:hidden] [transform:rotateY(180deg)]"
       style={{
-        // Exact red sampled from the real-estate house walls (#E45444)
-        background: "linear-gradient(150deg, #EF6C5B 0%, #E45444 52%, #CE4C3D 100%)",
+        // Light gray, a shade off the white front face so the flip still reads.
+        background: "linear-gradient(150deg, #fafafa 0%, #f5f5f5 52%, #ededed 100%)",
       }}
     >
-      <span aria-hidden className="pointer-events-none absolute inset-0 opacity-20 bg-lattice" />
-      <p className="relative text-[11.5px] leading-snug text-white/95">{industry.short}</p>
+      <span aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.05] bg-lattice" />
+      <p className="relative text-[11.5px] leading-snug text-neutral-700">{industry.short}</p>
       {cta}
     </div>
   )
@@ -108,7 +108,7 @@ function MobileIndustryCard({ industry, index }: { industry: Industry; index: nu
               href={`/industries/${industry.slug}`}
               onClick={(e) => e.stopPropagation()}
               aria-label={`View the ${industry.name} playbook`}
-              className="group/link relative z-10 mt-3 inline-flex w-fit items-center gap-1 rounded text-xs font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+              className="group/link relative z-10 mt-3 inline-flex w-fit items-center gap-1 rounded text-xs font-semibold text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-500/60"
             >
               View playbook
               <ArrowRight className="size-3.5 transition-transform group-hover/link:translate-x-0.5" aria-hidden />
@@ -151,7 +151,7 @@ function DesktopIndustryCard({ industry, index }: { industry: Industry; index: n
         <CardBack
           industry={industry}
           cta={
-            <span className="relative mt-3 inline-flex items-center gap-1 text-xs font-semibold text-white">
+            <span className="relative mt-3 inline-flex items-center gap-1 text-xs font-semibold text-neutral-900">
               View playbook
               <ArrowRight
                 className={cn(
@@ -173,7 +173,7 @@ export function Industries() {
     <section id="industries" className="relative overflow-hidden border-t border-border/40">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-dots opacity-60 [mask-image:radial-gradient(ellipse_at_center,black_25%,transparent_72%)]"
+        className="pointer-events-none absolute inset-0 bg-dots opacity-30 [mask-image:radial-gradient(ellipse_at_center,black_25%,transparent_72%)]"
       />
       <div className="relative mx-auto w-full max-w-6xl px-4 py-16 md:px-6 md:py-20">
         <div className="border-b border-border/50 pb-8">
